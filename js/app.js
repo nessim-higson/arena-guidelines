@@ -2,7 +2,7 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=9";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=10";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -56,7 +56,7 @@ const R = {
     return `<div class="cover__bg" id="coverBg">${frames}</div>
     <div class="cover__scrim"></div>
     <div class="slide__inner cover">
-      <h1 class="display hero-type reveal">THE<br>ARENA</h1>
+      <div class="cover__logo reveal" id="coverLogo">${mark("center", "cover-lockup")}</div>
       <div class="reveal" style="margin-top:var(--s3)">
         <div class="label" style="color:var(--white)">Brand Playbook — Work in Progress</div>
         <p class="cap" style="margin-top:10px;font-size:.72rem">West Hollywood, CA &nbsp;·&nbsp; enterthearena.com &nbsp;·&nbsp; Interactive Guidelines</p>
@@ -381,6 +381,7 @@ function build() {
   document.body.appendChild(lb);
 
   wireCover();
+  wireHeaderLogo();
   wireColor();
   wireGallery(lb);
   wireTypeEditor();
@@ -513,6 +514,16 @@ function wireImageColor() {
   stage.addEventListener("pointermove", move);
   stage.addEventListener("pointerleave", () => { stage.style.setProperty("--mx", "70%"); stage.style.setProperty("--my", "30%"); });
   if (sources[0]) load(sources[0]);
+}
+
+/* ---- header logo: slides into the nav as the cover logo scrolls away ---- */
+function wireHeaderLogo() {
+  const navBrand = $("#navBrand"), coverLogo = $("#coverLogo");
+  if (!navBrand) return;
+  if (!coverLogo) { navBrand.classList.add("is-in"); return; }
+  const onScroll = () => navBrand.classList.toggle("is-in", coverLogo.getBoundingClientRect().bottom < 58);
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 }
 
 /* ---- cover: crossfade-cycle the animated gifs ---- */
