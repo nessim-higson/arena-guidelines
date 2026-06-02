@@ -56,7 +56,7 @@ export const SLIDES = [
   // ---------- IDENTITY SYSTEM (elements + scaling, Herman-Miller-tight) ----------
   { id: "elements-overview", ch: "identity", kind: "elements-overview",
     eyebrow: "9.1 — Identity Elements", title: "ELEMENTS OVERVIEW",
-    intro: "The identity is a small, disciplined set of parts: the symbol, the wordmark, their lockups, and the generative ring system they all derive from. Everything else is built from these." },
+    intro: "The identity is a small, disciplined set of parts: the symbol, the wordmark, and their lockups. Everything else is built from these — and the symbol is always the supplied four-ring mark." },
 
   { id: "symbol-construction", ch: "identity", kind: "symbol-construction",
     eyebrow: "9.2 — Identity Elements", title: "SYMBOL CONSTRUCTION",
@@ -72,7 +72,7 @@ export const SLIDES = [
 
   { id: "scaling", ch: "identity", kind: "scaling",
     eyebrow: "9.10 — Identity Elements", title: "SCALING PRINCIPLES",
-    intro: "Because the mark is generative, it doesn't just shrink — it adapts. Ring density scales with size so the form stays true from billboard to favicon." },
+    intro: "The mark scales as one locked unit — the same four-ring symbol at every size, from billboard to favicon. It is never stretched, redrawn, or altered." },
 
   // ---------- TYPE ----------
   { id: "typeface", ch: "type", kind: "statement", label: "Visual Identity", display: "TYPEFACE",

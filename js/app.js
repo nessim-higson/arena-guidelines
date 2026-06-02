@@ -2,7 +2,7 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=14";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=15";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -29,19 +29,6 @@ async function loadLogos() {
 function mark(key = "icon", cls = "portal-mark") {
   const svg = LOGOS[key] || PORTAL_SVG; // PORTAL_SVG = fallback
   return svg.replace("<svg ", `<svg class="${cls}" `);
-}
-
-/* ---- parametric portal: n concentric rounded rects (for construction/scaling) ---- */
-function portalSVG(n, cls = "pt", sw = 5) {
-  const W = 260, H = 160, m = 8, cw = 44, ch = 26;
-  const sx = ((W - cw) / 2 - m) / Math.max(1, n - 1);
-  const sy = ((H - ch) / 2 - m) / Math.max(1, n - 1);
-  let rects = "";
-  for (let i = 0; i < n; i++) {
-    const x = m + i * sx, y = m + i * sy, w = W - 2 * x, h = H - 2 * y, rx = Math.max(6, h * 0.32);
-    rects += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="${rx.toFixed(1)}"/>`;
-  }
-  return `<svg class="${cls}" viewBox="0 0 ${W} ${H}" fill="none" stroke="currentColor" stroke-width="${sw}" xmlns="http://www.w3.org/2000/svg">${rects}</svg>`;
 }
 
 /* ---- line icons for the inspiration slide ------------------ */
@@ -138,8 +125,7 @@ const R = {
       { name: "Symbol", art: mark("icon", "el-mark") },
       { name: "Wordmark", art: `<div class="el-word is-arena">THE&nbsp;ARENA</div>` },
       { name: "Horizontal lockup", art: mark("horizontal", "el-mark") },
-      { name: "Stacked lockup", art: mark("left", "el-mark") },
-      { name: "Ring system", art: portalSVG(6, "el-mark", 4) }
+      { name: "Stacked lockup", art: mark("left", "el-mark") }
     ];
     const tiles = items.map((it, i) => `<div class="el-tile reveal">
       <span class="el-tile__no">${String(i + 1).padStart(2, "0")}</span>
@@ -151,20 +137,16 @@ const R = {
   "symbol-construction"(s) {
     return `<div class="slide__inner foundation">${headSec(s)}
       <div class="construct reveal">
-        <div class="construct__stage">
-          <svg class="construct__guides" viewBox="0 0 260 160" preserveAspectRatio="none">
-            <rect x="8" y="8" width="244" height="144" class="g-box"/>
-            <line x1="130" y1="0" x2="130" y2="160" class="g-line"/>
-            <line x1="0" y1="80" x2="260" y2="80" class="g-line"/>
-            <rect x="8" y="8" width="58" height="58" class="g-unit"/>
-          </svg>
-          ${portalSVG(4, "construct__mark", 5)}
+        <div class="construct__stage construct__stage--mark">
+          <span class="g-cross g-cross--v"></span>
+          <span class="g-cross g-cross--h"></span>
+          <div class="construct__markwrap"><div class="construct__mark">${mark("icon", "cm-svg")}</div></div>
         </div>
         <ul class="rules">
-          <li><b>Concentric.</b> Built from nested rounded rectangles, sharing one center.</li>
+          <li><b>Concentric.</b> Nested rounded rectangles, sharing one center.</li>
           <li><b>Radius.</b> Corner radius ≈ 10% of the shorter side; inner radii always smaller than outer.</li>
-          <li><b>Rhythm.</b> Band weight equals the gap between rings.</li>
-          <li><b>Parallel.</b> Curves never cross — the forms stay nested and clean.</li>
+          <li><b>Rhythm.</b> Band weight equals the gap between rings — four rings, always.</li>
+          <li><b>Fixed.</b> Use the supplied artwork as-is — never redraw, add or remove rings.</li>
         </ul>
       </div>`;
   },
@@ -198,17 +180,11 @@ const R = {
   },
 
   scaling(s) {
-    const sizes = [
-      { n: 6, px: 188, label: "Large — full density" },
-      { n: 5, px: 120, label: "" },
-      { n: 4, px: 76, label: "" },
-      { n: 3, px: 46, label: "" },
-      { n: 2, px: 30, label: "Small — reduced" }
-    ];
-    const items = sizes.map(z => `<div class="scale-item"><div class="scale-art" style="width:${z.px}px">${portalSVG(z.n, "scale-svg", 5)}</div><span class="cap">${z.px}px · ${z.n} rings${z.label ? " · " + esc(z.label) : ""}</span></div>`).join("");
+    const sizes = [{ px: 200, label: "Large" }, { px: 120, label: "" }, { px: 72, label: "" }, { px: 44, label: "Minimum" }];
+    const items = sizes.map(z => `<div class="scale-item"><div class="scale-art" style="width:${z.px}px">${mark("icon", "scale-svg")}</div><span class="cap">${z.px}px${z.label ? " · " + esc(z.label) : ""}</span></div>`).join("");
     return `<div class="slide__inner foundation">${headSec(s)}
       <div class="scale-row reveal">${items}</div>
-      <p class="rules-inline reveal"><b>The mark is generative.</b> Ring density scales with size — more rings when large for depth, fewer when small to protect legibility. The same logic drives the Ring Tool.</p>`;
+      <p class="rules-inline reveal"><b>One mark, scaled as a locked unit.</b> The symbol is always the four-ring mark, exactly as supplied. Scale it uniformly — never stretch, recolor, redraw, or change the number of rings. Below the minimum, use it only where it stays clearly legible.</p>`;
   },
 
   inspiration(s) {
