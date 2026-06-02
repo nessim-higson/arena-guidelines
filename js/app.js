@@ -2,7 +2,7 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=3";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=4";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -367,7 +367,7 @@ function wireTypeEditor() {
   const el = $("#typeEditor"); if (!el) return;
   const phrases = ["ENTER THE ARENA", "WHERE STORIES ARE FORGED", "STORIES THAT HIT HARD", "CLAIM YOUR SEAT"];
   let pi = 0, ci = 0, deleting = false, timer = null, auto = true;
-  const render = (txt) => { el.innerHTML = esc(txt) + '<span class="te-caret">▌</span>'; };
+  const render = (txt) => { el.innerHTML = esc(txt) + '<span class="te-caret"></span>'; };
   function tick() {
     const p = phrases[pi];
     if (!deleting) {
