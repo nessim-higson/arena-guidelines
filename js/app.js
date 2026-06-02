@@ -1,0 +1,247 @@
+/* ============================================================
+   THE ARENA — PLAYBOOK runtime
+   Builds slides from data/slides.js and wires interactions.
+   ============================================================ */
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js";
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const E = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
+const esc = (s) => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const paras = (arr) => (Array.isArray(arr) ? arr : [arr]).map(p => `<p>${esc(p)}</p>`).join("");
+
+/* ---- line icons for the inspiration slide ------------------ */
+const ICONS = {
+  Arena: `<svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="3"><ellipse cx="60" cy="40" rx="54" ry="32"/><ellipse cx="60" cy="40" rx="34" ry="18"/><line x1="6" y1="40" x2="26" y2="40"/><line x1="94" y1="40" x2="114" y2="40"/></svg>`,
+  Screen: `<svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="3"><rect x="8" y="8" width="104" height="58" rx="10"/><path d="M86 50l10 10"/><circle cx="98" cy="62" r="3" fill="currentColor" stroke="none"/></svg>`,
+  Frame: `<svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="3"><path d="M14 26V14h12M106 26V14H94M14 54v12h12M106 54v12H94"/><circle cx="60" cy="40" r="11"/><path d="M60 33v14M53 40h14"/></svg>`,
+  Portal: PORTAL_SVG
+};
+
+/* ============================================================
+   SLIDE RENDERERS
+   ============================================================ */
+function labelEl(s) {
+  let h = "";
+  if (s.label) h += `<div class="slide__label label reveal">${esc(s.label)}</div>`;
+  if (s.soon) h += `<div class="slide__soon reveal"><span class="tag-soon"><span>${esc(s.soon)}</span></span></div>`;
+  return h;
+}
+
+const R = {
+  cover(s) {
+    return `<div class="slide__inner cover">
+      <div class="portal reveal">${PORTAL_SVG}</div>
+      <h1 class="display hero-type reveal">THE<br>ARENA</h1>
+      <div class="reveal" style="margin-top:var(--s3)">
+        <div class="label" style="color:var(--white)">Brand Playbook — Work in Progress</div>
+        <p class="cap" style="margin-top:10px;font-size:.72rem">West Hollywood, CA &nbsp;·&nbsp; enterthearena.com &nbsp;·&nbsp; Interactive Guidelines</p>
+      </div>
+    </div>`;
+  },
+
+  chapter(s) {
+    return labelEl(s) + `<div class="slide__inner chapter">
+      <div class="chapter__num display display--oblique reveal">${esc(s.num)}</div>
+      <h2 class="chapter__title display display--oblique reveal">${esc(s.title).replace(/\n/g, "<br>")}</h2>
+    </div>`;
+  },
+
+  statement(s) {
+    const bg = s.bg ? `<img class="stmt-bg" src="${s.bg}" alt="" aria-hidden="true">` : "";
+    return bg + labelEl(s) + `<div class="slide__inner statement">
+      <h2 class="display d1 reveal">${esc(s.display)}</h2>
+      <div class="statement__body body reveal">${paras(s.body)}</div>
+    </div>`;
+  },
+
+  image(s) {
+    // Each deck render is a complete, self-contained slide (label/title/body
+    // already baked in) — so show only the image, no duplicate overlays.
+    const soon = s.soon ? `<div class="slide__soon reveal"><span class="tag-soon"><span>${esc(s.soon)}</span></span></div>` : "";
+    return soon + `<div class="slide__inner media">
+      <div class="media__frame reveal"><img loading="lazy" src="${s.img}" alt="${esc(s.caption || s.label || "")}"></div>
+    </div>`;
+  },
+
+  iconmark(s) {
+    return labelEl(s) + `<div class="slide__inner center">
+      <div class="reveal" style="width:min(48vw,560px)">${PORTAL_SVG}</div>
+    </div>`;
+  },
+
+  inspiration(s) {
+    const items = s.items.map(it => `
+      <div class="insp__item reveal">
+        ${ICONS[it.t] || ""}
+        <h4>${esc(it.t)}</h4>
+        <p>${esc(it.d)}${it.b ? `<br><br><strong style="color:#fff">${esc(it.b)}</strong>` : ""}</p>
+      </div>`).join("");
+    return labelEl(s) + `<div class="slide__inner col">
+      <p class="body reveal" style="max-width:58ch;margin-bottom:var(--s4)">${esc(s.intro)}</p>
+      <div class="insp">${items}</div>
+    </div>`;
+  },
+
+  "arena-specimen"(s) {
+    return labelEl(s) + `<div class="slide__inner col">
+      <div class="rule reveal" style="margin:var(--s3) 0 6px"></div>
+      <div class="cap reveal" style="margin-bottom:var(--s3)">Arena Regular</div>
+      <div class="glyphs reveal" style="font-size:clamp(1.6rem,5.5vw,4.4rem)">
+        ABCDEFGHIJKLM<br>NOPQRSTUVWXYZ<br>0123456789<br>.,;?!“”@’-&amp;
+      </div>
+      <div class="reveal" style="margin-top:var(--s4)"><span class="tag-soon"><span>WIP — working typeface</span></span></div>
+    </div>`;
+  },
+
+  "arena-examples"(s) {
+    return labelEl(s) + `<div class="slide__inner row" style="align-items:center;gap:var(--s6)">
+      <h3 class="display display--oblique reveal" style="font-size:clamp(2rem,6vw,5.5rem)">ENTER<br>THE<br>ARENA</h3>
+      <h3 class="display display--oblique reveal" style="font-size:clamp(2rem,6vw,5.5rem)">WHERE<br>STORIES<br>ARE<br>FORGED</h3>
+    </div>`;
+  },
+
+  "syne-specimen"(s) {
+    const set = (w, lbl) => `
+      <div class="cap reveal" style="margin:var(--s3) 0 8px">${lbl}</div>
+      <div class="reveal" style="font-family:var(--f-syne);font-weight:${w};line-height:1.05;font-size:clamp(1.2rem,3.4vw,2.6rem)">
+        ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789
+      </div>`;
+    return labelEl(s) + `<div class="slide__inner col">
+      <div class="rule reveal" style="margin-top:var(--s3)"></div>${set(400, "Syne Regular")}
+      <div class="rule reveal" style="margin-top:var(--s4)"></div>${set(700, "Syne Bold")}
+    </div>`;
+  },
+
+  hierarchy(s) {
+    return labelEl(s) + `<div class="slide__inner col" style="justify-content:center;gap:var(--s2);max-width:1100px">
+      <div class="hier-row reveal"><h3 class="display display--oblique" style="font-size:clamp(2rem,6.5vw,5rem)">ENTER THE ARENA</h3><span class="cap">Arena Regular</span></div>
+      <div class="rule reveal"></div>
+      <div class="hier-row reveal"><h4 style="font-family:var(--f-syne);font-weight:700;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(1.2rem,3vw,2rem);margin:0">Where stories are forged</h4><span class="cap">Syne Bold</span></div>
+      <div class="rule reveal"></div>
+      <div class="hier-row reveal"><p class="body" style="max-width:60ch;margin:0">A stage for transformation. Open to all with the courage to step inside. It's where stories are forged, and characters tested, shaped, and pushed to the edge to discover what they're capable of.</p><span class="cap">Syne Regular</span></div>
+    </div>`;
+  },
+
+  color(s) {
+    const rows = s.colors.map(c => `
+      <div class="swatch" data-hex="${c.hex}">
+        <div class="swatch__chip" style="background:${c.hex}"></div>
+        <span class="nm">${esc(c.name)}<br><span style="color:var(--body);font-weight:400">${c.hex}</span></span>
+        <span>PMS<br>${esc(c.pms)}</span>
+        <span>CMYK<br>${esc(c.cmyk)}</span>
+        <span>RGB<br>${esc(c.rgb)}</span>
+        <span class="copy">Click to copy</span>
+      </div>`).join("");
+    return labelEl(s) + `<div class="slide__inner col" style="justify-content:center">
+      <div class="swatches">${rows}</div>
+    </div>`;
+  },
+
+  ringtool(s) {
+    return labelEl(s) + `<div class="slide__inner ringtool">
+      <div class="ringtool__stage reveal">
+        <iframe src="${RING_TOOL_URL}" title="The Arena Ring Tool" loading="lazy"
+          referrerpolicy="no-referrer" allow="clipboard-write"></iframe>
+      </div>
+      <div class="ringtool__bar">
+        <div><strong class="display" style="font-size:1.4rem">${esc(s.title)}</strong>
+          <p class="body" style="font-size:.85rem;margin:4px 0 0;max-width:52ch">${esc(s.body)}</p></div>
+        <a class="tag-soon" href="${RING_TOOL_URL}" target="_blank" rel="noopener"><span>Open full tool ↗</span></a>
+      </div>
+    </div>`;
+  },
+
+  boilerplate(s) {
+    return labelEl(s) + `<div class="slide__inner center">
+      <div class="xerox reveal">
+        <h3>${esc(s.heading)}</h3>
+        ${paras(s.body)}
+        <div class="xerox__foot"><span>THE ARENA</span><span>BRAND PLAYBOOK</span></div>
+      </div>
+    </div>`;
+  },
+
+  appendix(s) {
+    return `<div class="slide__inner center col" style="text-align:center;gap:10px">
+      <h2 class="reveal" style="font-family:var(--f-syne);font-weight:600;letter-spacing:.04em;font-size:clamp(1.6rem,4vw,3rem);margin:0">${esc(s.title)}</h2>
+      <h3 class="reveal" style="font-family:var(--f-syne);font-weight:600;letter-spacing:.04em;font-size:clamp(1.6rem,4vw,3rem);margin:0;color:var(--body)">${esc(s.sub)}</h3>
+    </div>`;
+  }
+};
+
+/* ============================================================
+   BUILD
+   ============================================================ */
+function build() {
+  // nav
+  const navWrap = $("#navChapters");
+  navWrap.innerHTML = NAV.map(n => `<a href="#${n.target}" data-target="${n.target}">${esc(n.label)}</a>`).join("");
+  $("#navBrand").innerHTML = `${PORTAL_SVG}<span class="wm">The Arena</span>`;
+
+  // slides
+  const main = $("#deck");
+  SLIDES.forEach(s => {
+    const sec = E("section", "slide slide--" + s.kind);
+    sec.id = s.id;
+    sec.dataset.ch = s.ch;
+    if (s.dark) sec.classList.add("is-light-slide");
+    const fn = R[s.kind];
+    sec.innerHTML = fn ? fn(s) : `<div class="slide__inner"><p>${s.id}</p></div>`;
+    main.appendChild(sec);
+  });
+
+  wireColor();
+  wireReveal();
+  wireSpy();
+  wireProgress();
+}
+
+/* ---- color copy ---- */
+function wireColor() {
+  $$(".swatch").forEach(sw => sw.addEventListener("click", () => {
+    const hex = sw.dataset.hex;
+    navigator.clipboard?.writeText(hex);
+    const tag = $(".copy", sw); const prev = tag.textContent;
+    tag.textContent = "Copied " + hex + " ✓"; tag.style.color = "var(--yellow)";
+    setTimeout(() => { tag.textContent = prev; tag.style.color = ""; }, 1200);
+  }));
+}
+
+/* ---- reveal on scroll ---- */
+function wireReveal() {
+  const io = new IntersectionObserver((es) => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+  }), { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
+  $$(".reveal").forEach(n => io.observe(n));
+}
+
+/* ---- nav scroll-spy (by chapter) ---- */
+function wireSpy() {
+  const links = $$("#navChapters a");
+  const byTarget = new Map(links.map(a => [a.dataset.target, a]));
+  const chToLink = new Map(NAV.map(n => [SLIDES.find(s => s.id === n.target)?.ch, n.target]));
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => {
+      if (!e.isIntersecting) return;
+      const ch = e.target.dataset.ch;
+      const target = chToLink.get(ch);
+      links.forEach(a => a.classList.toggle("is-active", a.dataset.target === target));
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  $$(".slide").forEach(s => io.observe(s));
+}
+
+/* ---- progress bar ---- */
+function wireProgress() {
+  const bar = $("#navProgress");
+  const onScroll = () => {
+    const h = document.documentElement;
+    const p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
+    bar.style.width = (p * 100) + "%";
+  };
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+}
+
+build();

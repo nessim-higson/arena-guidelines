@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Arena — Interactive Brand Playbook</title>
+  <meta name="description" content="The Arena brand playbook — visual identity, typography, color, the portal mark, and the live Ring Tool." />
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120'><rect x='8' y='8' width='184' height='104' rx='24' fill='none' stroke='%23fff' stroke-width='10'/><rect x='64' y='44' width='72' height='32' rx='10' fill='none' stroke='%23fff' stroke-width='10'/></svg>" />
+  <link rel="stylesheet" href="./css/app.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav__brand" id="navBrand" href="#cover"></a>
+    <div class="nav__chapters" id="navChapters"></div>
+    <a class="nav__brand" href="#ringtool" style="color:var(--body)"><span class="wm" style="font-family:var(--f-syne);font-weight:600;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase">Ring Tool ↗</span></a>
+  </nav>
+  <div class="nav__progress" id="navProgress"></div>
+
+  <main id="deck"></main>
+
+  <footer class="footer">
+    <div>
+      <div class="display">THE ARENA</div>
+      <small>Brand Playbook v1 — West Hollywood, CA · enterthearena.com</small>
+    </div>
+    <small>Interactive guidelines · zero-build · self-hostable</small>
+  </footer>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
