@@ -2,7 +2,7 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=4";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=5";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -284,6 +284,24 @@ const R = {
     </div>`;
   },
 
+  "ip-color"(s) {
+    const chips = s.themes.map((t, i) => `<button class="ipchip${i === 0 ? " is-on" : ""}" data-i="${i}" style="--c:${t.accent}">
+      <span class="ipchip__dot"></span>${esc(t.name)}</button>`).join("");
+    return `<div class="slide__inner foundation">
+      <div class="sec-head reveal"><div class="eyebrow">${esc(s.eyebrow)}</div><h2>${esc(s.title)}</h2><p>${esc(s.intro)}</p></div>
+      <div class="ipchips reveal">${chips}</div>
+      <div class="ipfield reveal" id="ipField">
+        <div class="ipfield__glow"></div>
+        <div class="ipfield__mark">${mark("icon", "ipfield__svg")}</div>
+        <div class="ipfield__meta">
+          <div class="ipfield__name is-arena" id="ipName">THE ARENA</div>
+          <div class="ipfield__note" id="ipNote">Default — signal yellow</div>
+        </div>
+        <div class="ipfield__bar"></div>
+      </div>
+    </div>`;
+  },
+
   radius(s) {
     const chips = s.chips.map(c => `
       <div class="chip-card"><div class="chip-demo" style="border-radius:${c.r}px"></div>
@@ -357,6 +375,7 @@ function build() {
   wireGallery(lb);
   wireTypeEditor();
   wireDownloads();
+  wireIPColor();
   wireReveal();
   wireSpy();
   wireProgress();
@@ -427,6 +446,33 @@ function saveBlob(blob, name) {
   const a = document.createElement("a"); a.href = u; a.download = name;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(u), 1500);
+}
+
+/* ---- IP-adaptive color field (re-themes + cursor spotlight) ---- */
+function wireIPColor() {
+  const field = $("#ipField"); if (!field) return;
+  const slide = SLIDES.find(x => x.kind === "ip-color");
+  const themes = slide ? slide.themes : [];
+  const name = $("#ipName"), note = $("#ipNote");
+  const apply = (t) => {
+    field.style.setProperty("--ipbg", t.bg);
+    field.style.setProperty("--ipink", t.ink);
+    field.style.setProperty("--ipac", t.accent);
+    name.textContent = t.name.toUpperCase();
+    note.textContent = t.note;
+  };
+  $$(".ipchip").forEach(ch => ch.addEventListener("click", () => {
+    $$(".ipchip").forEach(x => x.classList.toggle("is-on", x === ch));
+    apply(themes[+ch.dataset.i]);
+  }));
+  const move = (e) => {
+    const r = field.getBoundingClientRect();
+    field.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100) + "%");
+    field.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100) + "%");
+  };
+  field.addEventListener("pointermove", move);
+  field.addEventListener("pointerleave", () => { field.style.setProperty("--mx", "50%"); field.style.setProperty("--my", "38%"); });
+  if (themes[0]) apply(themes[0]);
 }
 
 /* ---- gallery: tap-to-pause + click-to-enlarge ---- */

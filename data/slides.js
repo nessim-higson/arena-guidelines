@@ -129,6 +129,17 @@ export const SLIDES = [
       "Stack borders, shadows and fills as separation at once."
     ] },
 
+  { id: "ip-color", ch: "color", kind: "ip-color", label: "Color in Context",
+    eyebrow: "04 — Color", title: "ADAPTS TO IP",
+    intro: "The system stays black, white and yellow on its own — but it absorbs a property's palette without losing its structure. Pick an IP and watch the field, the mark and the accent re-theme. Move your cursor over the frame.",
+    themes: [
+      { name: "The Arena",     bg: "#050505", ink: "#ffffff", accent: "#faff00", note: "Default — signal yellow" },
+      { name: "Metal Slug",    bg: "#17150e", ink: "#f3e7c4", accent: "#c9a227", note: "Desert ops — sand & olive" },
+      { name: "Sample · Neon", bg: "#0b0016", ink: "#ffffff", accent: "#ff2bd6", note: "High-energy arcade" },
+      { name: "Sample · Noir", bg: "#080d12", ink: "#dce6ef", accent: "#4aa3ff", note: "Cold cinematic" },
+      { name: "Sample · Blaze",bg: "#140803", ink: "#ffe9d6", accent: "#ff5a1f", note: "Heat & motion" }
+    ] },
+
   // ---------- IMAGERY ----------
   { id: "imagery", ch: "imagery", kind: "statement", label: "Visual Identity", display: "IMAGERY",
     body: ["Although our IP and the imagery that comes from it is paramount, the following slides give guidance on the types of imagery we gravitate towards — defining our attitude, confidence and energy."] },

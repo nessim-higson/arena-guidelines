@@ -477,6 +477,36 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .frame-demo::before { content: ""; position: absolute; inset: 16px; border: 2px solid var(--fg-faint); border-radius: clamp(10px, 8%, 36px); }
 .frame-demo span { font-family: var(--f-arena); text-transform: uppercase; letter-spacing: 0.05em; z-index: 2; }
 
+/* ---- IP-adaptive color field ---- */
+.ipchips { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: var(--s4); }
+.ipchip { display: inline-flex; align-items: center; gap: 9px; font-family: var(--f-syne); font-weight: 600;
+  font-size: 0.72rem; letter-spacing: 0.03em; padding: 9px 16px; border: 1px solid var(--rule);
+  border-radius: var(--r-pill); background: transparent; color: var(--fg-muted); cursor: pointer; transition: all .2s; }
+.ipchip:hover { color: var(--white); border-color: var(--rule-bright); }
+.ipchip__dot { width: 11px; height: 11px; border-radius: 50%; background: var(--c); box-shadow: 0 0 10px var(--c); }
+.ipchip.is-on { color: #fff; border-color: var(--c); box-shadow: inset 0 0 0 1px var(--c); }
+
+.ipfield { position: relative; overflow: hidden; border-radius: var(--r-l);
+  min-height: clamp(360px, 52vh, 600px);
+  background: var(--ipbg, #050505); color: var(--ipink, #fff);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: clamp(1.5rem, 4vw, 3.5rem); cursor: crosshair;
+  transition: background .55s var(--ease), color .55s var(--ease);
+  --mx: 50%; --my: 38%; }
+.ipfield__glow { position: absolute; inset: 0; pointer-events: none; z-index: 0; mix-blend-mode: screen;
+  background: radial-gradient(circle at var(--mx) var(--my),
+    color-mix(in srgb, var(--ipac, #faff00) 45%, transparent), transparent 42%);
+  transition: background .1s linear; }
+.ipfield__mark { position: absolute; top: 47%; left: 50%; transform: translate(-50%, -50%);
+  width: min(40%, 340px); color: var(--ipink, #fff); z-index: 1; opacity: 0.95; transition: color .55s var(--ease); }
+.ipfield__svg { width: 100%; }
+.ipfield__meta { position: relative; z-index: 2; }
+.ipfield__name { font-size: clamp(2rem, 6vw, 4.5rem); line-height: 0.88; color: var(--ipink, #fff); transition: color .55s var(--ease); }
+.ipfield__note { font-family: var(--f-syne); font-weight: 600; font-size: var(--tx-body-s); color: var(--ipac, #faff00);
+  margin-top: 10px; letter-spacing: 0.06em; text-transform: uppercase; transition: color .55s var(--ease); }
+.ipfield__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: var(--ipac, #faff00); z-index: 2; transition: background .55s var(--ease); }
+@media (prefers-reduced-motion: reduce){ .ipfield, .ipfield__glow, .ipfield__name, .ipfield__note, .ipfield__bar, .ipfield__mark { transition: none; } }
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */
