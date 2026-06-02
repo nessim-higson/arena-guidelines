@@ -57,11 +57,11 @@ export const SLIDES = [
       "Designed for title systems, motion, and entertainment branding, it balances muscular geometry with refined optical curves to create a bold but premium visual voice."
     ] },
 
-  { id: "type-anatomy", ch: "type", kind: "image", img: img(8), label: "", dark: true },
-
   { id: "arena-type", ch: "type", kind: "arena-specimen", label: "Arena Typeface" },
 
-  { id: "arena-examples", ch: "type", kind: "arena-examples", label: "Arena Typeface — Examples" },
+  { id: "type-anatomy", ch: "type", kind: "type-anatomy", label: "Arena Typeface — Anatomy" },
+
+  { id: "arena-examples", ch: "type", kind: "arena-examples", label: "Arena Typeface — Interactive" },
 
   { id: "syne-type", ch: "type", kind: "syne-specimen", label: "Syne Typeface" },
 

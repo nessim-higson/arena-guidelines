@@ -2,7 +2,7 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=2";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=3";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -43,10 +43,11 @@ const ICONS = {
    SLIDE RENDERERS
    ============================================================ */
 function labelEl(s) {
-  let h = "";
-  if (s.label) h += `<div class="slide__label label reveal">${esc(s.label)}</div>`;
-  if (s.soon) h += `<div class="slide__soon reveal"><span class="tag-soon"><span>${esc(s.soon)}</span></span></div>`;
-  return h;
+  if (!s.label && !s.soon) return "";
+  return `<div class="slide__top reveal">
+    ${s.label ? `<div class="label">${esc(s.label)}</div>` : "<span></span>"}
+    ${s.soon ? `<span class="tag-soon"><span>${esc(s.soon)}</span></span>` : ""}
+  </div>`;
 }
 
 const R = {
@@ -92,7 +93,20 @@ const R = {
   },
 
   lockups(s) {
-    const item = (key, name) => `<div class="lockup reveal"><div class="lockup__art">${mark(key, "lk")}</div><span class="cap">${esc(name)}</span></div>`;
+    const item = (key, name) => `<div class="lockup reveal" data-logo="${key}">
+      <div class="lockup__art">${mark(key, "lk")}</div>
+      <div class="lockup__meta">
+        <span class="cap">${esc(name)}</span>
+        <div class="dl">
+          <button class="dl__c is-on" data-color="white">White</button>
+          <button class="dl__c" data-color="black">Black</button>
+          <span class="dl__sep"></span>
+          <button class="dl__f" data-fmt="svg">SVG</button>
+          <button class="dl__f" data-fmt="png">PNG</button>
+          <button class="dl__f" data-fmt="jpeg">JPEG</button>
+        </div>
+      </div>
+    </div>`;
     return labelEl(s) + `<div class="slide__inner col" style="justify-content:center">
       <div class="lockups-grid">
         ${item("horizontal", "Primary — horizontal · used often")}
@@ -100,6 +114,7 @@ const R = {
         ${item("center", "Stacked — centered")}
         ${item("icon", "Icon — standalone")}
       </div>
+      <p class="cap" style="margin-top:var(--s4)">Pick a color, then a format — files generate and download in your browser. SVG is vector; PNG is transparent; JPEG ships on a contrasting background.</p>
     </div>`;
   },
 
@@ -128,9 +143,26 @@ const R = {
   },
 
   "arena-examples"(s) {
-    return labelEl(s) + `<div class="slide__inner row" style="align-items:center;gap:var(--s6)">
-      <h3 class="display display--oblique reveal" style="font-size:clamp(2rem,6vw,5.5rem)">ENTER<br>THE<br>ARENA</h3>
-      <h3 class="display display--oblique reveal" style="font-size:clamp(2rem,6vw,5.5rem)">WHERE<br>STORIES<br>ARE<br>FORGED</h3>
+    return labelEl(s) + `<div class="slide__inner col" style="justify-content:center;gap:var(--s3)">
+      <div class="eyebrow reveal">Interactive — type to preview</div>
+      <div class="type-editor reveal" id="typeEditor" contenteditable="true" spellcheck="false"
+           role="textbox" aria-label="Type to preview the Arena typeface" data-placeholder="TYPE SOMETHING"></div>
+      <div class="cap reveal" id="typeEditorHint">Click and type — Arena is display-only &amp; uppercase. Try “ENTER THE ARENA”.</div>
+    </div>`;
+  },
+
+  "type-anatomy"(s) {
+    return `<div class="slide__inner anatomy">
+      <span class="anatomy__cross anatomy__cross--v"></span>
+      <span class="anatomy__cross anatomy__cross--h"></span>
+      <div class="anatomy__word is-arena">ARENA</div>
+      <p class="anatomy__note anatomy__note--tr reveal">The typeface balances hard geometric construction with softened internal curves, creating a tension between precision and fluidity. Sharp terminals and structural lines give the system strength and momentum, while the rounded transitions introduce a more human, cinematic quality.</p>
+      <p class="anatomy__note anatomy__note--bl reveal">This interplay between rigidity and softness gives the typeface its distinctive character. It feels engineered yet emotional — capable of expressing both impact and atmosphere within the same visual system.</p>
+      <div class="anatomy__detail reveal">
+        <div class="anatomy__mark">${mark("icon")}</div>
+        <div class="anatomy__radii"><span class="anatomy__corner"></span></div>
+        <p class="anatomy__caption"><b>Shared corner-curve.</b> The letterforms' rounded transitions echo the mark itself — the same nested rounded-rectangle radius language (≈10% of the shorter side) ties the type to the symbol.</p>
+      </div>
     </div>`;
   },
 
@@ -323,9 +355,78 @@ function build() {
 
   wireColor();
   wireGallery(lb);
+  wireTypeEditor();
+  wireDownloads();
   wireReveal();
   wireSpy();
   wireProgress();
+}
+
+/* ---- interactive type editor (types out, then editable) ---- */
+function wireTypeEditor() {
+  const el = $("#typeEditor"); if (!el) return;
+  const phrases = ["ENTER THE ARENA", "WHERE STORIES ARE FORGED", "STORIES THAT HIT HARD", "CLAIM YOUR SEAT"];
+  let pi = 0, ci = 0, deleting = false, timer = null, auto = true;
+  const render = (txt) => { el.innerHTML = esc(txt) + '<span class="te-caret">▌</span>'; };
+  function tick() {
+    const p = phrases[pi];
+    if (!deleting) {
+      ci++; render(p.slice(0, ci));
+      if (ci >= p.length) { deleting = true; timer = setTimeout(tick, 1500); return; }
+      timer = setTimeout(tick, 90);
+    } else {
+      ci--; render(p.slice(0, ci));
+      if (ci <= 0) { deleting = false; pi = (pi + 1) % phrases.length; timer = setTimeout(tick, 350); return; }
+      timer = setTimeout(tick, 40);
+    }
+  }
+  function stopAuto() { if (!auto) return; auto = false; clearTimeout(timer); el.textContent = ""; }
+  el.addEventListener("focus", stopAuto);
+  el.addEventListener("pointerdown", stopAuto);
+  el.addEventListener("input", () => { if (auto) stopAuto(); });
+  timer = setTimeout(tick, 650);
+}
+
+/* ---- client-side logo export (SVG / PNG / JPEG · black / white) ---- */
+function wireDownloads() {
+  const HEX = { white: "#ffffff", black: "#000000" };
+  $$(".lockup").forEach(card => {
+    const key = card.dataset.logo, svg = $(".lk", card);
+    let color = "white";
+    $$(".dl__c", card).forEach(b => b.addEventListener("click", () => {
+      color = b.dataset.color;
+      $$(".dl__c", card).forEach(x => x.classList.toggle("is-on", x === b));
+      card.classList.toggle("on-light", color === "black");
+    }));
+    $$(".dl__f", card).forEach(b => b.addEventListener("click", () => exportLogo(svg, key, b.dataset.fmt, HEX[color], color)));
+  });
+}
+function exportLogo(svg, key, fmt, hex, colorName) {
+  const clone = svg.cloneNode(true);
+  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  clone.setAttribute("fill", hex);
+  clone.querySelectorAll("[fill]").forEach(p => p.setAttribute("fill", hex));
+  const xml = new XMLSerializer().serializeToString(clone);
+  const base = `the-arena-${key}-${colorName}`;
+  if (fmt === "svg") { saveBlob(new Blob([xml], { type: "image/svg+xml;charset=utf-8" }), base + ".svg"); return; }
+  const vb = svg.viewBox.baseVal, scale = 6;
+  const w = Math.round((vb && vb.width ? vb.width : 300) * scale);
+  const h = Math.round((vb && vb.height ? vb.height : 200) * scale);
+  const img = new Image();
+  img.onload = () => {
+    const c = document.createElement("canvas"); c.width = w; c.height = h;
+    const ctx = c.getContext("2d");
+    if (fmt === "jpeg") { ctx.fillStyle = (hex === "#000000" ? "#ffffff" : "#000000"); ctx.fillRect(0, 0, w, h); }
+    ctx.drawImage(img, 0, 0, w, h);
+    c.toBlob(bl => saveBlob(bl, base + (fmt === "jpeg" ? ".jpg" : ".png")), fmt === "jpeg" ? "image/jpeg" : "image/png", 0.95);
+  };
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(xml);
+}
+function saveBlob(blob, name) {
+  const u = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = u; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 1500);
 }
 
 /* ---- gallery: tap-to-pause + click-to-enlarge ---- */
