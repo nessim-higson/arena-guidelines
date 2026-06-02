@@ -129,15 +129,30 @@ export const SLIDES = [
       "Stack borders, shadows and fills as separation at once."
     ] },
 
-  { id: "ip-color", ch: "color", kind: "ip-color", label: "Color in Context",
-    eyebrow: "04 — Color", title: "ADAPTS TO IP",
-    intro: "The system stays black, white and yellow on its own — but it absorbs a property's palette without losing its structure. Pick an IP and watch the field, the mark and the accent re-theme. Move your cursor over the frame.",
-    themes: [
-      { name: "The Arena",     bg: "#050505", ink: "#ffffff", accent: "#faff00", note: "Default — signal yellow" },
-      { name: "Metal Slug",    bg: "#17150e", ink: "#f3e7c4", accent: "#c9a227", note: "Desert ops — sand & olive" },
-      { name: "Sample · Neon", bg: "#0b0016", ink: "#ffffff", accent: "#ff2bd6", note: "High-energy arcade" },
-      { name: "Sample · Noir", bg: "#080d12", ink: "#dce6ef", accent: "#4aa3ff", note: "Cold cinematic" },
-      { name: "Sample · Blaze",bg: "#140803", ink: "#ffe9d6", accent: "#ff5a1f", note: "Heat & motion" }
+  { id: "tonal-range", ch: "color", kind: "tonal-range", label: "Color",
+    eyebrow: "04 — Color", title: "TONAL RANGE",
+    intro: "The core is grounded in black and white with a neutral ramp between them, plus yellow as the single signal. Scrub across the range — each band reveals its name and value.",
+    bands: [
+      { name: "Black",    hex: "#000000" },
+      { name: "Carbon",   hex: "#0C0C10" },
+      { name: "Graphite", hex: "#1F1F24" },
+      { name: "Iron",     hex: "#2C2C33" },
+      { name: "Slate",    hex: "#4A4A52" },
+      { name: "Ash",      hex: "#6B6B73" },
+      { name: "Mist",     hex: "#9A9AA2" },
+      { name: "Fog",      hex: "#C9C9D0", light: true },
+      { name: "White",    hex: "#FFFFFF", light: true },
+      { name: "Yellow",   hex: "#FAFF00", light: true }
+    ] },
+
+  { id: "image-color", ch: "color", kind: "image-color", label: "Color in Context",
+    eyebrow: "04 — Color", title: "IMAGE DIRECTS THE PALETTE",
+    intro: "On its own the system is monochrome — but its secondary color comes from the work. Colors are pulled straight from the IP's imagery, never overpowering it. Pick a source: the field floods with the tone sampled from its pixels, and the swatches below are read live from the image.",
+    sources: [
+      { name: "Metal Slug", img: img(65),         note: "Desert ops — pulled from the key art", fallback: { tone: "#9a7d4e", ink: "#000000", acc: "#caa24a" } },
+      { name: "Portrait",   img: "assets/extracted/pg19-002.png", note: "Grit & presence — pulled from skin and blood", fallback: { tone: "#5a3b34", ink: "#ffffff", acc: "#b54a3a" } },
+      { name: "Anime",      img: "assets/extracted/pg21-001.png", note: "Kinetic fire — pulled from the embers", fallback: { tone: "#6b3a1e", ink: "#ffffff", acc: "#ff7a2a" } },
+      { name: "Swagger",    img: "assets/extracted/pg22-000.png", note: "Street warmth — pulled from the scene", fallback: { tone: "#7a5a3a", ink: "#ffffff", acc: "#c98a4a" } }
     ] },
 
   // ---------- IMAGERY ----------

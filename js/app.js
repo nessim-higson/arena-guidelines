@@ -2,7 +2,7 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=5";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=6";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -284,20 +284,26 @@ const R = {
     </div>`;
   },
 
-  "ip-color"(s) {
-    const chips = s.themes.map((t, i) => `<button class="ipchip${i === 0 ? " is-on" : ""}" data-i="${i}" style="--c:${t.accent}">
-      <span class="ipchip__dot"></span>${esc(t.name)}</button>`).join("");
-    return `<div class="slide__inner foundation">
-      <div class="sec-head reveal"><div class="eyebrow">${esc(s.eyebrow)}</div><h2>${esc(s.title)}</h2><p>${esc(s.intro)}</p></div>
-      <div class="ipchips reveal">${chips}</div>
-      <div class="ipfield reveal" id="ipField">
-        <div class="ipfield__glow"></div>
-        <div class="ipfield__mark">${mark("icon", "ipfield__svg")}</div>
-        <div class="ipfield__meta">
-          <div class="ipfield__name is-arena" id="ipName">THE ARENA</div>
-          <div class="ipfield__note" id="ipNote">Default — signal yellow</div>
+  "tonal-range"(s) {
+    const bands = s.bands.map(b => `<div class="band${b.light ? " is-light" : ""}" style="--bc:${b.hex}">
+      <span class="band__lab"><b>${esc(b.name)}</b><span>${b.hex}</span></span></div>`).join("");
+    return `<div class="slide__inner foundation">${headSec(s)}<div class="bands reveal">${bands}</div></div>`;
+  },
+
+  "image-color"(s) {
+    const chips = s.sources.map((src, i) => `<button class="srcchip${i === 0 ? " is-on" : ""}" data-i="${i}" aria-label="${esc(src.name)}"><img loading="lazy" src="${src.img}" alt=""></button>`).join("");
+    return `<div class="slide__inner foundation">${headSec(s)}
+      <div class="imgcolor reveal">
+        <div class="imgcolor__stage" id="imgStage">
+          <div class="imgcolor__left">
+            <div class="imgcolor__name is-arena" id="imgName">${esc(s.sources[0].name)}</div>
+            <div class="imgcolor__swatches" id="imgSwatches"></div>
+            <div class="imgcolor__note" id="imgNote">${esc(s.sources[0].note)}</div>
+          </div>
+          <div class="imgcolor__right"><img class="imgcolor__photo" id="imgPhoto" crossorigin="anonymous" src="${s.sources[0].img}" alt=""></div>
+          <div class="imgcolor__glow"></div>
         </div>
-        <div class="ipfield__bar"></div>
+        <div class="srcchips" id="srcChips">${chips}</div>
       </div>
     </div>`;
   },
@@ -375,7 +381,7 @@ function build() {
   wireGallery(lb);
   wireTypeEditor();
   wireDownloads();
-  wireIPColor();
+  wireImageColor();
   wireReveal();
   wireSpy();
   wireProgress();
@@ -448,31 +454,61 @@ function saveBlob(blob, name) {
   setTimeout(() => URL.revokeObjectURL(u), 1500);
 }
 
-/* ---- IP-adaptive color field (re-themes + cursor spotlight) ---- */
-function wireIPColor() {
-  const field = $("#ipField"); if (!field) return;
-  const slide = SLIDES.find(x => x.kind === "ip-color");
-  const themes = slide ? slide.themes : [];
-  const name = $("#ipName"), note = $("#ipNote");
-  const apply = (t) => {
-    field.style.setProperty("--ipbg", t.bg);
-    field.style.setProperty("--ipink", t.ink);
-    field.style.setProperty("--ipac", t.accent);
-    name.textContent = t.name.toUpperCase();
-    note.textContent = t.note;
+/* ---- Image directs the palette: sample colors live from the imagery ---- */
+const _hex = (a) => "#" + a.map(v => Math.max(0, Math.min(255, v | 0)).toString(16).padStart(2, "0")).join("");
+const _lum = (a) => 0.299 * a[0] + 0.587 * a[1] + 0.114 * a[2];
+function samplePalette(img) {
+  const c = document.createElement("canvas"), n = 48; c.width = c.height = n;
+  const ctx = c.getContext("2d", { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0, n, n);
+  let d; try { d = ctx.getImageData(0, 0, n, n).data; } catch (e) { return null; }
+  let r = 0, g = 0, b = 0, cnt = 0, dark = [255, 255, 255], dl = 1e9, light = [0, 0, 0], ll = -1, acc = [128, 128, 128], as = -1;
+  for (let i = 0; i < d.length; i += 4) {
+    if (d[i + 3] < 128) continue;
+    const R = d[i], G = d[i + 1], B = d[i + 2]; r += R; g += G; b += B; cnt++;
+    const L = _lum([R, G, B]); if (L < dl) { dl = L; dark = [R, G, B]; } if (L > ll) { ll = L; light = [R, G, B]; }
+    const S = Math.max(R, G, B) - Math.min(R, G, B); if (S > as && L > 40 && L < 225) { as = S; acc = [R, G, B]; }
+  }
+  if (!cnt) return null;
+  return { avg: [r / cnt, g / cnt, b / cnt], dark, light, accent: acc };
+}
+function wireImageColor() {
+  const stage = $("#imgStage"); if (!stage) return;
+  const slide = SLIDES.find(x => x.kind === "image-color");
+  const sources = slide ? slide.sources : [];
+  const photo = $("#imgPhoto"), nameEl = $("#imgName"), noteEl = $("#imgNote"), swWrap = $("#imgSwatches");
+
+  const paint = (pal, fb) => {
+    const tone = pal ? _hex(pal.avg) : fb.tone;
+    const acc = pal ? _hex(pal.accent) : fb.acc;
+    const ink = pal ? (_lum(pal.avg) > 140 ? "#000000" : "#ffffff") : fb.ink;
+    stage.style.setProperty("--tone", tone);
+    stage.style.setProperty("--toneink", ink);
+    stage.style.setProperty("--toneacc", acc);
+    const sw = pal ? [_hex(pal.dark), _hex(pal.avg), _hex(pal.accent), _hex(pal.light)] : [fb.tone, fb.tone, fb.acc, fb.tone];
+    swWrap.innerHTML = sw.map(h => `<div class="sw" style="background:${h}"><span>${h.toUpperCase()}</span></div>`).join("");
   };
-  $$(".ipchip").forEach(ch => ch.addEventListener("click", () => {
-    $$(".ipchip").forEach(x => x.classList.toggle("is-on", x === ch));
-    apply(themes[+ch.dataset.i]);
+  const load = (src) => {
+    nameEl.textContent = src.name.toUpperCase(); noteEl.textContent = src.note;
+    photo.src = src.img;
+    const im = new Image(); im.crossOrigin = "anonymous";
+    im.onload = () => paint(samplePalette(im), src.fallback);
+    im.onerror = () => paint(null, src.fallback);
+    im.src = src.img;
+    paint(null, src.fallback); // instant fallback while sampling
+  };
+  $$("#srcChips .srcchip").forEach(ch => ch.addEventListener("click", () => {
+    $$("#srcChips .srcchip").forEach(x => x.classList.toggle("is-on", x === ch));
+    load(sources[+ch.dataset.i]);
   }));
   const move = (e) => {
-    const r = field.getBoundingClientRect();
-    field.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100) + "%");
-    field.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100) + "%");
+    const r = stage.getBoundingClientRect();
+    stage.style.setProperty("--mx", ((e.clientX - r.left) / r.width * 100) + "%");
+    stage.style.setProperty("--my", ((e.clientY - r.top) / r.height * 100) + "%");
   };
-  field.addEventListener("pointermove", move);
-  field.addEventListener("pointerleave", () => { field.style.setProperty("--mx", "50%"); field.style.setProperty("--my", "38%"); });
-  if (themes[0]) apply(themes[0]);
+  stage.addEventListener("pointermove", move);
+  stage.addEventListener("pointerleave", () => { stage.style.setProperty("--mx", "70%"); stage.style.setProperty("--my", "30%"); });
+  if (sources[0]) load(sources[0]);
 }
 
 /* ---- gallery: tap-to-pause + click-to-enlarge ---- */
