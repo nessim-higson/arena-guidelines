@@ -167,8 +167,99 @@ const R = {
       <h2 class="reveal" style="font-family:var(--f-syne);font-weight:600;letter-spacing:.04em;font-size:clamp(1.6rem,4vw,3rem);margin:0">${esc(s.title)}</h2>
       <h3 class="reveal" style="font-family:var(--f-syne);font-weight:600;letter-spacing:.04em;font-size:clamp(1.6rem,4vw,3rem);margin:0;color:var(--body)">${esc(s.sub)}</h3>
     </div>`;
+  },
+
+  /* ---- moving image gallery (imagery pillars) ---- */
+  gallery(s) {
+    const imgs = s.images.map(n => `assets/extracted/${n}.png`);
+    let base = imgs.slice(); while (base.length < 8) base = base.concat(imgs);
+    const loop = base.concat(base); // duplicated for seamless -50% loop
+    const dur = Math.max(34, base.length * 7);
+    const shots = loop.map(src => `<button class="shot" data-full="${src}"><img loading="lazy" src="${src}" alt="${esc(s.title)} reference"></button>`).join("");
+    return labelEl(s) + `<div class="slide__inner gallery">
+      <div class="gallery__head reveal">
+        <h2 class="gallery__title">${esc(s.title)}</h2>
+        <div><p class="gallery__lead">${esc(s.lead)}</p><p class="gallery__body">${esc(s.body)}</p></div>
+      </div>
+      <div class="marquee reveal" style="--marquee-dur:${dur}s"><div class="marquee__track">${shots}</div></div>
+      <div class="gallery__hint">
+        <span class="cap">Hover to pause · tap to pause on mobile · click any frame to enlarge</span>
+        <span class="gallery__count">${s.images.length} reference${s.images.length > 1 ? "s" : ""}</span>
+      </div>
+    </div>`;
+  },
+
+  /* ---- design-system foundations ---- */
+  "type-scale"(s) {
+    const rows = s.rows.map(r => `
+      <div class="type-row reveal">
+        <div class="tok"><b>${esc(r.tok)}</b><span>${esc(r.spec)}</span></div>
+        <div class="spec ${r.cls}" style="font-size:${r.size}px;line-height:${r.lh};letter-spacing:${r.ls}">${esc(r.t)}</div>
+      </div>`).join("");
+    return `<div class="slide__inner foundation">${headSec(s)}${rows}</div>`;
+  },
+
+  "color-usage"(s) {
+    const cells = s.cells.map(c => `
+      <div class="usage__cell">
+        <div class="usage__demo" style="background:${c.bg};color:${c.fg};${c.border ? "box-shadow:inset 0 0 0 1px var(--rule)" : ""}">${esc(c.demo)}</div>
+        <span class="cap" style="padding-top:12px">${esc(c.cap)}</span>
+        <p>${esc(c.note)}</p>
+      </div>`).join("");
+    const prop = s.proportion.map(p => `<span style="flex:${p.pct};background:${p.c};color:${p.fg}">${esc(p.label)}</span>`).join("");
+    const li = (arr) => arr.map(x => `<li>${esc(x)}</li>`).join("");
+    return `<div class="slide__inner foundation">${headSec(s)}
+      <div class="usage reveal">${cells}</div>
+      <div class="proportion reveal">${prop}</div>
+      <div class="dodont reveal">
+        <div class="col do"><h4>Do</h4><ul>${li(s.do)}</ul></div>
+        <div class="col dont"><h4>Don't</h4><ul>${li(s.dont)}</ul></div>
+      </div>
+    </div>`;
+  },
+
+  radius(s) {
+    const chips = s.chips.map(c => `
+      <div class="chip-card"><div class="chip-demo" style="border-radius:${c.r}px"></div>
+      <div class="tok"><b>${esc(c.name)}</b>${esc(c.use)}</div></div>`).join("");
+    return `<div class="slide__inner foundation">${headSec(s)}
+      <div class="cards reveal">${chips}</div>
+      <div class="mark-echo reveal">
+        <div class="nested" style="border-radius:0"><div style="border-radius:28px"></div><div style="border-radius:20px"></div><div style="border-radius:14px"></div><div style="border-radius:8px"></div></div>
+        <p class="note"><b>Mark-echo rule.</b> ${esc(s.note.replace("Mark-echo rule. ", ""))}</p>
+      </div>
+    </div>`;
+  },
+
+  spacing(s) {
+    const rows = s.steps.map(st => `
+      <div class="space-row"><div class="lab"><b>${esc(st.n)}</b> · ${st.px}px</div><div class="space-bar" style="width:${st.px}px"></div></div>`).join("");
+    return `<div class="slide__inner foundation">${headSec(s)}<div class="reveal">${rows}</div></div>`;
+  },
+
+  primitives(s) {
+    return `<div class="slide__inner foundation">${headSec(s)}
+      <div class="proto reveal">
+        <div class="proto-cell"><div class="eyebrow">Button</div>
+          <button class="btn-d btn-primary">ENTER THE ARENA</button><div style="height:12px"></div>
+          <button class="btn-d btn-secondary">SECONDARY</button></div>
+        <div class="proto-cell"><div class="eyebrow">Input</div>
+          <div class="field"><label>Email</label><input type="email" placeholder="you@enterthearena.com"></div></div>
+        <div class="proto-cell"><div class="eyebrow">Frame — brand gesture</div>
+          <div class="frame-demo"><span>Portal</span></div></div>
+      </div>
+    </div>`;
   }
 };
+
+/* shared foundation section header (eyebrow + Arena title + intro) */
+function headSec(s) {
+  return `<div class="sec-head reveal">
+    <div class="eyebrow">${esc(s.eyebrow)}</div>
+    <h2>${esc(s.title)}</h2>
+    ${s.intro ? `<p>${esc(s.intro)}</p>` : ""}
+  </div>`;
+}
 
 /* ============================================================
    BUILD
@@ -191,10 +282,31 @@ function build() {
     main.appendChild(sec);
   });
 
+  // lightbox for galleries
+  const lb = E("div", "lightbox");
+  lb.innerHTML = `<button class="lightbox__close">Close ✕</button><img alt="">`;
+  document.body.appendChild(lb);
+
   wireColor();
+  wireGallery(lb);
   wireReveal();
   wireSpy();
   wireProgress();
+}
+
+/* ---- gallery: tap-to-pause + click-to-enlarge ---- */
+function wireGallery(lb) {
+  const lbImg = $("img", lb), close = $(".lightbox__close", lb);
+  const hide = () => lb.classList.remove("open");
+  close.addEventListener("click", hide);
+  lb.addEventListener("click", (e) => { if (e.target === lb) hide(); });
+  addEventListener("keydown", (e) => { if (e.key === "Escape") hide(); });
+
+  $$(".shot").forEach(btn => btn.addEventListener("click", () => {
+    lbImg.src = btn.dataset.full; lb.classList.add("open");
+  }));
+  // tap a marquee to toggle pause (touch devices have no hover)
+  $$(".marquee").forEach(m => m.addEventListener("touchstart", () => m.classList.toggle("paused"), { passive: true }));
 }
 
 /* ---- color copy ---- */
