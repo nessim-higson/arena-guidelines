@@ -53,6 +53,27 @@ export const SLIDES = [
       { t: "Portal", d: "The mark functions as a portal. Its nested forms create depth, movement, and the sensation of being pulled into another world.", b: "A visual expression of action entertainment in motion." }
     ] },
 
+  // ---------- IDENTITY SYSTEM (elements + scaling, Herman-Miller-tight) ----------
+  { id: "elements-overview", ch: "identity", kind: "elements-overview",
+    eyebrow: "9.1 — Identity Elements", title: "ELEMENTS OVERVIEW",
+    intro: "The identity is a small, disciplined set of parts: the symbol, the wordmark, their lockups, and the generative ring system they all derive from. Everything else is built from these." },
+
+  { id: "symbol-construction", ch: "identity", kind: "symbol-construction",
+    eyebrow: "9.2 — Identity Elements", title: "SYMBOL CONSTRUCTION",
+    intro: "The symbol is drawn, not decorated. Concentric rounded rectangles on a shared center, with a fixed relationship between radius, band and gap." },
+
+  { id: "clearspace", ch: "identity", kind: "clearspace",
+    eyebrow: "9.5 — Identity Elements", title: "CLEARSPACE",
+    intro: "Give the mark room. A consistent exclusion zone keeps it legible and uncrowded in any layout." },
+
+  { id: "min-size", ch: "identity", kind: "min-size",
+    eyebrow: "9.6 — Identity Elements", title: "MINIMUM SIZE",
+    intro: "Floors that protect legibility in print and on screen. Shown here at actual size." },
+
+  { id: "scaling", ch: "identity", kind: "scaling",
+    eyebrow: "9.10 — Identity Elements", title: "SCALING PRINCIPLES",
+    intro: "Because the mark is generative, it doesn't just shrink — it adapts. Ring density scales with size so the form stays true from billboard to favicon." },
+
   // ---------- TYPE ----------
   { id: "typeface", ch: "type", kind: "statement", label: "Visual Identity", display: "TYPEFACE",
     body: [
