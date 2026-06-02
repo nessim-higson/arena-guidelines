@@ -51,7 +51,7 @@ export const SLIDES = [
     ] },
 
   // ---------- TYPE ----------
-  { id: "typeface", ch: "type", kind: "statement", label: "Visual Identity", display: "TYPEFACE", bg: img(7),
+  { id: "typeface", ch: "type", kind: "statement", label: "Visual Identity", display: "TYPEFACE",
     body: [
       "Arena is a cinematic display typeface built around modular precision, controlled aggression, and architectural clarity.",
       "Designed for title systems, motion, and entertainment branding, it balances muscular geometry with refined optical curves to create a bold but premium visual voice."
@@ -155,7 +155,7 @@ export const SLIDES = [
     images: ["pg23-000", "pg23-001", "pg23-002"] },
 
   // ---------- MATERIAL ----------
-  { id: "material", ch: "material", kind: "statement", label: "Visual Identity", display: "MATERIAL", bg: img(24),
+  { id: "material", ch: "material", kind: "statement", label: "Visual Identity", display: "MATERIAL",
     body: [
       "Arena's material language balances refinement with tension, pairing industrial surfaces and architectural forms with softer atmospheric treatments.",
       "Matte finishes, metal textures, thermal gradients, shadow, blur, and layered depth create a world that feels engineered, cinematic, and charged with energy."

@@ -182,12 +182,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
    ============================================================ */
 .slide {
   position: relative;
-  min-height: 100svh;
-  padding: calc(var(--nav-h) + var(--s4)) var(--gutter) var(--s5);
+  padding: clamp(6rem, 10vh, 9rem) var(--gutter) clamp(4rem, 8vh, 7rem);
   display: flex; flex-direction: column;
   border-top: 1px solid var(--rule);
   overflow: hidden;
 }
+/* only the dramatic / full-bleed slides fill the viewport;
+   content slides size to their content with consistent rhythm */
+.slide--cover, .slide--chapter, .slide--gallery, .slide--image,
+.slide--ringtool, .slide--iconmark, .slide--lockups, .slide--appendix { min-height: 100svh; }
 .slide__inner { width: 100%; max-width: var(--maxw); margin: 0 auto; flex: 1; display: flex; flex-direction: column; }
 .slide__label { position: absolute; top: calc(var(--nav-h) + 18px); left: var(--gutter); }
 .slide__soon { position: absolute; top: calc(var(--nav-h) + 14px); right: var(--gutter); }
@@ -282,10 +285,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .stmt-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.32; z-index: 0; pointer-events: none; }
 .slide--statement .slide__inner { position: relative; z-index: 1; }
 
-/* statement layout: huge headline pinned top, body lower-left */
-.slide--statement .slide__inner.statement { justify-content: flex-start; }
-.statement .d1 { margin-bottom: var(--s5); }
-.statement__body { margin-top: auto; }
+/* statement layout: huge headline, body grouped just below it (left column) */
+.slide--statement .slide__inner.statement { justify-content: center; }
+.statement .d1 { margin-bottom: clamp(1.5rem, 4vh, 3.25rem); }
+.statement__body { margin-top: 0; }
 
 /* light slide (typeface anatomy render is on light grey) */
 .is-light-slide { background: #d9d9d4; }
