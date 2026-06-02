@@ -169,9 +169,10 @@ const R = {
     </div>`;
   },
 
-  /* ---- moving image gallery (imagery pillars) ---- */
+  /* ---- moving image gallery (imagery pillars + render clusters) ---- */
   gallery(s) {
-    const imgs = s.images.map(n => `assets/extracted/${n}.png`);
+    // a path with "/" is used as-is (deck renders); a bare name → extracted photo
+    const imgs = s.images.map(n => (String(n).includes("/") ? n : `assets/extracted/${n}.png`));
     let base = imgs.slice(); while (base.length < 8) base = base.concat(imgs);
     const loop = base.concat(base); // duplicated for seamless -50% loop
     const dur = Math.max(34, base.length * 7);

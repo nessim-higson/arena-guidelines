@@ -87,8 +87,10 @@ export const SLIDES = [
   { id: "arena-ip", ch: "type", kind: "statement", label: "Visual Identity", display: "ARENA + IP", soon: "More to come",
     body: ["Co-branding lockups pair The Arena with partner IP — balancing each property's equity with Arena's system."] },
 
-  { id: "ip-metalslug", ch: "type", kind: "image", img: img(14), label: "Arena + IP" },
-  { id: "ip-deathvalley", ch: "type", kind: "image", img: img(15), label: "Arena + IP" },
+  { id: "arena-ip-gallery", ch: "type", kind: "gallery", label: "Arena + IP",
+    title: "Arena + IP", lead: "Co-branding with partner properties.",
+    body: "Lockups pair The Arena with partner IP — balancing each property's equity with Arena's system. Key art, posters and social, shown here with Metal Slug.",
+    images: [img(65), img(14), img(66), img(15), img(68), img(67)] },
 
   // ---------- COLOR ----------
   { id: "color-intro", ch: "color", kind: "statement", label: "Visual Identity", display: "COLOR", soon: "Coming soon",
@@ -160,12 +162,10 @@ export const SLIDES = [
       "Matte finishes, metal textures, thermal gradients, shadow, blur, and layered depth create a world that feels engineered, cinematic, and charged with energy."
     ] },
 
-  { id: "mat-chrome", ch: "material", kind: "image", img: img(25), label: "Material" },
-  { id: "mat-tunnels", ch: "material", kind: "image", img: img(26), label: "Material" },
-  { id: "mat-sand", ch: "material", kind: "image", img: img(27), label: "Material" },
-  { id: "mat-motion", ch: "material", kind: "image", img: img(28), label: "Material" },
-  { id: "mat-treat1", ch: "material", kind: "image", img: img(29), label: "Material" },
-  { id: "mat-treat2", ch: "material", kind: "image", img: img(30), label: "Material" },
+  { id: "material-gallery", ch: "material", kind: "gallery", label: "Material",
+    title: "Material Studies", lead: "Engineered, cinematic, charged with energy.",
+    body: "Industrial surfaces and architectural forms meet softer atmospheric treatments — matte finishes, metal textures, thermal gradients, shadow, blur and layered depth.",
+    images: [img(26), img(25), img(28), img(27), img(57)] },
 
   // ---------- SYSTEM + RING TOOL ----------
   { id: "system", ch: "system", kind: "statement", label: "Visual Identity", display: "SYSTEM",
@@ -219,30 +219,20 @@ export const SLIDES = [
   // ---------- APPENDIX / PROOF OF CONCEPT ----------
   { id: "appendix", ch: "appendix", kind: "appendix", title: "APPENDIX", sub: "PROOF OF CONCEPT" },
 
-  { id: "poc-grid", ch: "appendix", kind: "image", img: img(44), label: "Proof of Concept" },
-  { id: "poc-frame", ch: "appendix", kind: "image", img: img(45), label: "Proof of Concept" },
-  { id: "card-line", ch: "appendix", kind: "image", img: img(46), label: "Business Cards" },
-  { id: "card-emboss", ch: "appendix", kind: "image", img: img(47), label: "Business Cards" },
-  { id: "card-wordmark", ch: "appendix", kind: "image", img: img(48), label: "Business Cards" },
-  { id: "card-hand", ch: "appendix", kind: "image", img: img(49), label: "Business Cards" },
-  { id: "mkt-hithard", ch: "appendix", kind: "image", img: img(50), label: "Applications" },
-  { id: "mkt-forged", ch: "appendix", kind: "image", img: img(51), label: "Applications" },
-  { id: "treat-metal", ch: "appendix", kind: "image", img: img(52), label: "Treatments" },
-  { id: "treat-flame", ch: "appendix", kind: "image", img: img(53), label: "Treatments" },
-  { id: "treat-molten", ch: "appendix", kind: "image", img: img(54), label: "Treatments" },
-  { id: "treat-stone", ch: "appendix", kind: "image", img: img(55), label: "Treatments" },
-  { id: "treat-fabric", ch: "appendix", kind: "image", img: img(56), label: "Treatments" },
-  { id: "poc-tunnels", ch: "appendix", kind: "image", img: img(57), label: "Proof of Concept" },
-  { id: "poc-enter", ch: "appendix", kind: "image", img: img(58), label: "Proof of Concept" },
-  { id: "poc-the", ch: "appendix", kind: "image", img: img(59), label: "Proof of Concept" },
-  { id: "poc-fabric", ch: "appendix", kind: "image", img: img(60), label: "Proof of Concept" },
-  { id: "poc-liquid", ch: "appendix", kind: "image", img: img(62), label: "Proof of Concept" },
-  { id: "poc-thermal", ch: "appendix", kind: "image", img: img(63), label: "Proof of Concept" },
-  { id: "poc-fabric2", ch: "appendix", kind: "image", img: img(64), label: "Proof of Concept" },
-  { id: "ip-keyart", ch: "appendix", kind: "image", img: img(65), label: "Arena + IP" },
-  { id: "ip-llamas", ch: "appendix", kind: "image", img: img(66), label: "Arena + IP" },
-  { id: "ip-social", ch: "appendix", kind: "image", img: img(67), label: "Arena + IP" },
-  { id: "ip-posters", ch: "appendix", kind: "image", img: img(68), label: "Arena + IP" }
+  { id: "treatments", ch: "appendix", kind: "gallery", label: "Proof of Concept",
+    title: "Logo Treatments", lead: "One mark, many materials.",
+    body: "The mark and wordmark rendered across the material language — cast iron, oxidised metal, molten, chrome, stone, thermal and fabric emboss. Expressive range without losing the form.",
+    images: [img(52), img(29), img(54), img(53), img(30), img(62), img(55), img(56), img(63), img(58), img(59), img(60), img(64)] },
+
+  { id: "applications", ch: "appendix", kind: "gallery", label: "Proof of Concept",
+    title: "Applications", lead: "The system in the world.",
+    body: "Key marketing layouts and environments — big Arena display, gritty imagery, the portal pattern as structure.",
+    images: [img(50), img(51), img(44), img(45)] },
+
+  { id: "cards", ch: "appendix", kind: "gallery", label: "Business Cards",
+    title: "Business Cards", lead: "Black stock, blind deboss, signal restraint.",
+    body: "The portal mark embossed and line-etched on black — front and back. Markus Gerdemann, President, Brand & Marketing · enterthearena.com.",
+    images: [img(49), img(46), img(47), img(48)] }
 ];
 
 // chapters for the top nav (label -> first slide id to scroll to)
