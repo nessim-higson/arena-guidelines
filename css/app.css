@@ -230,7 +230,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .slide--cover .slide__inner.cover { position: relative; z-index: 2; }
 .cover { justify-content: center; align-items: flex-start; text-align: left; }
 .cover .portal { width: clamp(120px, 18vw, 260px); margin-bottom: var(--s4); }
-.cover__logo { width: clamp(280px, 44vw, 600px); color: var(--white); margin-bottom: var(--s3); }
+.cover__logo { width: clamp(340px, 56vw, 760px); color: var(--white); margin-bottom: var(--s4); }
 .cover-lockup { width: 100%; height: auto; }
 /* nav logo: hidden over the cover, slides in once the cover logo scrolls away */
 #navBrand { opacity: 0; transform: translateX(-14px); pointer-events: none; transition: opacity .45s var(--ease), transform .45s var(--ease); }
@@ -286,8 +286,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .lockup:nth-child(4) .lk { max-height: 150px; } /* icon a touch bigger */
 @media (max-width: 680px){ .lockups-grid { grid-template-columns: 1fr; } }
 
-/* nav lockup (official horizontal) */
-.nav-lockup { height: 22px; width: auto; color: var(--white); }
+/* nav lockup (official horizontal) — sized to fill the bar comfortably.
+   id-scoped to beat the generic `.nav__brand svg { width:26px }` rule. */
+#navBrand .nav-lockup { height: 34px; width: auto; color: var(--white); }
+@media (max-width: 680px){ #navBrand .nav-lockup { height: 28px; } }
 
 /* logo download controls */
 .lockup__meta { display: flex; flex-direction: column; gap: 12px; }
