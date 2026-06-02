@@ -2,7 +2,7 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=6";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=7";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -52,8 +52,10 @@ function labelEl(s) {
 
 const R = {
   cover(s) {
-    return `<div class="slide__inner cover">
-      <div class="portal reveal">${mark("icon")}</div>
+    const frames = COVER_GIFS.map((src, i) => `<img class="cover__frame${i === 0 ? " is-on" : ""}" src="${src}" alt="" aria-hidden="true">`).join("");
+    return `<div class="cover__bg" id="coverBg">${frames}</div>
+    <div class="cover__scrim"></div>
+    <div class="slide__inner cover">
       <h1 class="display hero-type reveal">THE<br>ARENA</h1>
       <div class="reveal" style="margin-top:var(--s3)">
         <div class="label" style="color:var(--white)">Brand Playbook — Work in Progress</div>
@@ -234,22 +236,23 @@ const R = {
     </div>`;
   },
 
-  /* ---- moving image gallery (imagery pillars + render clusters) ---- */
+  /* ---- controllable image gallery (drag · arrows · scroll · autoplay) ---- */
   gallery(s) {
     // a path with "/" is used as-is (deck renders); a bare name → extracted photo
     const imgs = s.images.map(n => (String(n).includes("/") ? n : `assets/extracted/${n}.png`));
-    let base = imgs.slice(); while (base.length < 8) base = base.concat(imgs);
-    const loop = base.concat(base); // duplicated for seamless -50% loop
-    const dur = Math.max(34, base.length * 7);
-    const shots = loop.map(src => `<button class="shot" data-full="${src}"><img loading="lazy" src="${src}" alt="${esc(s.title)} reference"></button>`).join("");
+    const shots = imgs.map(src => `<button class="shot" data-full="${src}"><img loading="lazy" src="${src}" alt="${esc(s.title)} reference"></button>`).join("");
     return labelEl(s) + `<div class="slide__inner gallery">
       <div class="gallery__head reveal">
         <h2 class="gallery__title">${esc(s.title)}</h2>
         <div><p class="gallery__lead">${esc(s.lead)}</p><p class="gallery__body">${esc(s.body)}</p></div>
       </div>
-      <div class="marquee reveal" style="--marquee-dur:${dur}s"><div class="marquee__track">${shots}</div></div>
+      <div class="gallery__viewport reveal">
+        <button class="gallery__nav gallery__nav--prev" aria-label="Previous">‹</button>
+        <div class="gallery__track">${shots}</div>
+        <button class="gallery__nav gallery__nav--next" aria-label="Next">›</button>
+      </div>
       <div class="gallery__hint">
-        <span class="cap">Hover to pause · tap to pause on mobile · click any frame to enlarge</span>
+        <span class="cap">Drag, scroll or use the arrows · click any frame to enlarge</span>
         <span class="gallery__count">${s.images.length} reference${s.images.length > 1 ? "s" : ""}</span>
       </div>
     </div>`;
@@ -377,6 +380,7 @@ function build() {
   lb.innerHTML = `<button class="lightbox__close">Close ✕</button><img alt="">`;
   document.body.appendChild(lb);
 
+  wireCover();
   wireColor();
   wireGallery(lb);
   wireTypeEditor();
@@ -511,7 +515,18 @@ function wireImageColor() {
   if (sources[0]) load(sources[0]);
 }
 
-/* ---- gallery: tap-to-pause + click-to-enlarge ---- */
+/* ---- cover: crossfade-cycle the animated gifs ---- */
+function wireCover() {
+  const frames = $$("#coverBg .cover__frame"); if (frames.length < 2) return;
+  let i = 0;
+  setInterval(() => {
+    frames[i].classList.remove("is-on");
+    i = (i + 1) % frames.length;
+    frames[i].classList.add("is-on");
+  }, 7000);
+}
+
+/* ---- gallery: drag · arrows · scroll · autoplay · click-to-enlarge ---- */
 function wireGallery(lb) {
   const lbImg = $("img", lb), close = $(".lightbox__close", lb);
   const hide = () => lb.classList.remove("open");
@@ -519,11 +534,41 @@ function wireGallery(lb) {
   lb.addEventListener("click", (e) => { if (e.target === lb) hide(); });
   addEventListener("keydown", (e) => { if (e.key === "Escape") hide(); });
 
+  $$(".gallery__viewport").forEach(vp => {
+    const track = $(".gallery__track", vp);
+    const step = () => Math.min(track.clientWidth * 0.78, 560);
+    $(".gallery__nav--prev", vp).addEventListener("click", () => track.scrollBy({ left: -step(), behavior: "smooth" }));
+    $(".gallery__nav--next", vp).addEventListener("click", () => track.scrollBy({ left: step(), behavior: "smooth" }));
+
+    // drag-to-scroll
+    let down = false, sx = 0, sl = 0, moved = 0;
+    track.addEventListener("pointerdown", (e) => { down = true; moved = 0; sx = e.clientX; sl = track.scrollLeft; track.classList.add("dragging"); });
+    track.addEventListener("pointermove", (e) => { if (!down) return; const dx = e.clientX - sx; moved = Math.max(moved, Math.abs(dx)); track.scrollLeft = sl - dx; });
+    const end = () => { down = false; track.classList.remove("dragging"); };
+    track.addEventListener("pointerup", end);
+    track.addEventListener("pointercancel", end);
+    track.addEventListener("pointerleave", end);
+    // swallow the click that ends a drag (so it doesn't open the lightbox)
+    track.addEventListener("click", (e) => { if (moved > 6) { e.preventDefault(); e.stopPropagation(); } }, true);
+
+    // autoplay (faster), pause while hovering/interacting
+    let timer = null;
+    const tick = () => {
+      if (down) return;
+      const max = track.scrollWidth - track.clientWidth;
+      if (track.scrollLeft >= max - 4) track.scrollTo({ left: 0, behavior: "smooth" });
+      else track.scrollBy({ left: step() * 0.7, behavior: "smooth" });
+    };
+    const play = () => { if (!timer) timer = setInterval(tick, 3200); };
+    const stop = () => { clearInterval(timer); timer = null; };
+    vp.addEventListener("pointerenter", stop);
+    vp.addEventListener("pointerleave", play);
+    play();
+  });
+
   $$(".shot").forEach(btn => btn.addEventListener("click", () => {
     lbImg.src = btn.dataset.full; lb.classList.add("open");
   }));
-  // tap a marquee to toggle pause (touch devices have no hover)
-  $$(".marquee").forEach(m => m.addEventListener("touchstart", () => m.classList.toggle("paused"), { passive: true }));
 }
 
 /* ---- color copy ---- */
