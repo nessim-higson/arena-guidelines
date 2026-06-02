@@ -2,7 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=15";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=16";
+import { LOGO_SVGS } from "../data/logos.js?v=16";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -10,22 +11,8 @@ const E = (tag, cls, html) => { const n = document.createElement(tag); if (cls) 
 const esc = (s) => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 const paras = (arr) => (Array.isArray(arr) ? arr : [arr]).map(p => `<p>${esc(p)}</p>`).join("");
 
-/* ---- official logo SVGs (fetched + inlined so currentColor themes them) ---- */
-const LOGOS = {};
-const LOGO_SRC = {
-  icon: "assets/logo/icon.svg",
-  horizontal: "assets/logo/lockup-horizontal.svg",
-  center: "assets/logo/lockup-center.svg",
-  left: "assets/logo/lockup-left.svg"
-};
-async function loadLogos() {
-  await Promise.all(Object.entries(LOGO_SRC).map(async ([k, u]) => {
-    try {
-      let t = await (await fetch(u)).text();
-      LOGOS[k] = t.replace(/<\?xml[^>]*\?>/, "").replace(/\s(width|height)="[^"]*"/g, "").trim();
-    } catch (e) { LOGOS[k] = ""; }
-  }));
-}
+/* ---- official logo SVGs (embedded — inline so currentColor themes them, no fetch) ---- */
+const LOGOS = LOGO_SVGS;
 function mark(key = "icon", cls = "portal-mark") {
   const svg = LOGOS[key] || PORTAL_SVG; // PORTAL_SVG = fallback
   return svg.replace("<svg ", `<svg class="${cls}" `);
@@ -702,4 +689,4 @@ function wireProgress() {
   onScroll();
 }
 
-loadLogos().then(build);
+build();
