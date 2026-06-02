@@ -282,7 +282,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .lockups-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, var(--s6)); align-items: center; }
 .lockup { display: flex; flex-direction: column; gap: 18px; border: 1px solid var(--rule); border-radius: var(--r-m); padding: clamp(1.5rem, 4vw, 3.5rem); background: var(--panel); }
 .lockup__art { display: flex; align-items: center; justify-content: center; min-height: 110px; color: var(--white); }
-.lockup__art .lk { width: auto; max-width: 100%; max-height: 130px; }
+.lockup__art .lk { width: auto; height: auto; max-width: 100%; max-height: 130px; }
 .lockup:nth-child(4) .lk { max-height: 150px; } /* icon a touch bigger */
 @media (max-width: 680px){ .lockups-grid { grid-template-columns: 1fr; } }
 
@@ -550,7 +550,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .el-tile { background: var(--ink); padding: clamp(1.1rem, 2.4vw, 2rem); display: flex; flex-direction: column; gap: var(--s3); min-height: 210px; }
 .el-tile__no { font-family: var(--f-syne); font-weight: 600; font-size: var(--t-cap); color: var(--fg-faint); letter-spacing: 0.12em; }
 .el-tile__art { flex: 1; display: grid; place-items: center; color: var(--white); }
-.el-tile__art .el-mark { width: 100%; max-height: 64px; }
+.el-tile__art .el-mark { width: auto; height: auto; max-width: 100%; max-height: 64px; }
 .el-word { font-family: var(--f-arena); color: #fff; font-size: clamp(0.95rem, 1.4vw, 1.3rem); white-space: nowrap; }
 @media (max-width: 900px){ .el-grid { grid-template-columns: repeat(2, 1fr); } }
 
