@@ -10,6 +10,27 @@ const E = (tag, cls, html) => { const n = document.createElement(tag); if (cls) 
 const esc = (s) => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
 const paras = (arr) => (Array.isArray(arr) ? arr : [arr]).map(p => `<p>${esc(p)}</p>`).join("");
 
+/* ---- official logo SVGs (fetched + inlined so currentColor themes them) ---- */
+const LOGOS = {};
+const LOGO_SRC = {
+  icon: "assets/logo/icon.svg",
+  horizontal: "assets/logo/lockup-horizontal.svg",
+  center: "assets/logo/lockup-center.svg",
+  left: "assets/logo/lockup-left.svg"
+};
+async function loadLogos() {
+  await Promise.all(Object.entries(LOGO_SRC).map(async ([k, u]) => {
+    try {
+      let t = await (await fetch(u)).text();
+      LOGOS[k] = t.replace(/<\?xml[^>]*\?>/, "").replace(/\s(width|height)="[^"]*"/g, "").trim();
+    } catch (e) { LOGOS[k] = ""; }
+  }));
+}
+function mark(key = "icon", cls = "portal-mark") {
+  const svg = LOGOS[key] || PORTAL_SVG; // PORTAL_SVG = fallback
+  return svg.replace("<svg ", `<svg class="${cls}" `);
+}
+
 /* ---- line icons for the inspiration slide ------------------ */
 const ICONS = {
   Arena: `<svg viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="3"><ellipse cx="60" cy="40" rx="54" ry="32"/><ellipse cx="60" cy="40" rx="34" ry="18"/><line x1="6" y1="40" x2="26" y2="40"/><line x1="94" y1="40" x2="114" y2="40"/></svg>`,
@@ -31,7 +52,7 @@ function labelEl(s) {
 const R = {
   cover(s) {
     return `<div class="slide__inner cover">
-      <div class="portal reveal">${PORTAL_SVG}</div>
+      <div class="portal reveal">${mark("icon")}</div>
       <h1 class="display hero-type reveal">THE<br>ARENA</h1>
       <div class="reveal" style="margin-top:var(--s3)">
         <div class="label" style="color:var(--white)">Brand Playbook — Work in Progress</div>
@@ -66,14 +87,26 @@ const R = {
 
   iconmark(s) {
     return labelEl(s) + `<div class="slide__inner center">
-      <div class="reveal" style="width:min(48vw,560px)">${PORTAL_SVG}</div>
+      <div class="reveal" style="width:min(46vw,520px)">${mark("icon")}</div>
+    </div>`;
+  },
+
+  lockups(s) {
+    const item = (key, name) => `<div class="lockup reveal"><div class="lockup__art">${mark(key, "lk")}</div><span class="cap">${esc(name)}</span></div>`;
+    return labelEl(s) + `<div class="slide__inner col" style="justify-content:center">
+      <div class="lockups-grid">
+        ${item("horizontal", "Primary — horizontal · used often")}
+        ${item("left", "Stacked — left")}
+        ${item("center", "Stacked — centered")}
+        ${item("icon", "Icon — standalone")}
+      </div>
     </div>`;
   },
 
   inspiration(s) {
     const items = s.items.map(it => `
       <div class="insp__item reveal">
-        ${ICONS[it.t] || ""}
+        ${it.t === "Portal" ? mark("icon") : (ICONS[it.t] || "")}
         <h4>${esc(it.t)}</h4>
         <p>${esc(it.d)}${it.b ? `<br><br><strong style="color:#fff">${esc(it.b)}</strong>` : ""}</p>
       </div>`).join("");
@@ -269,7 +302,7 @@ function build() {
   // nav
   const navWrap = $("#navChapters");
   navWrap.innerHTML = NAV.map(n => `<a href="#${n.target}" data-target="${n.target}">${esc(n.label)}</a>`).join("");
-  $("#navBrand").innerHTML = `${PORTAL_SVG}<span class="wm">The Arena</span>`;
+  $("#navBrand").innerHTML = mark("horizontal", "nav-lockup");
 
   // slides
   const main = $("#deck");
@@ -357,4 +390,4 @@ function wireProgress() {
   onScroll();
 }
 
-build();
+loadLogos().then(build);

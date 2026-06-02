@@ -31,8 +31,7 @@ export const SLIDES = [
       "Our mark is simultaneously a stadium, screen, frame, and portal — reflecting Arena's role as a gateway into worlds of action and spectacle."
     ] },
 
-  { id: "lockups", ch: "identity", kind: "image", img: img(3), label: "Logo Lockups",
-    note: "Horizontal · stacked · wordmark" },
+  { id: "lockups", ch: "identity", kind: "lockups", label: "Logo Lockups" },
 
   { id: "icon", ch: "identity", kind: "statement", label: "Visual Identity", display: "ICON",
     body: [
