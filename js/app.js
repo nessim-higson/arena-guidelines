@@ -2,7 +2,7 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=7";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=8";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -582,12 +582,18 @@ function wireColor() {
   }));
 }
 
-/* ---- reveal on scroll ---- */
+/* ---- reveal on scroll (fail-safe: never leaves content stuck hidden) ---- */
 function wireReveal() {
+  const els = $$(".reveal");
+  const show = (n) => n.classList.add("in");
+  if (!("IntersectionObserver" in window)) { els.forEach(show); return; }
   const io = new IntersectionObserver((es) => es.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
-  }), { threshold: 0.08, rootMargin: "0px 0px -6% 0px" });
-  $$(".reveal").forEach(n => io.observe(n));
+    if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
+  }), { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+  els.forEach(n => io.observe(n));
+  // safety net: reveal anything in/near the viewport shortly after load even
+  // if the observer never fires (so type can never be left invisible)
+  setTimeout(() => els.forEach(n => { const r = n.getBoundingClientRect(); if (r.top < innerHeight * 1.15) show(n); }), 1200);
 }
 
 /* ---- nav scroll-spy (by chapter) ---- */
