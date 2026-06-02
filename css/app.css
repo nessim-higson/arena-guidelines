@@ -230,7 +230,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .slide--cover .slide__inner.cover { position: relative; z-index: 2; }
 .cover { justify-content: center; align-items: flex-start; text-align: left; }
 .cover .portal { width: clamp(120px, 18vw, 260px); margin-bottom: var(--s4); }
-.cover__logo { width: clamp(340px, 56vw, 760px); color: var(--white); margin-bottom: var(--s4); }
+.cover__logo { width: clamp(340px, 56vw, 760px); color: var(--white); margin-bottom: var(--s2); }
 .cover-lockup { width: 100%; height: auto; }
 /* nav logo: hidden over the cover, slides in once the cover logo scrolls away */
 #navBrand { opacity: 0; transform: translateX(-14px); pointer-events: none; transition: opacity .45s var(--ease), transform .45s var(--ease); }

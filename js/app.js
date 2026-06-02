@@ -2,7 +2,7 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=12";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=13";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -57,7 +57,7 @@ const R = {
     <div class="cover__scrim"></div>
     <div class="slide__inner cover">
       <div class="cover__logo reveal" id="coverLogo">${mark("left", "cover-lockup")}</div>
-      <div class="reveal" style="margin-top:var(--s3)">
+      <div class="reveal" style="margin-top:0">
         <div class="label" style="color:var(--white)">Brand Playbook — Work in Progress</div>
         <p class="cap" style="margin-top:10px;font-size:.72rem">West Hollywood, CA &nbsp;·&nbsp; enterthearena.com &nbsp;·&nbsp; Interactive Guidelines</p>
       </div>
