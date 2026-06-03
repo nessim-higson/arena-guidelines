@@ -272,6 +272,9 @@ html.lenis, html.lenis body { height: auto; }
 .cover__bg { position: absolute; inset: 0; z-index: 0; background: #000; }
 .cover__frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.4s var(--ease); }
 .cover__frame.is-on { opacity: 1; }
+/* hero video — desaturated to stay on the strict black/white/yellow palette */
+.cover__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) contrast(1.06) brightness(0.95); }
 .cover__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(90deg, rgba(0,0,0,.82), rgba(0,0,0,.45) 38%, rgba(0,0,0,.05) 66%, transparent 82%),
               linear-gradient(to bottom, rgba(0,0,0,.5), transparent 26%, transparent 50%, rgba(0,0,0,.92)); }

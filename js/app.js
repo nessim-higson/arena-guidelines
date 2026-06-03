@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=31";
-import { LOGO_SVGS } from "../data/logos.js?v=31";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=32";
+import { LOGO_SVGS } from "../data/logos.js?v=32";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -39,8 +39,12 @@ function labelEl(s) {
 
 const R = {
   cover(s) {
-    const frames = COVER_GIFS.map((src, i) => `<img class="cover__frame${i === 0 ? " is-on" : ""}" src="${src}" alt="" aria-hidden="true">`).join("");
-    return `<div class="cover__bg" id="coverBg">${frames}</div>
+    return `<div class="cover__bg" id="coverBg">
+      <video class="cover__video" id="coverVideo" autoplay muted loop playsinline preload="auto"
+             poster="assets/cover/portal-poster.jpg" aria-hidden="true">
+        <source src="assets/cover/portal.mp4" type="video/mp4">
+      </video>
+    </div>
     <div class="cover__scrim"></div>
     <div class="slide__inner cover">
       <div class="cover__logo reveal" id="coverLogo">${mark("left", "cover-lockup")}</div>
@@ -747,6 +751,9 @@ function wireHeaderLogo() {
 
 /* ---- cover: crossfade-cycle the animated gifs ---- */
 function wireCover() {
+  // reduced-motion: hold the hero video on its poster frame instead of playing
+  const v = $("#coverVideo");
+  if (v && matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); try { v.pause(); } catch {} }
   const frames = $$("#coverBg .cover__frame"); if (frames.length < 2) return;
   let i = 0;
   setInterval(() => {

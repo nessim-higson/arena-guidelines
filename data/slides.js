@@ -8,8 +8,6 @@
 
 export const RING_TOOL_URL = "https://nessim-higson.github.io/the-arena/arena-rings-engine.html";
 
-// cover background — animated gifs cycled behind the wordmark (add more freely)
-export const COVER_GIFS = ["assets/cover/cover-1.gif", "assets/cover/cover-2.gif", "assets/cover/cover-3.gif"];
 
 // nested rounded-rectangle "portal" mark, stroked (stadium / screen / frame / portal)
 export const PORTAL_SVG = `
