@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=28";
-import { LOGO_SVGS } from "../data/logos.js?v=28";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=29";
+import { LOGO_SVGS } from "../data/logos.js?v=29";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -381,7 +381,7 @@ const R = {
       </div>
       <div class="gallery__viewport reveal">
         <button class="gallery__nav gallery__nav--prev" aria-label="Previous">‹</button>
-        <div class="gallery__track">${shots}</div>
+        <div class="gallery__track" data-lenis-prevent>${shots}</div>
         <button class="gallery__nav gallery__nav--next" aria-label="Next">›</button>
       </div>
       <div class="gallery__hint">
@@ -562,6 +562,7 @@ function build() {
   wireReveal();
   wireSpy();
   wireProgress();
+  wireSmoothScroll();
 }
 
 /* ---- interactive type editor (types out, then editable) ---- */
@@ -799,9 +800,17 @@ function wireReveal() {
   const els = $$(".reveal");
   const show = (n) => n.classList.add("in");
   if (!("IntersectionObserver" in window)) { els.forEach(show); return; }
-  const io = new IntersectionObserver((es) => es.forEach(e => {
-    if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
-  }), { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
+  // Choreograph: elements that cross into view together cascade top-to-bottom
+  // with a small stagger, instead of popping in as a flat block. Solo arrivals
+  // get no delay, so scrolling to a single element still feels immediate.
+  const io = new IntersectionObserver((es) => {
+    const entering = es.filter(e => e.isIntersecting)
+      .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    entering.forEach((e, i) => {
+      e.target.style.transitionDelay = (Math.min(i, 6) * 70) + "ms";
+      show(e.target); io.unobserve(e.target);
+    });
+  }, { threshold: 0.08, rootMargin: "0px 0px -8% 0px" });
   els.forEach(n => io.observe(n));
   // safety net: reveal anything in/near the viewport shortly after load even
   // if the observer never fires (so type can never be left invisible)
@@ -822,6 +831,41 @@ function wireSpy() {
     });
   }, { rootMargin: "-45% 0px -50% 0px" });
   $$(".slide").forEach(s => io.observe(s));
+}
+
+/* ---- weighted smooth scroll (Lenis) ----------------------------------------
+   Gives the deck the physical, weighted scroll of an award-grade brand site.
+   Loaded dynamically from a CDN: if it ever fails to load, the site silently
+   falls back to native scroll — the import never blocks the rest of app.js.
+   Skipped entirely for reduced-motion users. */
+async function wireSmoothScroll() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let Lenis;
+  try {
+    Lenis = (await import("https://cdn.jsdelivr.net/npm/lenis@1.1.20/+esm")).default;
+  } catch { return; } // CDN blocked/offline → native scroll, everything else works
+  const lenis = new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 1 });
+  const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
+  requestAnimationFrame(raf);
+  // keep in-page anchor jumps weighted, and clear the fixed nav
+  const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 56;
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute("href");
+    if (id.length < 2) return;
+    const el = $(id);
+    if (!el) return;
+    e.preventDefault();
+    try {
+      lenis.scrollTo(el, { offset: -(navH + 10) });
+    } catch {
+      // belt-and-suspenders: navigation must work even if Lenis misbehaves
+      const y = el.getBoundingClientRect().top + window.scrollY - (navH + 10);
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+    history.replaceState(null, "", id);
+  });
 }
 
 /* ---- progress bar ---- */

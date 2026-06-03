@@ -216,6 +216,30 @@ button { font: inherit; color: inherit; cursor: pointer; }
 @media (prefers-reduced-motion: reduce){ .reveal{opacity:1;transform:none;transition:none} }
 
 /* ============================================================
+   CRAFT — top-design pass: focus, anchor offset, micro-typography
+   ============================================================ */
+/* Keyboard focus: branded yellow, accessible — shown for keyboard users only,
+   suppressed for mouse so it never reads as visual noise. */
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 2px; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* Anchor jumps land below the fixed nav instead of tucking under it. */
+.slide { scroll-margin-top: calc(var(--nav-h) + 14px); }
+
+/* Micro-typography: balance display lines so headlines never orphan a word;
+   pretty-wrap body so the last line isn't a lonely runt. */
+.display, .chapter__title, .pillar__cat, h1, h2 { text-wrap: balance; }
+.statement__body, .pillar__lead, .pillar__body, .foundation .sec-head p,
+.anatomy__note, .acall__b, .gallery__lead, .gallery__body { text-wrap: pretty; }
+
+/* Lenis weighted scroll — harmless if Lenis never loads (classes only added
+   by the library at runtime). Keeps the native bar; just changes the feel. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ============================================================
    SLIDE TYPES
    ============================================================ */
 
