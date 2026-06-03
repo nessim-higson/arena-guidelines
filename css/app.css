@@ -239,6 +239,15 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 
+/* Syne specimen flipped to white — a palette-cleanser between the black type
+   sections, read like a foundry specimen sheet. Shares the Misuse slide's
+   light palette so the two white moments feel intentional and related.
+   (No yellow lives here, so white never breaks the "no yellow on white" rule.) */
+.slide--syne-specimen { background: #fff; color: #111; }
+.slide--syne-specimen .label { color: #111; }
+.slide--syne-specimen .cap { color: #888; }
+.slide--syne-specimen .rule { background: rgba(0,0,0,0.12); }
+
 /* ============================================================
    SLIDE TYPES
    ============================================================ */
