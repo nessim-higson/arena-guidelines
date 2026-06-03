@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=24";
-import { LOGO_SVGS } from "../data/logos.js?v=24";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=25";
+import { LOGO_SVGS } from "../data/logos.js?v=25";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -133,8 +133,11 @@ const R = {
       <div class="bp__card bp__card--${it.mod}"><div class="bp__inner">${mark("horizontal", "bp__logo")}</div></div>
       <div class="bp__cap"><span class="bp__x">✕</span><span>${esc(it.cap)}</span></div>
     </div>`).join("");
-    return `<div class="slide__inner">
-      <div class="spec2head reveal"><h2 class="pillar__cat is-arena">${esc(s.category)}</h2><div class="pillar__sub is-arena">${esc(s.sub)}</div></div>
+    return `<div class="slide__inner safe-wrap">
+      <div class="safe-head">
+        <div class="spec2head reveal"><h2 class="pillar__cat is-arena">${esc(s.category)}</h2><div class="pillar__sub is-arena">${esc(s.sub)}</div></div>
+        <p class="pillar__body reveal" style="margin-top:var(--s4)">${esc(s.intro)}</p>
+      </div>
       <div class="bp-grid">${cards}</div>
     </div>`;
   },

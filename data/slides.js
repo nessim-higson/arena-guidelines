@@ -36,10 +36,11 @@ export const SLIDES = [
 
   { id: "lockups", ch: "identity", kind: "lockups", label: "Logo Lockups" },
 
-  { id: "best-practices", ch: "identity", kind: "best-practices", category: "LOGO", sub: "BEST PRACTICES" },
-
   { id: "safe-area", ch: "identity", kind: "safe-area", category: "LOGO", sub: "SAFE AREA",
     intro: "Always leave clear space on all sides of the logo, unoccupied by other elements, as shown." },
+
+  { id: "best-practices", ch: "identity", kind: "best-practices", category: "LOGO", sub: "MISUSE",
+    intro: "The logo is fixed artwork. Avoid the following — each example breaks its integrity." },
 
   { id: "icon", ch: "identity", kind: "statement", label: "Visual Identity", display: "ICON",
     body: [
