@@ -36,6 +36,11 @@ export const SLIDES = [
 
   { id: "lockups", ch: "identity", kind: "lockups", label: "Logo Lockups" },
 
+  { id: "best-practices", ch: "identity", kind: "best-practices", category: "LOGO", sub: "BEST PRACTICES" },
+
+  { id: "safe-area", ch: "identity", kind: "safe-area", category: "LOGO", sub: "SAFE AREA",
+    intro: "Always leave clear space on all sides of the logo, unoccupied by other elements, as shown." },
+
   { id: "icon", ch: "identity", kind: "statement", label: "Visual Identity", display: "ICON",
     body: [
       "The Arena mark transforms a simple rounded rectangle into a multi-layered symbol that simultaneously evokes a stadium, a screen, a cinematic frame, and a portal.",
@@ -61,10 +66,6 @@ export const SLIDES = [
   { id: "symbol-construction", ch: "identity", kind: "symbol-construction",
     eyebrow: "9.2 — Identity Elements", title: "SYMBOL CONSTRUCTION",
     intro: "The symbol is drawn, not decorated. Concentric rounded rectangles on a shared center, with a fixed relationship between radius, band and gap." },
-
-  { id: "clearspace", ch: "identity", kind: "clearspace",
-    eyebrow: "9.5 — Identity Elements", title: "CLEARSPACE",
-    intro: "Give the mark room. A consistent exclusion zone keeps it legible and uncrowded in any layout." },
 
   { id: "min-size", ch: "identity", kind: "min-size",
     eyebrow: "9.6 — Identity Elements", title: "MINIMUM SIZE",

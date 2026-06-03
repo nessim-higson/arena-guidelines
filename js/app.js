@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=23";
-import { LOGO_SVGS } from "../data/logos.js?v=23";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=24";
+import { LOGO_SVGS } from "../data/logos.js?v=24";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -119,6 +119,46 @@ const R = {
       <div class="el-tile__art">${it.art}</div>
       <span class="el-tile__name cap">${esc(it.name)}</span></div>`).join("");
     return `<div class="slide__inner foundation">${headSec(s)}<div class="el-grid">${tiles}</div></div>`;
+  },
+
+  "best-practices"(s) {
+    const items = [
+      { mod: "distort", cap: "Do not stretch or distort the logo" },
+      { mod: "shape", cap: "Do not contain the logo within a shape" },
+      { mod: "effect", cap: "Do not apply effects to the logo" },
+      { mod: "stroke", cap: "Do not add a stroke to the logo" },
+      { mod: "outline", cap: "Do not convert the logo to outlines" }
+    ];
+    const cards = items.map(it => `<div class="bp reveal">
+      <div class="bp__card bp__card--${it.mod}"><div class="bp__inner">${mark("horizontal", "bp__logo")}</div></div>
+      <div class="bp__cap"><span class="bp__x">✕</span><span>${esc(it.cap)}</span></div>
+    </div>`).join("");
+    return `<div class="slide__inner">
+      <div class="spec2head reveal"><h2 class="pillar__cat is-arena">${esc(s.category)}</h2><div class="pillar__sub is-arena">${esc(s.sub)}</div></div>
+      <div class="bp-grid">${cards}</div>
+    </div>`;
+  },
+
+  "safe-area"(s) {
+    const variants = [
+      { key: "horizontal", label: "Symbol / Wordmark" },
+      { key: "left", label: "Symbol / Wordmark Left Justified" },
+      { key: "center", label: "Symbol / Wordmark Stacked" }
+    ];
+    const diag = (v) => `<div class="safe reveal">
+      <div class="safe__label"><span class="safe__rule"></span><span class="cap">${esc(v.label)}</span></div>
+      <div class="safe__box">
+        <span class="safe__corner safe__corner--tl"></span><span class="safe__corner safe__corner--br"></span>
+        <div class="safe__inner">${mark(v.key, "safe__logo")}</div>
+      </div>
+    </div>`;
+    return `<div class="slide__inner safe-wrap">
+      <div class="safe-head">
+        <div class="spec2head reveal"><h2 class="pillar__cat is-arena">${esc(s.category)}</h2><div class="pillar__sub is-arena">${esc(s.sub)}</div></div>
+        <p class="pillar__body reveal" style="margin-top:var(--s4)">${esc(s.intro)}</p>
+      </div>
+      <div class="safe-grid">${variants.map(diag).join("")}</div>
+    </div>`;
   },
 
   "symbol-construction"(s) {
