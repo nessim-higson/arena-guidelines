@@ -194,26 +194,49 @@ export const SLIDES = [
   { id: "imagery", ch: "imagery", kind: "statement", label: "Visual Identity", display: "IMAGERY",
     body: ["Although our IP and the imagery that comes from it is paramount, the following slides give guidance on the types of imagery we gravitate towards — defining our attitude, confidence and energy."] },
 
-  { id: "portraits", ch: "imagery", kind: "gallery", label: "Arena Foundations", title: "Portraits",
-    lead: "Our portraits carry presence.",
-    body: "We look for faces with grit, individuality and emotional weight. Imperfection, texture and attitude matter more than polish — the image should feel lived-in, confident and unforgettable.",
-    images: ["pg19-000", "pg19-002", "pg19-003"] },
-  { id: "camera", ch: "imagery", kind: "gallery", label: "Arena Foundations", title: "Camera Angles",
-    lead: "Our worlds are captured with intent.",
-    body: "Dynamic framing, extreme perspectives and overhead compositions create tension, momentum and scale. The camera should never feel passive — it should feel pulled into the action.",
-    images: ["pg20-000", "pg20-001", "pg20-002"] },
-  { id: "anime", ch: "imagery", kind: "gallery", label: "Arena Foundations", title: "Anime",
+  { id: "anime", ch: "imagery", kind: "pillar", category: "EDGE", sub: "ANIME",
     lead: "Anime is foundational to Arena's DNA.",
-    body: "We gravitate toward imagery that feels sharp, kinetic and emotionally charged. High contrast, exaggerated motion and iconic character energy define our attitude and visual intensity.",
-    images: ["pg21-000", "pg21-001", "pg21-002"] },
-  { id: "swagger", ch: "imagery", kind: "gallery", label: "Arena Foundations", title: "Swagger",
-    lead: "Swagger is earned through confidence, not performance.",
-    body: "We gravitate toward imagery with attitude, tension and self-possession. Unexpected styling, cinematic composition and moments of controlled cool shape Arena's energy.",
-    images: ["pg22-000", "pg22-001"] },
-  { id: "humor", ch: "imagery", kind: "gallery", label: "Arena Foundations", title: "Humor",
-    lead: "Arena embraces humor with edge.",
-    body: "We gravitate toward imagery that feels unexpected, chaotic and self-aware without losing intensity. Absurdity, contrast and exaggeration can coexist with action and confidence. The goal is not parody — it is personality under pressure.",
-    images: ["pg23-000", "pg23-001", "pg23-002"] },
+    body: "Anime embodies heightened emotion, kinetic action and unapologetic intensity. It reminds us that stories become memorable when they push beyond realism into feeling. We draw from anime's visual language to bring urgency, contrast and expressive energy into the Arena world.",
+    items: [
+      { img: "assets/extracted/pg21-000.png", pos: "top", lines: ["Extreme emotion and physicality.", "Characters pushed to their breaking point.", "Intensity over restraint."] },
+      { img: "assets/extracted/pg21-002.png", pos: "bottom", lines: ["Style fused with attitude.", "Individuality expressed through silhouette and composition.", "Coolness that feels effortless rather than manufactured."] },
+      { img: "assets/extracted/pg21-001.png", pos: "top", lines: ["Scale, momentum and spectacle.", "High-stakes action viewed through a cinematic lens.", "Relentless forward motion."] }
+    ] },
+
+  { id: "swagger", ch: "imagery", kind: "pillar", category: "AURA", sub: "SWAGGER",
+    lead: "Swagger is confidence without effort.",
+    body: "Arena embraces imagery with self-possession, tension and attitude. The best images feel cool because they are unconcerned with appearing cool. They project confidence through composition, character and unexpected choices.",
+    items: [
+      { img: "assets/extracted/pg22-000.png", pos: "bottom", lines: ["Contradiction creates intrigue.", "Calm presence amid chaos.", "Confidence through individuality."] },
+      { img: "assets/extracted/pg22-001.png", pos: "bottom", lines: ["Mastery performed casually.", "Precision made to look easy.", "Confidence backed by skill."] }
+    ] },
+
+  { id: "humor", ch: "imagery", kind: "pillar", category: "TONALITY", sub: "HUMOR",
+    lead: "Humor keeps Arena human.",
+    body: "We embrace humor that emerges from confidence, contrast and surprise. It should feel sharp, unexpected and self-aware rather than comedic for its own sake. The goal is personality, not parody.",
+    items: [
+      { img: "assets/extracted/pg23-000.png", pos: "bottom", lines: ["Serious stakes meeting absurd situations.", "Humor born from contrast.", "Self-awareness without losing intensity."] },
+      { img: "assets/extracted/pg23-001.png", pos: "top", lines: ["Exaggeration pushed to its limit.", "Chaotic, confident and unforgettable.", "Entertainment can be fun without becoming frivolous."] },
+      { img: "assets/extracted/pg23-002.png", pos: "bottom", lines: ["Unexpected visual collision.", "Action and absurdity existing simultaneously.", "Memorable because it shouldn't work."] }
+    ] },
+
+  { id: "portraits", ch: "imagery", kind: "pillar", category: "ATTITUDE / AESTHETIC", sub: "PORTRAITS",
+    lead: "Our portraits carry presence.",
+    body: "We seek faces with character, individuality and emotional weight. Texture, imperfection and lived experience matter more than polish. These images should feel confident, distinctive and impossible to overlook.",
+    items: [
+      { img: "assets/extracted/pg19-000.png", pos: "top", lines: ["Unfiltered personality.", "Fashion, humor and confidence coexist.", "Feels contemporary and self-aware."] },
+      { img: "assets/extracted/pg19-003.png", pos: "bottom", lines: ["Defiance and individuality.", "Raw energy captured honestly.", "A person impossible to ignore."] },
+      { img: "assets/extracted/pg19-002.png", pos: "top", lines: ["Texture and vulnerability.", "Beauty found in imperfection.", "Emotional presence over perfection."] }
+    ] },
+
+  { id: "camera", ch: "imagery", kind: "pillar", category: "CRAFT", sub: "CAMERA ANGLES",
+    lead: "Our worlds are captured with intent.",
+    body: "Arena favors dynamic perspectives that create tension, momentum and scale. Extreme framing, unconventional viewpoints and immersive compositions make the audience feel like participants rather than observers.",
+    items: [
+      { img: "assets/extracted/pg20-000.png", pos: "bottom", lines: ["Places the viewer inside the moment.", "Physical proximity creates intensity.", "Action experienced rather than witnessed."] },
+      { img: "assets/extracted/pg20-002.png", pos: "bottom", lines: ["Unexpected perspective.", "Reveals scale, geometry and spectacle.", "Turns a familiar scene into something iconic."] },
+      { img: "assets/extracted/pg20-001.png", pos: "top", lines: ["Momentum directed toward the viewer.", "Creates urgency and movement.", "Feels immediate and cinematic."] }
+    ] },
 
   // ---------- MATERIAL ----------
   { id: "material", ch: "material", kind: "statement", label: "Visual Identity", display: "MATERIAL",

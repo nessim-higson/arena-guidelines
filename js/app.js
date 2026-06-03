@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=21";
-import { LOGO_SVGS } from "../data/logos.js?v=21";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=22";
+import { LOGO_SVGS } from "../data/logos.js?v=22";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -287,6 +287,26 @@ const R = {
     return `<div class="slide__inner center col" style="text-align:center;gap:10px">
       <h2 class="reveal" style="font-family:var(--f-syne);font-weight:600;letter-spacing:.04em;font-size:clamp(1.6rem,4vw,3rem);margin:0">${esc(s.title)}</h2>
       <h3 class="reveal" style="font-family:var(--f-syne);font-weight:600;letter-spacing:.04em;font-size:clamp(1.6rem,4vw,3rem);margin:0;color:var(--body)">${esc(s.sub)}</h3>
+    </div>`;
+  },
+
+  /* ---- imagery pillar: header + lead/body + image collage with callouts ---- */
+  pillar(s) {
+    const figs = s.items.map(it => `<figure class="pillar__fig reveal">
+      <img loading="lazy" src="${it.img}" alt="${esc(s.sub)} reference">
+      <figcaption class="pillar__callout pillar__callout--${it.pos || "bottom"}">${it.lines.map(l => `<span>${esc(l)}</span>`).join("")}</figcaption>
+    </figure>`).join("");
+    return `<div class="slide__inner pillar">
+      <div class="pillar__head">
+        <h2 class="pillar__cat is-arena reveal">${esc(s.category)}</h2>
+        <div class="pillar__sub is-arena reveal">${esc(s.sub)}</div>
+        <p class="pillar__lead reveal">${esc(s.lead)}</p>
+        <p class="pillar__body reveal">${esc(s.body)}</p>
+      </div>
+      <div class="pillar__main">
+        <div class="pillar__ex reveal"><span class="cap">Examples</span><span class="pillar__rule"></span></div>
+        <div class="pillar__collage" data-n="${s.items.length}">${figs}</div>
+      </div>
     </div>`;
   },
 

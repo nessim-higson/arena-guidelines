@@ -643,6 +643,34 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .flood__note { font-family: var(--f-syne); color: rgba(0,0,0,0.82); max-width: 50ch; margin-top: var(--s3); font-size: var(--tx-body-l); line-height: 1.5; }
 
 /* ============================================================
+   IMAGERY PILLAR (header + lead/body + collage with callouts)
+   ============================================================ */
+.pillar { display: grid; grid-template-columns: minmax(230px, 340px) 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+@media (max-width: 880px){ .pillar { grid-template-columns: 1fr; gap: var(--s4); } }
+.pillar__cat { font-family: var(--f-arena); text-transform: uppercase; color: #fff; font-size: clamp(1.4rem, 2.3vw, 2.1rem); line-height: 1.02; margin: 0; }
+.pillar__sub { font-family: var(--f-arena); text-transform: uppercase; color: var(--fg-faint); font-size: clamp(1.4rem, 2.3vw, 2.1rem); line-height: 1.02; margin-bottom: var(--s4); }
+.pillar__lead { font-family: var(--f-syne); font-weight: 700; color: #fff; margin: 0 0 var(--s3); max-width: 34ch; }
+.pillar__body { font-family: var(--f-syne); color: var(--body); max-width: 40ch; line-height: 1.55; margin: 0; }
+.pillar__ex { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s4); }
+.pillar__rule { flex: 1; height: 1px; background: var(--rule-bright); }
+.pillar__collage { display: flex; flex-wrap: wrap; gap: clamp(1.4rem, 2.5vw, 2.6rem); align-items: flex-start; }
+.pillar__fig { position: relative; margin: 0; flex: 1 1 300px; min-width: 260px; }
+.pillar__fig img { width: 100%; height: auto; display: block; }
+.pillar__collage[data-n="3"] .pillar__fig:nth-child(2) { margin-top: clamp(1.5rem, 5vw, 5rem); }
+.pillar__collage[data-n="3"] .pillar__fig:nth-child(3) { margin-top: clamp(0.5rem, 2vw, 2rem); }
+.pillar__collage[data-n="2"] .pillar__fig:nth-child(2) { margin-top: clamp(1.5rem, 6vw, 6rem); }
+.pillar__callout { position: absolute; left: 6%; max-width: min(88%, 380px);
+  background: rgba(32,32,34,0.85); backdrop-filter: blur(3px); padding: 12px 15px;
+  display: flex; flex-direction: column; gap: 3px; z-index: 3; }
+.pillar__callout span { font-family: var(--f-syne); font-size: 0.74rem; line-height: 1.45; color: rgba(255,255,255,0.92); }
+.pillar__callout--top { top: 7%; }
+.pillar__callout--bottom { bottom: 7%; }
+@media (max-width: 880px){
+  .pillar__collage { flex-direction: column; }
+  .pillar__fig { margin-top: 0 !important; min-width: 0; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
