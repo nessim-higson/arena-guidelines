@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=30";
-import { LOGO_SVGS } from "../data/logos.js?v=30";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=31";
+import { LOGO_SVGS } from "../data/logos.js?v=31";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -230,7 +230,8 @@ const R = {
   },
 
   "arena-specimen"(s) {
-    return labelEl(s) + `<div class="slide__inner col">
+    return `<div class="slide__inner col">
+      ${secHead("Type — Primary · Display", "Arena", { face: "arena", desc: "The display face: uppercase-only, engineered and wide. Arena carries every headline and the wordmark — and never sets below 39px." })}
       <div class="rule reveal" style="margin:var(--s3) 0 6px"></div>
       <div class="cap reveal" style="margin-bottom:var(--s3)">Arena Regular</div>
       <div class="glyphs reveal" style="font-size:clamp(1.6rem,5.5vw,4.4rem)">
@@ -286,14 +287,16 @@ const R = {
       <div class="reveal" style="font-family:var(--f-syne);font-weight:${w};line-height:1.05;font-size:clamp(1.2rem,3.4vw,2.6rem)">
         ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789
       </div>`;
-    return labelEl(s) + `<div class="slide__inner col">
+    return `<div class="slide__inner col">
+      ${secHead("Type — Secondary · Text", "Syne", { face: "syne", desc: "The workhorse. Where Arena makes the statement, Syne carries everything you actually read — subheads, body, captions, and every lowercase need." })}
       <div class="rule reveal" style="margin-top:var(--s3)"></div>${set(400, "Syne Regular")}
       <div class="rule reveal" style="margin-top:var(--s4)"></div>${set(700, "Syne Bold")}
     </div>`;
   },
 
   hierarchy(s) {
-    return labelEl(s) + `<div class="slide__inner col" style="justify-content:center;gap:var(--s2);max-width:1100px">
+    return `<div class="slide__inner col" style="gap:var(--s2);max-width:1100px">
+      ${secHead("Type — Hierarchy", "How they pair", { face: "syne" })}
       <div class="hier-row reveal"><h3 class="display display--oblique" style="font-size:clamp(2rem,6.5vw,5rem)">ENTER THE ARENA</h3><span class="cap">Arena Regular</span></div>
       <div class="rule reveal"></div>
       <div class="hier-row reveal"><h4 style="font-family:var(--f-syne);font-weight:700;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(1.2rem,3vw,2rem);margin:0">Where stories are forged</h4><span class="cap">Syne Bold</span></div>
@@ -521,6 +524,20 @@ function headSec(s) {
     <h2>${esc(s.title)}</h2>
     ${s.intro ? `<p>${esc(s.intro)}</p>` : ""}
   </div>`;
+}
+
+/* Section header for the mid-chapter sections that used to lead with only a
+   tiny label (so they blended together). The yellow-tick eyebrow anchors the
+   section; the headline is set IN the relevant typeface (face: 'arena'|'syne')
+   so each typeface section reads as its own owned moment. Title/desc optional. */
+function secHead(eyebrow, title, opts = {}) {
+  const face = opts.face === "syne" ? "sh__title--syne" : "sh__title--arena";
+  const h = title ? `<h2 class="sh__title ${face} reveal">${esc(title)}</h2>` : "";
+  const desc = opts.desc ? `<p class="sh__desc reveal">${esc(opts.desc)}</p>` : "";
+  return `<header class="sh">
+    <div class="eyebrow reveal">${esc(eyebrow)}</div>
+    ${h}${desc}
+  </header>`;
 }
 
 /* ============================================================

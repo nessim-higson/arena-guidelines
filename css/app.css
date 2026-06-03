@@ -239,6 +239,18 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 
+/* Section header — a consistent point of differentiation for the mid-chapter
+   sections that used to lead with only a tiny label. The yellow-tick eyebrow
+   anchors each section; the headline is set IN the typeface the section is
+   about, so Arena (primary) and Syne (secondary) become distinct owned moments
+   instead of blending into the black. Sits a tier below the chapter title. */
+.sh { max-width: 64ch; margin-bottom: var(--s4); }
+.sh + * { margin-top: 0; }
+.sh__title { line-height: 0.95; margin: var(--s2) 0 0; }
+.sh__title--arena { font-family: var(--f-arena); text-transform: uppercase; letter-spacing: 0; font-size: clamp(2.6rem, 8vw, 6rem); }
+.sh__title--syne { font-family: var(--f-syne); font-weight: 800; letter-spacing: -0.02em; font-size: clamp(2.8rem, 8.5vw, 6.6rem); }
+.sh__desc { color: var(--body); font-family: var(--f-syne); margin-top: var(--s3); max-width: 50ch; line-height: 1.5; }
+
 /* Syne specimen flipped to white — a palette-cleanser between the black type
    sections, read like a foundry specimen sheet. Shares the Misuse slide's
    light palette so the two white moments feel intentional and related.
@@ -247,6 +259,9 @@ html.lenis, html.lenis body { height: auto; }
 .slide--syne-specimen .label { color: #111; }
 .slide--syne-specimen .cap { color: #888; }
 .slide--syne-specimen .rule { background: rgba(0,0,0,0.12); }
+.slide--syne-specimen .eyebrow { color: #666; }
+.slide--syne-specimen .eyebrow::before { background: #111; } /* black tick — never yellow on white */
+.slide--syne-specimen .sh__desc { color: #555; }
 
 /* ============================================================
    SLIDE TYPES
