@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=22";
-import { LOGO_SVGS } from "../data/logos.js?v=22";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=23";
+import { LOGO_SVGS } from "../data/logos.js?v=23";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -292,9 +292,10 @@ const R = {
 
   /* ---- imagery pillar: header + lead/body + image collage with callouts ---- */
   pillar(s) {
-    const figs = s.items.map(it => `<figure class="pillar__fig reveal">
+    const cards = s.items.map((it, i) => `<figure class="pcard reveal">
       <img loading="lazy" src="${it.img}" alt="${esc(s.sub)} reference">
-      <figcaption class="pillar__callout pillar__callout--${it.pos || "bottom"}">${it.lines.map(l => `<span>${esc(l)}</span>`).join("")}</figcaption>
+      <span class="pcard__no">${String(i + 1).padStart(2, "0")}</span>
+      <figcaption class="pcard__desc">${it.lines.map(l => `<span>${esc(l)}</span>`).join("")}</figcaption>
     </figure>`).join("");
     return `<div class="slide__inner pillar">
       <div class="pillar__head">
@@ -304,8 +305,8 @@ const R = {
         <p class="pillar__body reveal">${esc(s.body)}</p>
       </div>
       <div class="pillar__main">
-        <div class="pillar__ex reveal"><span class="cap">Examples</span><span class="pillar__rule"></span></div>
-        <div class="pillar__collage" data-n="${s.items.length}">${figs}</div>
+        <div class="pillar__ex reveal"><span class="cap">Examples</span><span class="pillar__hint cap">Hover to reveal</span><span class="pillar__rule"></span></div>
+        <div class="pillar__grid">${cards}</div>
       </div>
     </div>`;
   },
@@ -498,6 +499,7 @@ function build() {
   wireDownloads();
   wireImageColor();
   wireInject();
+  wirePillars();
   wireReveal();
   wireSpy();
   wireProgress();
@@ -568,6 +570,16 @@ function saveBlob(blob, name) {
   const a = document.createElement("a"); a.href = u; a.download = name;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(u), 1500);
+}
+
+/* ---- imagery pillars: tap-to-reveal descriptor on touch devices ---- */
+function wirePillars() {
+  if (!matchMedia("(hover: none)").matches) return;
+  $$(".pcard").forEach(c => c.addEventListener("click", () => {
+    const open = c.classList.contains("is-open");
+    $$(".pcard").forEach(x => x.classList.remove("is-open"));
+    if (!open) c.classList.add("is-open");
+  }));
 }
 
 /* ---- yellow injection demo: dial the signal level ---- */
