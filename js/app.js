@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=18";
-import { LOGO_SVGS } from "../data/logos.js?v=18";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=19";
+import { LOGO_SVGS } from "../data/logos.js?v=19";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -341,6 +341,42 @@ const R = {
     </div>`;
   },
 
+  "inject-scale"(s) {
+    const levels = [
+      { demo: `<span class="ij-hair"></span>`, name: "Hairline", when: "A 1–2px rule or tick. The quietest signal — structure, not shout." },
+      { demo: `<span class="tag-soon"><span>Signal</span></span>`, name: "Marker / tag", when: "The highlighter note. Flags status or a single call-out." },
+      { demo: `<span class="ij-underline">FORGED</span>`, name: "Underline", when: "A struck word inside a headline. One emphasis per line, maximum." },
+      { demo: `<span class="ij-block">Claim your seat</span>`, name: "Block", when: "A solid yellow control — a button or chip. Black type only." },
+      { demo: `<span class="ij-floodchip is-arena">ARENA</span>`, name: "Flood", when: "Yellow becomes the surface. Rare, loud, black type — one beat per sequence." }
+    ];
+    const rows = levels.map(l => `<div class="ij-row reveal"><div class="ij-row__demo">${l.demo}</div><div class="ij-row__name">${esc(l.name)}</div><div class="ij-row__when">${esc(l.when)}</div></div>`).join("");
+    return `<div class="slide__inner foundation">${headSec(s)}<div class="ij-scale">${rows}</div></div>`;
+  },
+
+  "inject-demo"(s) {
+    return `<div class="slide__inner foundation">${headSec(s)}
+      <div class="inject reveal">
+        <div class="inject__stage" id="injectStage" data-level="0">
+          <span class="ij-eyebrow">Visual Identity</span>
+          <h3 class="ij-head is-arena">ENTER THE ARENA</h3>
+          <p class="ij-body">A stage for transformation. Open to all with the courage to step inside — where stories are forged.</p>
+          <div class="ij-rowflex"><button class="ij-cta">Claim your seat</button><span class="ij-tag">Signal</span></div>
+        </div>
+        <div class="inject__control">
+          <input type="range" id="injectRange" min="0" max="3" step="1" value="0" aria-label="Yellow injection level">
+          <div class="inject__labels" id="injectLabels"><span class="is-on">Restrained</span><span>Accent</span><span>Bold</span><span>Flood</span></div>
+        </div>
+      </div>`;
+  },
+
+  flood(s) {
+    return `<div class="slide__inner flood">
+      <span class="flood__label label">${esc(s.label)}</span>
+      <h2 class="display d1 reveal">${esc(s.display).replace(/\n/g, "<br>")}</h2>
+      <p class="flood__note reveal">${esc(s.note)}</p>
+    </div>`;
+  },
+
   "tonal-range"(s) {
     const bands = s.bands.map(b => `<div class="band${b.light ? " is-light" : ""}" style="--bc:${b.hex}">
       <span class="band__lab"><b>${esc(b.name)}</b><span>${b.hex}</span></span></div>`).join("");
@@ -441,6 +477,7 @@ function build() {
   wireTypeEditor();
   wireDownloads();
   wireImageColor();
+  wireInject();
   wireReveal();
   wireSpy();
   wireProgress();
@@ -511,6 +548,15 @@ function saveBlob(blob, name) {
   const a = document.createElement("a"); a.href = u; a.download = name;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(u), 1500);
+}
+
+/* ---- yellow injection demo: dial the signal level ---- */
+function wireInject() {
+  const stage = $("#injectStage"), range = $("#injectRange"); if (!stage || !range) return;
+  const labels = $$("#injectLabels span");
+  const set = (v) => { stage.dataset.level = v; labels.forEach((l, i) => l.classList.toggle("is-on", i == v)); };
+  range.addEventListener("input", () => set(range.value));
+  labels.forEach((l, i) => l.addEventListener("click", () => { range.value = i; set(i); }));
 }
 
 /* ---- Image directs the palette: sample colors live from the imagery ---- */

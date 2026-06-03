@@ -153,6 +153,17 @@ export const SLIDES = [
       "Stack borders, shadows and fills as separation at once."
     ] },
 
+  { id: "inject-scale", ch: "color", kind: "inject-scale",
+    eyebrow: "04 — Color", title: "HOW YELLOW INJECTS",
+    intro: "Yellow is the only voice that interrupts the black and white — so how it enters matters. It works as a deliberate scale, from the quietest hairline to a full surface. Use the smallest level that does the job." },
+
+  { id: "inject-demo", ch: "color", kind: "inject-demo",
+    eyebrow: "04 — Color", title: "DIAL THE SIGNAL",
+    intro: "One module, four levels of injection. Drag from restrained to dominant — the system holds either way. Black stays the foundation; yellow earns its moment." },
+
+  { id: "flood", ch: "color", kind: "flood", label: "Color — Signal", display: "YELLOW IS\nA SIGNAL",
+    note: "As a surface, yellow is loud by design. Reserve the flood for one high-impact beat — a divider, a launch, a call to act — and always set type in black." },
+
   { id: "tonal-range", ch: "color", kind: "tonal-range", label: "Color",
     eyebrow: "04 — Color", title: "TONAL RANGE",
     intro: "The core is grounded in black and white with a neutral ramp between them, plus yellow as the single signal. Scrub across the range — each band reveals its name and value.",
