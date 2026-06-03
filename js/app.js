@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=25";
-import { LOGO_SVGS } from "../data/logos.js?v=25";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=26";
+import { LOGO_SVGS } from "../data/logos.js?v=26";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -251,17 +251,33 @@ const R = {
   },
 
   "type-anatomy"(s) {
+    const calls = [
+      { c: "tl", n: "01", title: "Sharp terminals",
+        body: "Sharp terminals and structural lines give the system strength and momentum — the hard geometry that anchors every letterform." },
+      { c: "tr", n: "02", title: "Softened curves",
+        body: "Hard geometric construction is balanced by softened internal curves, creating a tension between precision and fluidity — strong, yet cinematic." },
+      { c: "bl", n: "03", title: "Engineered yet emotional",
+        body: "The interplay between rigidity and softness gives the type its character — capable of expressing both impact and atmosphere within one system." },
+      { c: "br", n: "04", title: "Shared corner-curve", mark: true,
+        body: "Rounded transitions echo the mark itself — the same nested rounded-rectangle radius language (≈10% of the shorter side) ties the type to the symbol." }
+    ];
+    const call = (k) => `<div class="acall acall--${k.c} reveal" tabindex="0" aria-label="${esc(k.title)}">
+      <span class="acall__mk" aria-hidden="true">
+        <span class="acall__br acall__br--o"></span>
+        <span class="acall__br acall__br--i"></span>
+        <span class="acall__dot"></span>
+      </span>
+      <span class="acall__panel">
+        <span class="acall__t">${k.mark ? `<span class="acall__ring">${mark("icon")}</span>` : `<span class="acall__no">${k.n}</span>`}${esc(k.title)}</span>
+        <span class="acall__b">${esc(k.body)}</span>
+      </span>
+    </div>`;
     return `<div class="slide__inner anatomy">
       <span class="anatomy__cross anatomy__cross--v"></span>
       <span class="anatomy__cross anatomy__cross--h"></span>
       <div class="anatomy__word is-arena">ARENA</div>
-      <p class="anatomy__note anatomy__note--tr reveal">The typeface balances hard geometric construction with softened internal curves, creating a tension between precision and fluidity. Sharp terminals and structural lines give the system strength and momentum, while the rounded transitions introduce a more human, cinematic quality.</p>
-      <p class="anatomy__note anatomy__note--bl reveal">This interplay between rigidity and softness gives the typeface its distinctive character. It feels engineered yet emotional — capable of expressing both impact and atmosphere within the same visual system.</p>
-      <div class="anatomy__detail reveal">
-        <div class="anatomy__mark">${mark("icon")}</div>
-        <div class="anatomy__radii"><span class="anatomy__corner"></span></div>
-        <p class="anatomy__caption"><b>Shared corner-curve.</b> The letterforms' rounded transitions echo the mark itself — the same nested rounded-rectangle radius language (≈10% of the shorter side) ties the type to the symbol.</p>
-      </div>
+      <div class="anatomy__hint reveal"><span class="anatomy__hdot"></span>Hover the corners to read the anatomy</div>
+      ${calls.map(call).join("")}
     </div>`;
   },
 
@@ -543,6 +559,7 @@ function build() {
   wireImageColor();
   wireInject();
   wirePillars();
+  wireAnatomy();
   wireReveal();
   wireSpy();
   wireProgress();
@@ -621,6 +638,16 @@ function wirePillars() {
   $$(".pcard").forEach(c => c.addEventListener("click", () => {
     const open = c.classList.contains("is-open");
     $$(".pcard").forEach(x => x.classList.remove("is-open"));
+    if (!open) c.classList.add("is-open");
+  }));
+}
+
+/* ---- type anatomy: tap to toggle corner callouts on touch ---- */
+function wireAnatomy() {
+  if (!matchMedia("(hover: none)").matches) return;
+  $$(".acall").forEach(c => c.addEventListener("click", () => {
+    const open = c.classList.contains("is-open");
+    $$(".acall").forEach(x => x.classList.remove("is-open"));
     if (!open) c.classList.add("is-open");
   }));
 }
