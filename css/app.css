@@ -310,8 +310,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 /* interactive type editor */
 .type-editor { font-family: var(--f-arena); text-transform: uppercase; color: var(--white);
-  font-size: clamp(2.4rem, 9vw, 8rem); line-height: 0.92; letter-spacing: -0.01em;
-  outline: none; min-height: 1em; caret-color: var(--signal); word-break: break-word; cursor: text; }
+  font-size: clamp(1.3rem, 3.9vw, 3.3rem); line-height: 1.1; letter-spacing: -0.01em;
+  outline: none; height: 1.2em; white-space: nowrap; overflow: hidden;
+  caret-color: var(--signal); cursor: text; }
 .type-editor:empty:before { content: attr(data-placeholder); color: var(--fg-faint); }
 .te-caret { display: inline-block; width: 2px; height: 0.8em; margin-left: 0.06em;
   background: var(--signal); vertical-align: -0.02em; animation: blink 1.05s steps(1) infinite; }
