@@ -183,7 +183,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
    ============================================================ */
 .slide {
   position: relative;
-  padding: clamp(3.5rem, 4.5vh, 4.25rem) var(--gutter) clamp(2.25rem, 3.5vh, 3.25rem);
+  padding: clamp(2.5rem, 3.2vh, 3.25rem) var(--gutter) clamp(1.75rem, 2.4vh, 2.5rem);
   display: flex; flex-direction: column;
   border-top: 1px solid var(--rule);
   overflow: hidden;
@@ -194,7 +194,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .slide--ringtool, .slide--iconmark, .slide--lockups, .slide--appendix { min-height: 100svh; }
 .slide__inner { width: 100%; max-width: var(--maxw); margin: 0 auto; flex: 1; display: flex; flex-direction: column; }
 /* in-flow header row (label left, yellow tag right) */
-.slide__top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s3); margin-bottom: clamp(1.25rem, 3.5vh, 2.75rem); }
+.slide__top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s3); margin-bottom: clamp(1rem, 2.2vh, 1.9rem); }
 
 /* layout helpers */
 .fill { flex: 1; }
@@ -492,7 +492,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .eyebrow::before { content: ""; width: 28px; height: 1px; background: var(--signal); display: inline-block; flex: none; }
 
 .foundation { display: flex; flex-direction: column; flex: 1; }
-.foundation .sec-head { margin-bottom: var(--s5); max-width: 70ch; }
+.foundation .sec-head { margin-bottom: var(--s4); max-width: 70ch; }
+/* the head's margin-bottom is the single source of head→content spacing —
+   neutralize the content block's own margin-top so the gap isn't doubled */
+.foundation > .sec-head + * { margin-top: 0; }
 .foundation .sec-head h2 { font-family: var(--f-arena); text-transform: uppercase; font-size: var(--d-2); line-height: 1; margin: var(--s2) 0 0; }
 .foundation .sec-head p { color: var(--body); margin-top: var(--s2); max-width: 64ch; }
 
