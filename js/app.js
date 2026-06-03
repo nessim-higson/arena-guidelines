@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=27";
-import { LOGO_SVGS } from "../data/logos.js?v=27";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=28";
+import { LOGO_SVGS } from "../data/logos.js?v=28";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -53,7 +53,6 @@ const R = {
 
   chapter(s) {
     return labelEl(s) + `<div class="slide__inner chapter">
-      <div class="chapter__num display display--oblique reveal">${esc(s.num)}</div>
       <h2 class="chapter__title display display--oblique reveal">${esc(s.title).replace(/\n/g, "<br>")}</h2>
     </div>`;
   },

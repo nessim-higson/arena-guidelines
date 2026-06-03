@@ -237,8 +237,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 #navBrand.is-in { opacity: 1; transform: none; pointer-events: auto; }
 
 /* chapter divider */
-.chapter { justify-content: space-between; }
-.chapter__num { font-family: var(--f-arena); font-weight: 700; font-size: clamp(2.5rem,6vw,5rem); }
+.chapter { justify-content: center; }
 .chapter__title { font-size: var(--d-chapter); }
 
 /* statement (label + huge headline + body) */
