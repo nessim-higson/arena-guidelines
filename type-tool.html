@@ -26,9 +26,16 @@
   .type{display:inline-block;font-family:var(--f-arena);text-transform:uppercase;font-weight:400;line-height:.92;
         letter-spacing:-.01em;white-space:pre;text-align:center;color:#fff;outline:none;font-size:120px;
         caret-color:var(--yellow);transition:color .3s var(--ease)}
-  .stage.light .type{color:#000}
+  .stage.light .type{color:#000;caret-color:#000}
   .te-caret{display:inline-block;width:.06em;height:.78em;margin-left:.04em;background:var(--yellow);
             vertical-align:-.04em;animation:blink 1.05s steps(1) infinite}
+  .stage.light .te-caret{background:#000}
+  /* thin blinking hairline cursor when you click into the empty canvas
+     (native caret hidden while empty so there's no double cursor) */
+  .type:empty{caret-color:transparent}
+  .type:empty:focus::after{content:"";display:inline-block;width:3px;height:.72em;
+            background:var(--yellow);vertical-align:-.06em;animation:blink 1.05s steps(1) infinite}
+  .stage.light .type:empty:focus::after{background:#000}
   @keyframes blink{50%{opacity:0}}
 
   /* clear "click to type" prompt — pulses, sits below the type, hides on focus */
@@ -107,6 +114,7 @@
 
     /* ---- auto-fit: huge for short text, shrinks as you type ---- */
     function fit(){
+      if(!text().trim()){ type.style.fontSize='200px'; return; } // moderate caret size when empty
       var availW=wrap.clientWidth, availH=wrap.clientHeight;
       type.style.fontSize='100px';
       var w=type.scrollWidth||1, h=type.scrollHeight||1;
