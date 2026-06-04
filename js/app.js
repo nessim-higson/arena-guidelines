@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=34";
-import { LOGO_SVGS } from "../data/logos.js?v=34";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=35";
+import { LOGO_SVGS } from "../data/logos.js?v=35";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -259,18 +259,20 @@ const R = {
     // Each pin sits ON a real feature of the word "ARENA". x/y are percentages
     // of the word's own box, so the dots stay locked to the glyphs as the type
     // scales. Tuned to the hero render.
+    // Tuned to features on the visible left letters of the oversized word —
+    // apex + leg on the A, bowl + inner-corner on the R.
     const pins = [
-      { x: 13, y: 7,  title: "Sharp terminals",
+      { x: 8, y: 4,  title: "Sharp terminals",
         body: "Where a stroke ends, Arena slices it flat on a hard angle — like this chiselled apex on the A. The same cut edges every terminal in the face." },
-      { x: 34, y: 24, title: "Rounded counters",
+      { x: 4, y: 70, title: "Monolinear weight",
+        body: "Stems hold a near-constant width — like the A's leg here — so a line of caps reads as one solid architectural wall." },
+      { x: 29, y: 22, title: "Rounded counters", left: true,
         body: "Inside the letters it softens — the R's bowl rounds off at every corner, a calm negative space held within the rigid outline." },
-      { x: 66, y: 48, title: "Monolinear weight",
-        body: "Stems hold a near-constant width — like the N's upright here — so a line of caps reads as one solid architectural wall." },
-      { x: 80, y: 57, title: "Shared corner-curve", mark: true,
-        body: "This counter's inner radius is the mark's radius — the same nested rounded-rectangle curve (≈10% of the shorter side) ties type to symbol." }
+      { x: 25, y: 43, title: "Shared corner-curve", mark: true, left: true, up: true,
+        body: "That bowl's inner radius is the mark's radius — the same nested rounded-rectangle curve (≈10% of the shorter side) ties type to symbol." }
     ];
     const pin = (p) => {
-      const flip = (p.x > 60 ? " apin--left" : "") + (p.y > 55 ? " apin--up" : "");
+      const flip = (p.left ? " apin--left" : "") + (p.up ? " apin--up" : "");
       return `<button class="apin${flip}" style="left:${p.x}%;top:${p.y}%" tabindex="0" aria-label="${esc(p.title)}">
         <span class="apin__dot" aria-hidden="true"></span>
         <span class="apin__panel">

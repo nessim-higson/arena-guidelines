@@ -375,12 +375,14 @@ html.lenis, html.lenis body { height: auto; }
 
 /* type anatomy (light feature slide — yellow dots pinned onto the letterforms) */
 .slide--type-anatomy { background: #d7d7d2; color: #14140f; min-height: 100svh; }
-.anatomy { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
-/* the word is the positioning context — pins are placed as % of this box, so
-   they stay locked to the glyphs at any size. Sized so "ARENA" fully fits. */
-.anatomy__type { position: relative; display: inline-block; margin-left: 2%; }
-.anatomy__word { display: block; font-size: clamp(2.6rem, 10.4vw, 11rem); line-height: 0.82; color: #fff;
-  white-space: nowrap; letter-spacing: -0.02em; -webkit-user-select: none; user-select: none; }
+.anatomy { position: relative; flex: 1; }
+/* VERY large, cinematic type that bleeds off the right edge (clipped by the
+   slide's overflow:hidden). The word is the positioning context — pins are
+   placed as % of this box, so they stay locked to the glyphs as it scales.
+   Dots are tuned to features on the visible left letters (the A and R). */
+.anatomy__type { position: absolute; left: 2%; top: 50%; transform: translateY(-50%); display: inline-block; }
+.anatomy__word { display: block; font-size: clamp(9rem, 40vw, 34rem); line-height: 0.8; color: #fff;
+  white-space: nowrap; letter-spacing: -0.03em; -webkit-user-select: none; user-select: none; }
 
 .anatomy__hint { position: absolute; z-index: 5; top: 6%; left: 4%; display: flex; align-items: center; gap: 9px;
   font-family: var(--f-syne); font-size: var(--tx-body-xs, 0.78rem); letter-spacing: 0.06em; text-transform: uppercase; color: #5c5c52; }
