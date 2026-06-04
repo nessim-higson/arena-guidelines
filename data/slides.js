@@ -26,8 +26,7 @@ export const SLIDES = [
   { id: "cover", ch: "cover", kind: "cover" },
 
   // ---------- 04 VISUAL IDENTITY ----------
-  { id: "ch04", ch: "identity", kind: "chapter", num: "04", title: "VISUAL\nIDENTITY",
-    video: "assets/cover/portal.mp4", poster: "assets/cover/portal-poster.jpg" },
+  { id: "ch04", ch: "identity", kind: "chapter", num: "04", title: "VISUAL\nIDENTITY" },
 
   { id: "logo", ch: "identity", kind: "statement", label: "Visual Identity", display: "LOGO",
     body: [
