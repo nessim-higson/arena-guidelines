@@ -91,8 +91,8 @@
     <div class="ctl">
       <span>Download</span>
       <div class="dl">
-        <button id="dl-svg" disabled>SVG</button>
         <button id="dl-png" disabled>PNG</button>
+        <button id="dl-svg" disabled>SVG</button>
         <button id="dl-jpg" disabled>JPG</button>
       </div>
     </div>
@@ -131,9 +131,9 @@
       var p=phrases[pi];
       type.innerHTML = esc(p.slice(0,ci)) + '<span class="te-caret"></span>';
       fit();
-      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1500); return; } }
+      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1800); return; } }
       else { ci--; if(ci<0){ deleting=false; ci=0; pi=(pi+1)%phrases.length; } }
-      demoTimer=setTimeout(demo, deleting?42:92);
+      demoTimer=setTimeout(demo, deleting?60:135);
     }
     function stopDemo(){ if(demoTimer){clearTimeout(demoTimer);demoTimer=null;} }
     function goLive(){ if(userActive) return; userActive=true; stopDemo(); type.innerHTML=''; cta.classList.add('hide'); fit(); enableDownloads(); }
