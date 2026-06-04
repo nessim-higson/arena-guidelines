@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=33";
-import { LOGO_SVGS } from "../data/logos.js?v=33";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=34";
+import { LOGO_SVGS } from "../data/logos.js?v=34";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -256,33 +256,35 @@ const R = {
   },
 
   "type-anatomy"(s) {
-    const calls = [
-      { c: "tl", n: "01", title: "Sharp terminals",
-        body: "Where a stroke ends, Arena slices it flat on a hard angle — the chiselled terminals you can see cutting the tops and tails of these letters." },
-      { c: "tr", n: "02", title: "Rounded counters",
-        body: "Inside the letters it softens: the counters round off at every corner — calm negative space held within the rigid outline." },
-      { c: "bl", n: "03", title: "Monolinear weight",
-        body: "Stems hold a near-constant width, so a line of caps reads as one solid architectural wall rather than separate letters." },
-      { c: "br", n: "04", title: "Shared corner-curve", mark: true,
-        body: "Those inner radii are the mark's radii — the same nested rounded-rectangle curve (≈10% of the shorter side) ties the type to the symbol." }
+    // Each pin sits ON a real feature of the word "ARENA". x/y are percentages
+    // of the word's own box, so the dots stay locked to the glyphs as the type
+    // scales. Tuned to the hero render.
+    const pins = [
+      { x: 13, y: 7,  title: "Sharp terminals",
+        body: "Where a stroke ends, Arena slices it flat on a hard angle — like this chiselled apex on the A. The same cut edges every terminal in the face." },
+      { x: 34, y: 24, title: "Rounded counters",
+        body: "Inside the letters it softens — the R's bowl rounds off at every corner, a calm negative space held within the rigid outline." },
+      { x: 66, y: 48, title: "Monolinear weight",
+        body: "Stems hold a near-constant width — like the N's upright here — so a line of caps reads as one solid architectural wall." },
+      { x: 80, y: 57, title: "Shared corner-curve", mark: true,
+        body: "This counter's inner radius is the mark's radius — the same nested rounded-rectangle curve (≈10% of the shorter side) ties type to symbol." }
     ];
-    const call = (k) => `<div class="acall acall--${k.c} reveal" tabindex="0" aria-label="${esc(k.title)}">
-      <span class="acall__mk" aria-hidden="true">
-        <span class="acall__br acall__br--o"></span>
-        <span class="acall__br acall__br--i"></span>
-        <span class="acall__dot"></span>
-      </span>
-      <span class="acall__panel">
-        <span class="acall__t">${k.mark ? `<span class="acall__ring">${mark("icon")}</span>` : `<span class="acall__no">${k.n}</span>`}${esc(k.title)}</span>
-        <span class="acall__b">${esc(k.body)}</span>
-      </span>
-    </div>`;
+    const pin = (p) => {
+      const flip = (p.x > 60 ? " apin--left" : "") + (p.y > 55 ? " apin--up" : "");
+      return `<button class="apin${flip}" style="left:${p.x}%;top:${p.y}%" tabindex="0" aria-label="${esc(p.title)}">
+        <span class="apin__dot" aria-hidden="true"></span>
+        <span class="apin__panel">
+          <span class="apin__t">${p.mark ? `<span class="apin__ring">${mark("icon")}</span>` : ""}${esc(p.title)}</span>
+          <span class="apin__b">${esc(p.body)}</span>
+        </span>
+      </button>`;
+    };
     return `<div class="slide__inner anatomy">
-      <span class="anatomy__cross anatomy__cross--v"></span>
-      <span class="anatomy__cross anatomy__cross--h"></span>
-      <div class="anatomy__word is-arena">ARENA</div>
-      <div class="anatomy__hint reveal"><span class="anatomy__hdot"></span>Hover the corners to read the anatomy</div>
-      ${calls.map(call).join("")}
+      <div class="anatomy__hint reveal"><span class="anatomy__hdot"></span>Hover the dots — each marks a feature of the letterforms</div>
+      <div class="anatomy__type reveal">
+        <span class="anatomy__word is-arena">ARENA</span>
+        ${pins.map(pin).join("")}
+      </div>
     </div>`;
   },
 
@@ -667,9 +669,10 @@ function wirePillars() {
 /* ---- type anatomy: tap to toggle corner callouts on touch ---- */
 function wireAnatomy() {
   if (!matchMedia("(hover: none)").matches) return;
-  $$(".acall").forEach(c => c.addEventListener("click", () => {
+  $$(".apin").forEach(c => c.addEventListener("click", (e) => {
+    e.preventDefault();
     const open = c.classList.contains("is-open");
-    $$(".acall").forEach(x => x.classList.remove("is-open"));
+    $$(".apin").forEach(x => x.classList.remove("is-open"));
     if (!open) c.classList.add("is-open");
   }));
 }

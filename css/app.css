@@ -373,81 +373,52 @@ html.lenis, html.lenis body { height: auto; }
   background: var(--signal); vertical-align: -0.02em; animation: blink 1.05s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* type anatomy (light feature slide — interactive corner callouts) */
+/* type anatomy (light feature slide — yellow dots pinned onto the letterforms) */
 .slide--type-anatomy { background: #d7d7d2; color: #14140f; min-height: 100svh; }
-.anatomy { position: relative; flex: 1; }
-.anatomy__word { position: absolute; left: 2%; top: 50%; transform: translateY(-50%);
-  font-size: clamp(9rem, 40vw, 34rem); line-height: 0.8; color: #fff; white-space: nowrap; z-index: 1; letter-spacing: -0.03em;
-  -webkit-user-select: none; user-select: none; }
-.anatomy__cross { position: absolute; background: rgba(0,0,0,0.32); z-index: 2; pointer-events: none; }
-.anatomy__cross--v { top: 0; bottom: 0; left: 38%; width: 1px; }
-.anatomy__cross--h { left: 0; right: 0; top: 50%; height: 1px; }
+.anatomy { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+/* the word is the positioning context — pins are placed as % of this box, so
+   they stay locked to the glyphs at any size. Sized so "ARENA" fully fits. */
+.anatomy__type { position: relative; display: inline-block; margin-left: 2%; }
+.anatomy__word { display: block; font-size: clamp(2.6rem, 10.4vw, 11rem); line-height: 0.82; color: #fff;
+  white-space: nowrap; letter-spacing: -0.02em; -webkit-user-select: none; user-select: none; }
 
-/* global hover hint */
 .anatomy__hint { position: absolute; z-index: 5; top: 6%; left: 4%; display: flex; align-items: center; gap: 9px;
   font-family: var(--f-syne); font-size: var(--tx-body-xs, 0.78rem); letter-spacing: 0.06em; text-transform: uppercase; color: #5c5c52; }
-.anatomy__hdot { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 0 0 rgba(250,255,0,0.7); animation: a-pulse 2s ease-out infinite; }
+.anatomy__hdot { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); border: 1.5px solid #14140f;
+  box-shadow: 0 0 0 0 rgba(20,20,15,.4); animation: a-pulse-dark 2s ease-out infinite; }
 
-/* corner callout */
-.acall { position: absolute; z-index: 6; display: flex; flex-direction: column; gap: 16px; align-items: flex-start;
-  width: min(40vw, 360px); }
-.acall--tl { top: 12%; left: 4%; }
-.acall--tr { top: 12%; right: 4%; align-items: flex-end; text-align: right; }
-.acall--bl { bottom: 10%; left: 4%; flex-direction: column-reverse; }
-.acall--br { bottom: 10%; right: 4%; flex-direction: column-reverse; align-items: flex-end; text-align: right; }
+/* the pin = a large yellow dot sitting on a feature, with an info panel */
+.apin { position: absolute; transform: translate(-50%, -50%); width: 0; height: 0; border: 0; padding: 0; background: none; cursor: pointer; z-index: 6; }
+.apin__dot { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: clamp(18px, 1.9vw, 30px); height: clamp(18px, 1.9vw, 30px); border-radius: 50%;
+  background: var(--signal); border: 2px solid #14140f; box-shadow: 0 0 0 0 rgba(20,20,15,.45);
+  animation: a-pulse-dark 2s ease-out infinite; transition: transform .25s var(--ease); }
+.apin:hover .apin__dot, .apin:focus-visible .apin__dot, .apin.is-open .apin__dot { animation: none; transform: translate(-50%,-50%) scale(1.28); }
 
-/* the marker — nested rounded corner brackets (echo the mark radius) + signal dot */
-.acall__mk { position: relative; width: 56px; height: 56px; flex: none; cursor: pointer; }
-.acall__br { position: absolute; border: 2px solid #14140f; transition: border-color .3s, transform .3s; }
-.acall__br--o { inset: 0; }
-.acall__br--i { inset: 10px; border-color: rgba(20,20,15,0.42); }
-/* per-corner: show only the two outer sides + round the outer corner */
-.acall--tl .acall__br { border-right: 0; border-bottom: 0; border-top-left-radius: 16px; }
-.acall--tl .acall__br--i { border-top-left-radius: 9px; }
-.acall--tr .acall__br { border-left: 0; border-bottom: 0; border-top-right-radius: 16px; }
-.acall--tr .acall__br--i { border-top-right-radius: 9px; }
-.acall--bl .acall__br { border-right: 0; border-top: 0; border-bottom-left-radius: 16px; }
-.acall--bl .acall__br--i { border-bottom-left-radius: 9px; }
-.acall--br .acall__br { border-left: 0; border-top: 0; border-bottom-right-radius: 16px; }
-.acall--br .acall__br--i { border-bottom-right-radius: 9px; }
-.acall__dot { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 9px; height: 9px; border-radius: 50%;
-  background: var(--signal); box-shadow: 0 0 0 0 rgba(250,255,0,0.75); animation: a-pulse 2s ease-out infinite; transition: transform .3s; }
+/* info panel — a dark chip that reads cleanly over the light slide */
+.apin__panel { position: absolute; left: 0; top: calc(50% + 22px); width: min(300px, 64vw);
+  background: #14140f; color: #fff; padding: 14px 16px; border-radius: 10px; text-align: left;
+  opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .35s var(--ease), transform .35s var(--ease); z-index: 7;
+  box-shadow: 0 18px 50px rgba(0,0,0,.3); }
+.apin--left .apin__panel { left: auto; right: 0; }
+.apin--up .apin__panel { top: auto; bottom: calc(50% + 22px); transform: translateY(-6px); }
+.apin:hover .apin__panel, .apin:focus-within .apin__panel, .apin.is-open .apin__panel { opacity: 1; transform: none; pointer-events: auto; }
+.apin__t { display: flex; align-items: center; gap: 9px; font-family: var(--f-syne); font-weight: 700; font-size: 0.98rem; color: #fff; margin-bottom: 5px; }
+.apin__ring { width: 26px; color: #fff; display: inline-flex; flex: none; }
+.apin__ring .portal-mark { width: 100%; }
+.apin__b { font-family: var(--f-syne); font-size: var(--tx-body-s); color: rgba(255,255,255,.72); line-height: 1.5; margin: 0; }
 
-/* hover / focus state on the marker */
-.acall:hover .acall__br--o, .acall:focus-within .acall__br--o { border-color: #000; transform: scale(1.06); }
-.acall:hover .acall__br--i, .acall:focus-within .acall__br--i { border-color: var(--signal); }
-.acall:hover .acall__dot, .acall:focus-within .acall__dot { animation: none; transform: translate(-50%,-50%) scale(1.5); }
-
-/* the info panel — hidden until hover */
-.acall__panel { display: grid; gap: 8px; max-width: 360px;
-  opacity: 0; transform: translateY(-8px); pointer-events: none; transition: opacity .4s ease, transform .4s ease; }
-.acall--bl .acall__panel, .acall--br .acall__panel { transform: translateY(8px); }
-.acall:hover .acall__panel, .acall:focus-within .acall__panel, .acall.is-open .acall__panel { opacity: 1; transform: none; pointer-events: auto; }
-.acall__t { display: flex; align-items: center; gap: 10px; font-family: var(--f-syne); font-weight: 700; font-size: 1.04rem; color: #000; letter-spacing: -0.01em; }
-.acall--tr .acall__t, .acall--br .acall__t { flex-direction: row-reverse; }
-.acall__no { font-variant-numeric: tabular-nums; font-size: 0.74rem; color: #fff; background: #14140f; border-radius: 6px; padding: 3px 6px; letter-spacing: 0.04em; }
-.acall__ring { width: 34px; color: #14140f; display: inline-flex; flex: none; }
-.acall__ring .portal-mark { width: 100%; }
-.acall__b { font-family: var(--f-syne); font-size: var(--tx-body-s); color: #33332b; line-height: 1.5; margin: 0; }
-
-@keyframes a-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(250,255,0,0.7); }
-  70% { box-shadow: 0 0 0 11px rgba(250,255,0,0); }
-  100% { box-shadow: 0 0 0 0 rgba(250,255,0,0); }
+@keyframes a-pulse-dark {
+  0% { box-shadow: 0 0 0 0 rgba(20,20,15,.45); }
+  70% { box-shadow: 0 0 0 14px rgba(20,20,15,0); }
+  100% { box-shadow: 0 0 0 0 rgba(20,20,15,0); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .acall__dot, .anatomy__hdot { animation: none; }
-}
+@media (prefers-reduced-motion: reduce) { .apin__dot, .anatomy__hdot { animation: none; } }
 @media (max-width: 820px) {
-  .anatomy { display: flex; flex-direction: column; gap: var(--s4); padding-top: var(--s5); }
-  .anatomy__cross { display: none; }
-  .anatomy__word { position: relative; left: 0; top: 0; transform: none; font-size: 30vw; order: -1; }
-  .anatomy__hint { position: static; }
-  .acall { position: static; width: 100%; flex-direction: column; align-items: flex-start; text-align: left; }
-  .acall--tr, .acall--br { align-items: flex-start; text-align: left; }
-  .acall--tr .acall__t, .acall--br .acall__t { flex-direction: row; }
-  .acall__panel { opacity: 1; transform: none; pointer-events: auto; }
-  .acall__mk { display: none; }
+  .anatomy { padding-top: var(--s5); }
+  .anatomy__hint { position: static; margin-bottom: var(--s4); }
+  .anatomy__word { font-size: 26vw; }
+  .apin__panel { width: min(260px, 70vw); }
 }
 
 /* footer */
