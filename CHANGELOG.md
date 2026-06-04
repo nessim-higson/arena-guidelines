@@ -11,6 +11,8 @@ logged under the top **Unreleased** section and rolled into the next version whe
 
 ## Unreleased — v2.0 (in progress)
 
+- **2026-06-04** — Opened v2 line: footer marked "v2 (in progress)"; began logging each iteration here.
+
 _Next iterations are logged here as they land._
 
 ---
