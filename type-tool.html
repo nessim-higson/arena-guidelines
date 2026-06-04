@@ -22,8 +22,8 @@
   .stage{position:fixed;inset:0;display:grid;place-items:center;background:#000;
          transition:background .3s var(--ease);cursor:text}
   .stage.light{background:#fff}
-  .center{display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.6vh,30px);width:100%}
-  .typewrap{display:grid;place-items:end center;width:88%;height:40vh;overflow:hidden}
+  .center{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3vh,34px);width:100%}
+  .typewrap{display:flex;align-items:center;justify-content:center;width:88%;overflow:hidden}
   /* download row that lives directly under the type the user has made */
   .dl-under{display:flex;align-items:center;gap:14px;min-height:42px;opacity:0;transform:translateY(8px);
             transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
@@ -127,7 +127,8 @@
     /* ---- auto-fit: huge for short text, shrinks as you type ---- */
     function fit(){
       if(!text().trim()){ type.style.fontSize='200px'; return; } // moderate caret size when empty
-      var availW=wrap.clientWidth, availH=wrap.clientHeight;
+      // virtual fit area (decoupled from the wrap, so the wrap stays content-sized and the group centers)
+      var availW=stage.clientWidth*0.86, availH=stage.clientHeight*0.46;
       type.style.fontSize='100px';
       var w=type.scrollWidth||1, h=type.scrollHeight||1;
       var size=Math.min(availW/w, availH/h)*100;
@@ -136,7 +137,7 @@
     }
 
     /* ---- idle "type to invite" demo ---- */
-    var phrases=["ENTER THE ARENA","WHERE STORIES ARE FORGED","STORIES THAT HIT HARD","CLAIM YOUR SEAT"];
+    var phrases=["ENTER\nTHE ARENA","WHERE STORIES\nARE FORGED","STORIES THAT\nHIT HARD","CLAIM\nYOUR SEAT"];
     var pi=0, ci=0, deleting=false;
     function demo(){
       if(userActive) return;
