@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL } from "../data/slides.js?v=32";
-import { LOGO_SVGS } from "../data/logos.js?v=32";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=33";
+import { LOGO_SVGS } from "../data/logos.js?v=33";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -39,12 +39,8 @@ function labelEl(s) {
 
 const R = {
   cover(s) {
-    return `<div class="cover__bg" id="coverBg">
-      <video class="cover__video" id="coverVideo" autoplay muted loop playsinline preload="auto"
-             poster="assets/cover/portal-poster.jpg" aria-hidden="true">
-        <source src="assets/cover/portal.mp4" type="video/mp4">
-      </video>
-    </div>
+    const frames = COVER_GIFS.map((src, i) => `<img class="cover__frame${i === 0 ? " is-on" : ""}" src="${src}" alt="" aria-hidden="true">`).join("");
+    return `<div class="cover__bg" id="coverBg">${frames}</div>
     <div class="cover__scrim"></div>
     <div class="slide__inner cover">
       <div class="cover__logo reveal" id="coverLogo">${mark("left", "cover-lockup")}</div>
@@ -56,7 +52,12 @@ const R = {
   },
 
   chapter(s) {
-    return labelEl(s) + `<div class="slide__inner chapter">
+    const vid = s.video ? `<div class="chap-bg">
+      <video class="bg-video" autoplay muted loop playsinline preload="auto" poster="${s.poster || ""}" aria-hidden="true">
+        <source src="${s.video}" type="video/mp4">
+      </video>
+    </div><div class="chap-scrim"></div>` : "";
+    return vid + labelEl(s) + `<div class="slide__inner chapter">
       <h2 class="chapter__title display display--oblique reveal">${esc(s.title).replace(/\n/g, "<br>")}</h2>
     </div>`;
   },
@@ -257,13 +258,13 @@ const R = {
   "type-anatomy"(s) {
     const calls = [
       { c: "tl", n: "01", title: "Sharp terminals",
-        body: "Sharp terminals and structural lines give the system strength and momentum — the hard geometry that anchors every letterform." },
-      { c: "tr", n: "02", title: "Softened curves",
-        body: "Hard geometric construction is balanced by softened internal curves, creating a tension between precision and fluidity — strong, yet cinematic." },
-      { c: "bl", n: "03", title: "Engineered yet emotional",
-        body: "The interplay between rigidity and softness gives the type its character — capable of expressing both impact and atmosphere within one system." },
+        body: "Where a stroke ends, Arena slices it flat on a hard angle — the chiselled terminals you can see cutting the tops and tails of these letters." },
+      { c: "tr", n: "02", title: "Rounded counters",
+        body: "Inside the letters it softens: the counters round off at every corner — calm negative space held within the rigid outline." },
+      { c: "bl", n: "03", title: "Monolinear weight",
+        body: "Stems hold a near-constant width, so a line of caps reads as one solid architectural wall rather than separate letters." },
       { c: "br", n: "04", title: "Shared corner-curve", mark: true,
-        body: "Rounded transitions echo the mark itself — the same nested rounded-rectangle radius language (≈10% of the shorter side) ties the type to the symbol." }
+        body: "Those inner radii are the mark's radii — the same nested rounded-rectangle curve (≈10% of the shorter side) ties the type to the symbol." }
     ];
     const call = (k) => `<div class="acall acall--${k.c} reveal" tabindex="0" aria-label="${esc(k.title)}">
       <span class="acall__mk" aria-hidden="true">
@@ -300,7 +301,7 @@ const R = {
 
   hierarchy(s) {
     return `<div class="slide__inner col" style="gap:var(--s2);max-width:1100px">
-      ${secHead("Type — Hierarchy", "How they pair", { face: "syne" })}
+      ${secHead("Type — Hierarchy", "", { desc: "One message across the scale — Arena sets the statement, Syne carries everything beneath it." })}
       <div class="hier-row reveal"><h3 class="display display--oblique" style="font-size:clamp(2rem,6.5vw,5rem)">ENTER THE ARENA</h3><span class="cap">Arena Regular</span></div>
       <div class="rule reveal"></div>
       <div class="hier-row reveal"><h4 style="font-family:var(--f-syne);font-weight:700;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(1.2rem,3vw,2rem);margin:0">Where stories are forged</h4><span class="cap">Syne Bold</span></div>
@@ -751,9 +752,10 @@ function wireHeaderLogo() {
 
 /* ---- cover: crossfade-cycle the animated gifs ---- */
 function wireCover() {
-  // reduced-motion: hold the hero video on its poster frame instead of playing
-  const v = $("#coverVideo");
-  if (v && matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); try { v.pause(); } catch {} }
+  // reduced-motion: hold any background video on its poster frame instead of playing
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    $$(".bg-video").forEach(v => { v.removeAttribute("autoplay"); try { v.pause(); } catch {} });
+  }
   const frames = $$("#coverBg .cover__frame"); if (frames.length < 2) return;
   let i = 0;
   setInterval(() => {

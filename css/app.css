@@ -272,9 +272,14 @@ html.lenis, html.lenis body { height: auto; }
 .cover__bg { position: absolute; inset: 0; z-index: 0; background: #000; }
 .cover__frame { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.4s var(--ease); }
 .cover__frame.is-on { opacity: 1; }
-/* hero video — desaturated to stay on the strict black/white/yellow palette */
-.cover__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-  filter: grayscale(1) contrast(1.06) brightness(0.95); }
+/* chapter-divider video background (the portal tunnel on the Identity divider) —
+   desaturated to stay on the strict black/white/yellow palette */
+.chap-bg { position: absolute; inset: 0; z-index: 0; background: #000; overflow: hidden; }
+.bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  filter: grayscale(1) contrast(1.05) brightness(0.82); }
+.chap-scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.72) 68%, rgba(0,0,0,0.9) 100%); }
+.slide--chapter .slide__inner.chapter { position: relative; z-index: 2; }
 .cover__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background: linear-gradient(90deg, rgba(0,0,0,.82), rgba(0,0,0,.45) 38%, rgba(0,0,0,.05) 66%, transparent 82%),
               linear-gradient(to bottom, rgba(0,0,0,.5), transparent 26%, transparent 50%, rgba(0,0,0,.92)); }
@@ -709,7 +714,7 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 760px){ .ij-row { grid-template-columns: 1fr; gap: 10px; } }
 .ij-hair { display: block; width: 96px; height: 2px; background: var(--signal); }
 .ij-underline { font-family: var(--f-arena); color: #fff; font-size: 1.5rem; padding: 0 2px;
-  background: linear-gradient(var(--signal), var(--signal)) bottom / 100% 36% no-repeat; }
+  background: linear-gradient(var(--signal), var(--signal)) bottom / 100% 18% no-repeat; }
 .ij-block { font-family: var(--f-syne); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 0.7rem; background: var(--signal); color: #000; padding: 9px 16px; border-radius: var(--r-pill); }
 .ij-floodchip { font-family: var(--f-arena); background: var(--signal); color: #000; padding: 7px 13px; font-size: 1.15rem; }
 
@@ -767,14 +772,15 @@ html.lenis, html.lenis body { height: auto; }
 .pcard img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .7s var(--ease), filter .5s var(--ease); }
 .pcard__no { position: absolute; top: 12px; left: 14px; z-index: 2; font-family: var(--f-syne); font-weight: 700; font-size: 0.66rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.9); mix-blend-mode: difference; transition: opacity .3s; }
 .pcard__desc { position: absolute; inset: 0; z-index: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px;
-  padding: clamp(1rem, 1.6vw, 1.6rem); opacity: 0; transition: opacity .45s var(--ease);
+  padding: clamp(1rem, 1.6vw, 1.6rem); opacity: 0; transition: opacity .6s var(--ease);
   background: linear-gradient(to top, rgba(0,0,0,0.92), rgba(0,0,0,0.45) 52%, rgba(0,0,0,0.1) 100%); }
-.pcard__desc span { font-family: var(--f-syne); font-size: clamp(0.72rem, 0.9vw, 0.82rem); line-height: 1.45; color: #fff; transform: translateY(10px); transition: transform .5s var(--ease); }
-.pcard__desc span:nth-child(2) { transition-delay: .04s; }
-.pcard__desc span:nth-child(3) { transition-delay: .08s; }
+.pcard__desc span { font-family: var(--f-syne); font-size: clamp(0.72rem, 0.9vw, 0.82rem); line-height: 1.45; color: #fff;
+  opacity: 0; transform: translateY(14px); transition: transform .7s var(--ease), opacity .7s var(--ease); }
+.pcard__desc span:nth-child(2) { transition-delay: .08s; }
+.pcard__desc span:nth-child(3) { transition-delay: .16s; }
 .pcard:hover img, .pcard.is-open img { transform: scale(1.05); filter: brightness(0.6); }
 .pcard:hover .pcard__desc, .pcard.is-open .pcard__desc { opacity: 1; }
-.pcard:hover .pcard__desc span, .pcard.is-open .pcard__desc span { transform: none; }
+.pcard:hover .pcard__desc span, .pcard.is-open .pcard__desc span { transform: none; opacity: 1; }
 .pcard:hover .pcard__no, .pcard.is-open .pcard__no { opacity: 0; }
 @media (hover: none){ .pcard { cursor: pointer; } }
 @media (prefers-reduced-motion: reduce){ .pcard img, .pcard__desc, .pcard__desc span { transition: none; } }

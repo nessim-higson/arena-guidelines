@@ -8,6 +8,8 @@
 
 export const RING_TOOL_URL = "https://nessim-higson.github.io/the-arena/arena-rings-engine.html";
 
+// cover background — animated gifs cycled behind the wordmark (add more freely)
+export const COVER_GIFS = ["assets/cover/cover-1.gif", "assets/cover/cover-2.gif", "assets/cover/cover-3.gif"];
 
 // nested rounded-rectangle "portal" mark, stroked (stadium / screen / frame / portal)
 export const PORTAL_SVG = `
@@ -24,7 +26,8 @@ export const SLIDES = [
   { id: "cover", ch: "cover", kind: "cover" },
 
   // ---------- 04 VISUAL IDENTITY ----------
-  { id: "ch04", ch: "identity", kind: "chapter", num: "04", title: "VISUAL\nIDENTITY" },
+  { id: "ch04", ch: "identity", kind: "chapter", num: "04", title: "VISUAL\nIDENTITY",
+    video: "assets/cover/portal.mp4", poster: "assets/cover/portal-poster.jpg" },
 
   { id: "logo", ch: "identity", kind: "statement", label: "Visual Identity", display: "LOGO",
     body: [
@@ -81,11 +84,11 @@ export const SLIDES = [
       "Designed for title systems, motion, and entertainment branding, it balances muscular geometry with refined optical curves to create a bold but premium visual voice."
     ] },
 
+  { id: "arena-examples", ch: "type", kind: "arena-examples", label: "Arena Typeface — Interactive" },
+
   { id: "arena-type", ch: "type", kind: "arena-specimen", label: "Arena Typeface" },
 
   { id: "type-anatomy", ch: "type", kind: "type-anatomy", label: "Arena Typeface — Anatomy" },
-
-  { id: "arena-examples", ch: "type", kind: "arena-examples", label: "Arena Typeface — Interactive" },
 
   { id: "syne-type", ch: "type", kind: "syne-specimen", label: "Syne Typeface" },
 
