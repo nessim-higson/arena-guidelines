@@ -22,13 +22,21 @@
   .stage{position:fixed;inset:0;display:grid;place-items:center;background:#000;
          transition:background .3s var(--ease);cursor:text}
   .stage.light{background:#fff}
-  .typewrap{display:grid;place-items:center;width:88%;height:62%;overflow:hidden}
+  .center{display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.6vh,30px);width:100%}
+  .typewrap{display:grid;place-items:end center;width:88%;height:40vh;overflow:hidden}
+  /* download row that lives directly under the type the user has made */
+  .dl-under{display:flex;align-items:center;gap:14px;min-height:42px;opacity:0;transform:translateY(8px);
+            transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
+  .dl-under.show{opacity:1;transform:none;pointer-events:auto}
+  .dl-label{font-family:var(--f-syne);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .stage.light .dl-label{color:rgba(0,0,0,.5)}
+  .stage.light .dl-under .dl button{color:#000;border-color:rgba(0,0,0,.2)}
   .type{display:inline-block;font-family:var(--f-arena);text-transform:uppercase;font-weight:400;line-height:.92;
         letter-spacing:-.01em;white-space:pre;text-align:center;color:#fff;outline:none;font-size:120px;
         caret-color:var(--yellow);transition:color .3s var(--ease)}
   .stage.light .type{color:#000;caret-color:#000}
-  .te-caret{display:inline-block;width:.06em;height:.78em;margin-left:.04em;background:var(--yellow);
-            vertical-align:-.04em;animation:blink 1.05s steps(1) infinite}
+  .te-caret{display:inline-block;width:3px;height:.72em;margin-left:.06em;background:var(--yellow);
+            vertical-align:-.06em;animation:blink 1.05s steps(1) infinite}
   .stage.light .te-caret{background:#000}
   /* thin blinking hairline cursor when you click into the empty canvas
      (native caret hidden while empty so there's no double cursor) */
@@ -72,7 +80,17 @@
 </head>
 <body>
   <div class="stage" id="stage">
-    <div class="typewrap"><div class="type" id="type" contenteditable="plaintext-only" spellcheck="false" role="textbox" aria-label="Type in the Arena typeface"></div></div>
+    <div class="center">
+      <div class="typewrap"><div class="type" id="type" contenteditable="plaintext-only" spellcheck="false" role="textbox" aria-label="Type in the Arena typeface"></div></div>
+      <div class="dl-under" id="dlunder">
+        <span class="dl-label">Download</span>
+        <div class="dl">
+          <button id="dl-png" disabled>PNG</button>
+          <button id="dl-svg" disabled>SVG</button>
+          <button id="dl-jpg" disabled>JPG</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="cta" id="cta">
@@ -88,28 +106,22 @@
         <button data-mode="light"><span class="sw sw-white"></span>White</button>
       </div>
     </div>
-    <div class="ctl">
-      <span>Download</span>
-      <div class="dl">
-        <button id="dl-png" disabled>PNG</button>
-        <button id="dl-svg" disabled>SVG</button>
-        <button id="dl-jpg" disabled>JPG</button>
-      </div>
-    </div>
   </div>
 
   <script src="./assets/vendor/opentype.min.js"></script>
   <script>
   (function(){
     var stage=document.getElementById('stage'), type=document.getElementById('type'),
-        wrap=type.parentNode, cta=document.getElementById('cta'), modeWrap=document.getElementById('mode');
+        wrap=type.parentNode, cta=document.getElementById('cta'), modeWrap=document.getElementById('mode'),
+        dlunder=document.getElementById('dlunder');
     var dlBtns=[document.getElementById('dl-svg'),document.getElementById('dl-png'),document.getElementById('dl-jpg')];
     var font=null, mode='dark', userActive=false, demoTimer=null;
     var EM=1000, LINE=0.95, CAP=0.72, PAD=0.16, TARGET=3500, MAXPX=480, MINPX=22;
 
     function colors(){ return mode==='dark' ? {fg:'#ffffff', bg:'#000000'} : {fg:'#000000', bg:'#ffffff'}; }
     function text(){ return (type.innerText||''); }
-    function enableDownloads(){ var has=text().trim().length>0; dlBtns.forEach(function(b){b.disabled=!has;}); }
+    // downloads appear under the type only once the user has typed something
+    function enableDownloads(){ var has=text().trim().length>0; dlBtns.forEach(function(b){b.disabled=!has;}); dlunder.classList.toggle('show', has && userActive); }
     function esc(s){ return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
 
     /* ---- auto-fit: huge for short text, shrinks as you type ---- */
@@ -131,13 +143,13 @@
       var p=phrases[pi];
       type.innerHTML = esc(p.slice(0,ci)) + '<span class="te-caret"></span>';
       fit();
-      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1800); return; } }
+      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1650); return; } }
       else { ci--; if(ci<0){ deleting=false; ci=0; pi=(pi+1)%phrases.length; } }
-      demoTimer=setTimeout(demo, deleting?60:135);
+      demoTimer=setTimeout(demo, deleting?50:115);
     }
     function stopDemo(){ if(demoTimer){clearTimeout(demoTimer);demoTimer=null;} }
     function goLive(){ if(userActive) return; userActive=true; stopDemo(); type.innerHTML=''; cta.classList.add('hide'); fit(); enableDownloads(); }
-    function idle(){ userActive=false; ci=0; deleting=false; cta.classList.remove('hide'); demo(); }
+    function idle(){ userActive=false; ci=0; deleting=false; cta.classList.remove('hide'); enableDownloads(); demo(); }
 
     /* ---- vector geometry / export (true outlines via opentype) ---- */
     function geometry(){
