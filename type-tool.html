@@ -18,54 +18,71 @@
   html,body{height:100%}
   body{background:#000;color:#fff;font-family:var(--f-syne);overflow:hidden}
 
-  /* the whole viewport IS the canvas you type into */
-  .stage{position:fixed;inset:0;display:grid;place-items:center;padding:clamp(2.5rem,7vw,6rem) clamp(1.5rem,5vw,5rem);
-         background:#000;transition:background .3s var(--ease);cursor:text}
+  /* the viewport IS the canvas you type into */
+  .stage{position:fixed;inset:0;display:grid;place-items:center;background:#000;
+         transition:background .3s var(--ease);cursor:text}
   .stage.light{background:#fff}
-  .type{font-family:var(--f-arena);text-transform:uppercase;font-weight:400;line-height:.92;letter-spacing:-.01em;
-        font-size:clamp(2.6rem,9vw,8rem);text-align:center;color:#fff;outline:none;max-width:100%;
-        overflow-wrap:anywhere;caret-color:var(--yellow);transition:color .3s var(--ease)}
+  .typewrap{display:grid;place-items:center;width:88%;height:62%;overflow:hidden}
+  .type{display:inline-block;font-family:var(--f-arena);text-transform:uppercase;font-weight:400;line-height:.92;
+        letter-spacing:-.01em;white-space:pre;text-align:center;color:#fff;outline:none;font-size:120px;
+        caret-color:var(--yellow);transition:color .3s var(--ease)}
   .stage.light .type{color:#000}
-  .type:empty::before{content:attr(data-ph);color:var(--muted);pointer-events:none}
-  .stage.light .type:empty::before{color:rgba(0,0,0,.35)}
-  /* blinking caret shown during the idle demo */
   .te-caret{display:inline-block;width:.06em;height:.78em;margin-left:.04em;background:var(--yellow);
             vertical-align:-.04em;animation:blink 1.05s steps(1) infinite}
   @keyframes blink{50%{opacity:0}}
 
-  /* floating controls */
-  .bar{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;gap:1rem;align-items:center;justify-content:space-between;
+  /* clear "click to type" prompt — pulses, sits below the type, hides on focus */
+  .cta{position:fixed;left:50%;bottom:24%;transform:translateX(-50%);z-index:4;display:inline-flex;align-items:center;gap:10px;
+       font-family:var(--f-syne);font-weight:600;font-size:.8rem;letter-spacing:.04em;color:#000;background:var(--yellow);
+       padding:11px 18px;border-radius:999px;box-shadow:0 0 0 0 rgba(250,255,0,.55);animation:ctapulse 2.1s var(--ease) infinite;
+       pointer-events:none;transition:opacity .3s}
+  .cta svg{width:16px;height:16px}
+  .cta.hide{opacity:0}
+  @keyframes ctapulse{0%{box-shadow:0 0 0 0 rgba(250,255,0,.5)}70%{box-shadow:0 0 0 16px rgba(250,255,0,0)}100%{box-shadow:0 0 0 0 rgba(250,255,0,0)}}
+
+  /* controls */
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;gap:1.2rem;align-items:center;justify-content:space-between;
        flex-wrap:wrap;padding:clamp(.7rem,2vw,1.1rem) clamp(1rem,3vw,2rem)}
-  .stage.light ~ .bar .seg button{color:rgba(0,0,0,.55)}
-  .stage.light ~ .bar .seg{border-color:rgba(0,0,0,.18)}
-  .stage.light ~ .bar .seg button.on{background:#000;color:#fff}
-  .stage.light ~ .bar .dl button{color:#000;border-color:rgba(0,0,0,.2)}
-  .stage.light ~ .bar .hint{color:rgba(0,0,0,.5)}
-  .group{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  .seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:rgba(0,0,0,.2);backdrop-filter:blur(6px)}
-  .seg button{font-family:var(--f-syne);font-weight:600;font-size:.72rem;letter-spacing:.03em;background:transparent;color:var(--muted);
-              border:0;padding:9px 15px;cursor:pointer;transition:.15s}
-  .seg button.on{background:#fff;color:#000}
+  .ctl{display:flex;align-items:center;gap:9px}
+  .ctl > span{font-family:var(--f-syne);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:rgba(127,127,127,.14);backdrop-filter:blur(6px)}
+  .seg button{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-syne);font-weight:600;font-size:.74rem;
+              background:transparent;color:inherit;border:0;padding:9px 15px;cursor:pointer;transition:.15s}
+  .seg button.on{background:var(--yellow);color:#000}
+  .sw{width:14px;height:14px;border-radius:50%;border:1px solid rgba(127,127,127,.6)}
+  .sw-black{background:#000}.sw-white{background:#fff}
   .dl{display:flex;gap:8px;flex-wrap:wrap}
   .dl button{font-family:var(--f-syne);font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
-             background:rgba(0,0,0,.2);backdrop-filter:blur(6px);color:#fff;border:1px solid var(--rule);border-radius:999px;padding:10px 16px;cursor:pointer;transition:.15s}
+             background:rgba(127,127,127,.14);backdrop-filter:blur(6px);color:inherit;border:1px solid var(--rule);border-radius:999px;padding:10px 16px;cursor:pointer;transition:.15s}
   .dl button:hover:not(:disabled){border-color:var(--yellow);color:var(--yellow)}
   .dl button:disabled{opacity:.4;cursor:not-allowed}
-  .hint{font-family:var(--f-syne);font-size:.68rem;letter-spacing:.04em;color:var(--muted)}
+  /* dark text for controls on the white ground */
+  .stage.light ~ .bar{color:#000}
+  .stage.light ~ .bar .ctl>span{color:rgba(0,0,0,.5)}
+  .stage.light ~ .bar .seg{border-color:rgba(0,0,0,.18)}
+  .stage:not(.light) ~ .bar{color:#fff}
 </style>
 </head>
 <body>
   <div class="stage" id="stage">
-    <div class="type" id="type" contenteditable="plaintext-only" spellcheck="false" data-ph="" role="textbox" aria-label="Type in the Arena typeface"></div>
+    <div class="typewrap"><div class="type" id="type" contenteditable="plaintext-only" spellcheck="false" role="textbox" aria-label="Type in the Arena typeface"></div></div>
+  </div>
+
+  <div class="cta" id="cta">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 4v16M5 4h9M5 12h7M5 20h9"/></svg>
+    Click anywhere &amp; start typing
   </div>
 
   <div class="bar">
-    <span class="hint" id="hint">Click anywhere and type · Arena is uppercase &amp; display-only</span>
-    <div class="group">
-      <div class="seg" id="mode" role="group" aria-label="Color">
-        <button data-mode="dark" class="on">White</button>
-        <button data-mode="light">Black</button>
+    <div class="ctl">
+      <span>Background</span>
+      <div class="seg" id="mode" role="group" aria-label="Background color">
+        <button data-mode="dark" class="on"><span class="sw sw-black"></span>Black</button>
+        <button data-mode="light"><span class="sw sw-white"></span>White</button>
       </div>
+    </div>
+    <div class="ctl">
+      <span>Download</span>
       <div class="dl">
         <button id="dl-svg" disabled>SVG</button>
         <button id="dl-png" disabled>PNG</button>
@@ -78,71 +95,77 @@
   <script>
   (function(){
     var stage=document.getElementById('stage'), type=document.getElementById('type'),
-        hint=document.getElementById('hint'), modeWrap=document.getElementById('mode');
+        wrap=type.parentNode, cta=document.getElementById('cta'), modeWrap=document.getElementById('mode');
     var dlBtns=[document.getElementById('dl-svg'),document.getElementById('dl-png'),document.getElementById('dl-jpg')];
     var font=null, mode='dark', userActive=false, demoTimer=null;
-    var EM=1000, LINE=0.95, CAP=0.72, PAD=0.16, TARGET=3500;
+    var EM=1000, LINE=0.95, CAP=0.72, PAD=0.16, TARGET=3500, MAXPX=480, MINPX=22;
 
     function colors(){ return mode==='dark' ? {fg:'#ffffff', bg:'#000000'} : {fg:'#000000', bg:'#ffffff'}; }
-    function text(){ return (type.innerText||'').replace(/ /g,' '); }
+    function text(){ return (type.innerText||''); }
     function enableDownloads(){ var has=text().trim().length>0; dlBtns.forEach(function(b){b.disabled=!has;}); }
+    function esc(s){ return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
 
-    /* ---------- idle "type to invite" demo (like the old inline editor) ---------- */
+    /* ---- auto-fit: huge for short text, shrinks as you type ---- */
+    function fit(){
+      var availW=wrap.clientWidth, availH=wrap.clientHeight;
+      type.style.fontSize='100px';
+      var w=type.scrollWidth||1, h=type.scrollHeight||1;
+      var size=Math.min(availW/w, availH/h)*100;
+      size=Math.max(MINPX, Math.min(size, MAXPX));
+      type.style.fontSize=size+'px';
+    }
+
+    /* ---- idle "type to invite" demo ---- */
     var phrases=["ENTER THE ARENA","WHERE STORIES ARE FORGED","STORIES THAT HIT HARD","CLAIM YOUR SEAT"];
     var pi=0, ci=0, deleting=false;
     function demo(){
       if(userActive) return;
       var p=phrases[pi];
       type.innerHTML = esc(p.slice(0,ci)) + '<span class="te-caret"></span>';
-      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1400); return; } }
+      fit();
+      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1500); return; } }
       else { ci--; if(ci<0){ deleting=false; ci=0; pi=(pi+1)%phrases.length; } }
-      demoTimer=setTimeout(demo, deleting?45:95);
+      demoTimer=setTimeout(demo, deleting?42:92);
     }
-    function esc(s){ return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
     function stopDemo(){ if(demoTimer){clearTimeout(demoTimer);demoTimer=null;} }
-    function goLive(){ if(userActive) return; userActive=true; stopDemo(); type.innerHTML=''; enableDownloads(); }
+    function goLive(){ if(userActive) return; userActive=true; stopDemo(); type.innerHTML=''; cta.classList.add('hide'); fit(); enableDownloads(); }
+    function idle(){ userActive=false; ci=0; deleting=false; cta.classList.remove('hide'); demo(); }
 
-    /* ---------- vector geometry from the font ---------- */
+    /* ---- vector geometry / export (true outlines via opentype) ---- */
     function geometry(){
       if(!font) return null;
       var lines=text().toUpperCase().replace(/\r/g,'').split('\n');
       var parts=[], minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9, ink=false;
       for(var i=0;i<lines.length;i++){
-        var baseline=i*EM*LINE;
-        minY=Math.min(minY, baseline-EM*CAP); maxY=Math.max(maxY, baseline);
-        var p=font.getPath(lines[i], 0, baseline, EM), d=p.toPathData(2);
-        if(d){ parts.push(d); ink=true;
-          var bb=p.getBoundingBox();
-          if(isFinite(bb.x1)){ minX=Math.min(minX,bb.x1);maxX=Math.max(maxX,bb.x2);minY=Math.min(minY,bb.y1);maxY=Math.max(maxY,bb.y2); }
-        }
+        var baseline=i*EM*LINE; minY=Math.min(minY,baseline-EM*CAP); maxY=Math.max(maxY,baseline);
+        var p=font.getPath(lines[i],0,baseline,EM), d=p.toPathData(2);
+        if(d){ parts.push(d); ink=true; var bb=p.getBoundingBox();
+          if(isFinite(bb.x1)){minX=Math.min(minX,bb.x1);maxX=Math.max(maxX,bb.x2);minY=Math.min(minY,bb.y1);maxY=Math.max(maxY,bb.y2);} }
       }
       if(!ink) return null;
       var pad=EM*PAD; minX-=pad;maxX+=pad;minY-=pad;maxY+=pad;
       return {d:parts.join(' '), x:minX, y:minY, w:maxX-minX, h:maxY-minY};
     }
-    function svgStr(g, fg, bg){
-      var rect=bg?'<rect x="'+g.x+'" y="'+g.y+'" width="'+g.w+'" height="'+g.h+'" fill="'+bg+'"/>':'';
-      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+g.x.toFixed(1)+' '+g.y.toFixed(1)+' '+g.w.toFixed(1)+' '+g.h.toFixed(1)+'" width="'+Math.round(g.w)+'" height="'+Math.round(g.h)+'">'+rect+'<path d="'+g.d+'" fill="'+fg+'"/></svg>';
-    }
+    function svgStr(g,fg,bg){ var rect=bg?'<rect x="'+g.x+'" y="'+g.y+'" width="'+g.w+'" height="'+g.h+'" fill="'+bg+'"/>':'';
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+g.x.toFixed(1)+' '+g.y.toFixed(1)+' '+g.w.toFixed(1)+' '+g.h.toFixed(1)+'" width="'+Math.round(g.w)+'" height="'+Math.round(g.h)+'">'+rect+'<path d="'+g.d+'" fill="'+fg+'"/></svg>'; }
     function download(blob,name){ var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(a.href);},1500); }
     function slug(){ var s=text().toUpperCase().replace(/\s+/g,'-').replace(/[^A-Z0-9\-]/g,'').slice(0,40); return 'arena-'+(s||'type'); }
     function exportSVG(){ var g=geometry(); if(!g)return; download(new Blob([svgStr(g,colors().fg,null)],{type:'image/svg+xml'}), slug()+'.svg'); }
-    function raster(mime,quality,fill){
-      var g=geometry(); if(!g)return; var c=colors();
+    function raster(mime,quality,fill){ var g=geometry(); if(!g)return; var c=colors();
       var scale=TARGET/Math.max(g.w,g.h), cw=Math.max(1,Math.round(g.w*scale)), ch=Math.max(1,Math.round(g.h*scale));
       var canvas=document.createElement('canvas'); canvas.width=cw; canvas.height=ch; var ctx=canvas.getContext('2d');
       if(fill){ ctx.fillStyle=fill; ctx.fillRect(0,0,cw,ch); }
-      var img=new Image();
-      img.onload=function(){ ctx.drawImage(img,0,0,cw,ch); canvas.toBlob(function(b){ if(b) download(b, slug()+(mime==='image/png'?'.png':'.jpg')); }, mime, quality); };
-      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgStr(g,c.fg,null));
-    }
+      var img=new Image(); img.onload=function(){ ctx.drawImage(img,0,0,cw,ch); canvas.toBlob(function(b){ if(b) download(b, slug()+(mime==='image/png'?'.png':'.jpg')); }, mime, quality); };
+      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgStr(g,c.fg,null)); }
 
-    /* ---------- wire ---------- */
-    stage.addEventListener('mousedown', function(e){ if(e.target!==type){ type.focus(); } });
+    /* ---- wire ---- */
+    stage.addEventListener('mousedown', function(e){ if(e.target!==type){ e.preventDefault(); type.focus(); } });
     type.addEventListener('focus', goLive);
-    type.addEventListener('input', function(){ userActive=true; enableDownloads(); });
-    type.addEventListener('blur', function(){ if(!text().trim()){ userActive=false; ci=0; deleting=false; demo(); } });
-    modeWrap.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b)return; mode=b.dataset.mode; [].forEach.call(modeWrap.children,function(x){x.classList.toggle('on',x===b);}); });
+    type.addEventListener('input', function(){ userActive=true; cta.classList.add('hide'); fit(); enableDownloads(); });
+    type.addEventListener('blur', function(){ if(!text().trim()){ idle(); } });
+    window.addEventListener('resize', fit);
+    modeWrap.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b)return; mode=b.dataset.mode;
+      stage.classList.toggle('light', mode==='light'); [].forEach.call(modeWrap.children,function(x){x.classList.toggle('on',x===b);}); });
     document.getElementById('dl-svg').addEventListener('click', exportSVG);
     document.getElementById('dl-png').addEventListener('click', function(){ raster('image/png', undefined, null); });
     document.getElementById('dl-jpg').addEventListener('click', function(){ raster('image/jpeg', 0.95, colors().bg); });
