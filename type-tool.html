@@ -144,9 +144,15 @@
       var p=phrases[pi];
       type.innerHTML = esc(p.slice(0,ci)) + '<span class="te-caret"></span>';
       fit();
-      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1650); return; } }
-      else { ci--; if(ci<0){ deleting=false; ci=0; pi=(pi+1)%phrases.length; } }
-      demoTimer=setTimeout(demo, deleting?50:115);
+      var delay = deleting ? 50 : 115;
+      if(!deleting){
+        if(p[ci-1]==='\n') delay = 1400;   // pause between the two intro lines
+        ci++;
+        if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1650); return; }
+      } else {
+        ci--; if(ci<0){ deleting=false; ci=0; pi=(pi+1)%phrases.length; }
+      }
+      demoTimer=setTimeout(demo, delay);
     }
     function stopDemo(){ if(demoTimer){clearTimeout(demoTimer);demoTimer=null;} }
     function goLive(){ if(userActive) return; userActive=true; stopDemo(); type.innerHTML=''; cta.classList.add('hide'); fit(); enableDownloads(); }
