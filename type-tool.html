@@ -146,7 +146,7 @@
       fit();
       var delay = deleting ? 50 : 115;
       if(!deleting){
-        if(p[ci-1]==='\n') delay = 1400;   // pause between the two intro lines
+        if(p[ci]==='\n') delay = 1400;     // hold on line one before breaking to line two
         ci++;
         if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1650); return; }
       } else {
