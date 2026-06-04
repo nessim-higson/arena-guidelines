@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=41";
-import { LOGO_SVGS } from "../data/logos.js?v=41";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, TYPE_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=42";
+import { LOGO_SVGS } from "../data/logos.js?v=42";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -264,11 +264,15 @@ const R = {
   },
 
   "arena-examples"(s) {
-    return labelEl(s) + `<div class="slide__inner col" style="justify-content:center;gap:var(--s3)">
-      <div class="eyebrow reveal">Interactive — type to preview</div>
-      <div class="type-editor reveal" id="typeEditor" contenteditable="true" spellcheck="false"
-           role="textbox" aria-label="Type to preview the Arena typeface" data-placeholder="TYPE SOMETHING"></div>
-      <div class="cap reveal" id="typeEditorHint">Click and type — Arena is display-only &amp; uppercase. Try “ENTER THE ARENA”.</div>
+    return labelEl(s) + `<div class="slide__inner ringtool">
+      <div class="ringtool__stage reveal">
+        <iframe src="${TYPE_TOOL_URL}" title="Arena Type Tool" loading="lazy" allow="clipboard-write"></iframe>
+      </div>
+      <div class="ringtool__bar">
+        <div><strong class="display" style="font-size:1.4rem">Type tool</strong>
+          <p class="body" style="font-size:.85rem;margin:4px 0 0;max-width:60ch">Typeset in Arena, set it black or white, and export vector SVG or high-resolution transparent PNG / JPG to drop straight into slides.</p></div>
+        <a class="tag-soon" href="${TYPE_TOOL_URL}" target="_blank" rel="noopener"><span>Open full tool ↗</span></a>
+      </div>
     </div>`;
   },
 

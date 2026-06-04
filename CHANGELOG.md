@@ -12,6 +12,8 @@ logged under the top **Unreleased** section and rolled into the next version whe
 ## Unreleased — v2.0 (in progress)
 
 - **2026-06-04** — Opened v2 line: footer marked "v2 (in progress)"; began logging each iteration here.
+- **2026-06-04** — **Arena Type Tool** (`type-tool.html`): standalone page to typeset in Arena, toggle black/white, and export **vector SVG** + high-res (~3500 px) transparent **PNG**/**JPG** for slides. Uses vendored `opentype.js` for true glyph outlines (self-hostable, no CDN). Embedded into the deck on the Type "Try it" slide (iframe) replacing the old preview-only editor, with an "Open full tool ↗" link.
+- **2026-06-04** — Added scratch `comps.html` for the V.2 layout discussion (title-page alignment + Songtrust identity options); to be removed once direction is chosen.
 - **2026-06-04** — Type anatomy: dots shrunk; word kept oversized; trimmed the forced full-height grey band.
 - **2026-06-04** — **Structure pass (Cash-App direction).** Converted the five chapter intros (Type, Color, Imagery, Material, System) into **chapter landings**: eyebrow + big title + intro + a **clickable section index** so the long scroll reads as discrete, navigable chunks. Landings **alternate light/dark** (Type/Imagery/System on white) to break fatigue. New `landing` slide kind + `light` build flag.
 
