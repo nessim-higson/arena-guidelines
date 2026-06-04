@@ -374,17 +374,18 @@ html.lenis, html.lenis body { height: auto; }
 @keyframes blink { 50% { opacity: 0; } }
 
 /* type anatomy (light feature slide — yellow dots pinned onto the letterforms) */
-.slide--type-anatomy { background: #d7d7d2; color: #14140f; min-height: 100svh; }
-.anatomy { position: relative; flex: 1; }
+.slide--type-anatomy { background: #d7d7d2; color: #14140f; padding-top: clamp(4rem, 7.5vh, 5.5rem); }
+.anatomy { position: relative; display: block; }
 /* VERY large, cinematic type that bleeds off the right edge (clipped by the
-   slide's overflow:hidden). The word is the positioning context — pins are
-   placed as % of this box, so they stay locked to the glyphs as it scales.
-   Dots are tuned to features on the visible left letters (the A and R). */
-.anatomy__type { position: absolute; left: 2%; top: 50%; transform: translateY(-50%); display: inline-block; }
+   slide's overflow:hidden). In normal flow so the slide sizes to the word —
+   no forced full-height band of grey above it. The word is the positioning
+   context: pins are placed as % of this box, so they stay locked to the glyphs
+   as it scales. Dots are tuned to features on the visible left letters (A, R). */
+.anatomy__type { position: relative; display: inline-block; margin: var(--s2) 0; }
 .anatomy__word { display: block; font-size: clamp(9rem, 40vw, 34rem); line-height: 0.8; color: #fff;
   white-space: nowrap; letter-spacing: -0.03em; -webkit-user-select: none; user-select: none; }
 
-.anatomy__hint { position: absolute; z-index: 5; top: 6%; left: 4%; display: flex; align-items: center; gap: 9px;
+.anatomy__hint { display: flex; align-items: center; gap: 9px; margin-bottom: var(--s3);
   font-family: var(--f-syne); font-size: var(--tx-body-xs, 0.78rem); letter-spacing: 0.06em; text-transform: uppercase; color: #5c5c52; }
 .anatomy__hdot { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); border: 1.5px solid #14140f;
   box-shadow: 0 0 0 0 rgba(20,20,15,.4); animation: a-pulse-dark 2s ease-out infinite; }
