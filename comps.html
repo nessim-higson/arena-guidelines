@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arena V.2 — layout comps (scratch, not the deck)</title>
+<style>
+  @import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap");
+  @font-face{font-family:"Arena";src:url("./assets/fonts/Arena-Regular.otf") format("opentype");font-weight:400 900;font-display:swap}
+  :root{
+    --black:#000;--white:#fff;--yellow:#faff00;--signal:var(--yellow);
+    --body:rgba(255,255,255,.64);--rule:rgba(255,255,255,.12);
+    --f-arena:"Arena","Arial Narrow",sans-serif;--f-syne:"Syne",system-ui,sans-serif;
+    --d-1:clamp(1.9rem,9.5vw,7rem);--s2:1rem;--s3:1.5rem;--s4:2.5rem;
+    --gutter:clamp(1.25rem,4.2vw,4rem);
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:#111;color:var(--white);font-family:var(--f-syne)}
+  /* sticky chooser */
+  .bar{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(0,0,0,.86);backdrop-filter:blur(8px);
+       border-bottom:1px solid rgba(255,255,255,.12);display:flex;gap:6px;flex-wrap:wrap;align-items:center;
+       padding:10px var(--gutter);font-family:var(--f-syne)}
+  .bar b{font-weight:700;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-right:10px}
+  .bar a{font-size:.72rem;color:#bbb;text-decoration:none;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:5px 11px}
+  .bar a:hover{color:#000;background:var(--signal);border-color:var(--signal)}
+  .slide{min-height:100vh;padding:calc(56px + clamp(2rem,5vh,4rem)) var(--gutter) 3rem;display:flex;flex-direction:column;position:relative;border-bottom:1px solid rgba(255,255,255,.14)}
+  .label{position:absolute;top:64px;right:var(--gutter);font-weight:700;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;background:var(--signal);color:#000;padding:5px 9px;border-radius:5px}
+  .eyebrow{font-family:var(--f-syne);font-weight:700;font-size:.65rem;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.64);display:flex;align-items:center;gap:12px}
+  .eyebrow::before{content:"";width:28px;height:1px;background:var(--signal)}
+  .display{font-family:var(--f-arena);text-transform:uppercase;line-height:1;letter-spacing:-.01em;font-size:var(--d-1);font-style:normal}
+  .body{font-family:var(--f-syne);color:var(--body);line-height:1.55;font-size:1.05rem}
+  /* landing */
+  .landing{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(2rem,5vh,4rem);max-width:1680px;margin:0 auto;width:100%}
+  .landing .display{margin:var(--s3) 0 0}
+  .lbody{max-width:54ch;margin-top:var(--s3)}
+  .lx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(2rem,5vw,5rem);max-width:900px;border-top:1px solid var(--rule)}
+  .lx a{display:flex;align-items:baseline;gap:16px;padding:1rem 0;border-bottom:1px solid var(--rule);text-decoration:none;color:inherit}
+  .lx .n{font-family:var(--f-syne);font-weight:700;font-size:.68rem;letter-spacing:.08em;color:var(--signal);min-width:1.7em}
+  .lx .nm{font-family:var(--f-syne);font-weight:600;font-size:clamp(1rem,1.5vw,1.25rem)}
+  /* centered modifier */
+  .c .landing{align-items:center;text-align:center}
+  .c .eyebrow{justify-content:center}.c .lbody{margin-left:auto;margin-right:auto}
+  .c .lx{grid-template-columns:1fr;max-width:440px;margin:0 auto}.c .lx a{justify-content:center}
+  /* identity page */
+  .idpage{max-width:1200px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(1.8rem,4vh,3rem);text-align:center}
+  .idpage .eyebrow{justify-content:center}
+  .idpage .lead{max-width:60ch;margin:0 auto}
+  .hero-card{border-radius:18px;padding:clamp(2.4rem,6vh,4.5rem);display:grid;place-items:center;border:1px solid var(--rule)}
+  .hero-card img{width:min(54%,420px);height:auto}
+  .var-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+  @media(max-width:720px){.var-grid{grid-template-columns:1fr 1fr}}
+  .var{border-radius:12px;padding:1.8rem 1rem;display:flex;flex-direction:column;gap:1.1rem;align-items:center;justify-content:center;min-height:150px;border:1px solid var(--rule)}
+  .var img{max-height:40px;max-width:76%;width:auto;height:auto}
+  .var .cap{font-family:var(--f-syne);font-size:.66rem;text-transform:uppercase;letter-spacing:.07em;color:var(--body)}
+  /* light grounds */
+  .light{background:#fff;color:#111}
+  .light .eyebrow{color:#666}.light .eyebrow::before{background:#111}
+  .light .display{color:#111}.light .body,.light .lead{color:#555}
+  .light .hero-card,.light .var{border-color:rgba(0,0,0,.13)}
+  .light .var .cap{color:#888}
+  /* black identity marks (svgs are black -> invert to white) */
+  .invert .hero-card img,.invert .var img{filter:invert(1)}
+</style>
+</head>
+<body>
+  <div class="bar"><b>Arena V.2 comps</b>
+    <a href="#A">A · Title left</a>
+    <a href="#B">B · Title centered</a>
+    <a href="#D">D · Identity title</a>
+    <a href="#E">E · Identity logo (white)</a>
+    <a href="#F">F · Identity logo (black)</a>
+    <span style="margin-left:auto;color:#777;font-size:.66rem">scratch preview · not the live deck</span>
+  </div>
+
+  <!-- A: TITLE LEFT (current) -->
+  <section class="slide" id="A"><div class="label">A · Title left (current)</div><div class="landing">
+    <div><div class="eyebrow">03 — Color</div><h2 class="display">COLOR</h2>
+    <p class="body lbody">Our color approach prioritizes elegance, restraint, and timelessness. The palette is intentionally neutral so that, like a gallery, it serves as a blank slate.</p></div>
+    <nav class="lx">
+      <a><span class="n">01</span><span class="nm">Palette</span></a><a><span class="n">02</span><span class="nm">Using color</span></a>
+      <a><span class="n">03</span><span class="nm">How yellow injects</span></a><a><span class="n">04</span><span class="nm">Dial the signal</span></a>
+      <a><span class="n">05</span><span class="nm">Signal flood</span></a><a><span class="n">06</span><span class="nm">Tonal range</span></a>
+      <a><span class="n">07</span><span class="nm">Image-led palette</span></a>
+    </nav>
+  </div></section>
+
+  <!-- B: TITLE CENTERED -->
+  <section class="slide c" id="B"><div class="label">B · Title centered</div><div class="landing">
+    <div><div class="eyebrow">03 — Color</div><h2 class="display">COLOR</h2>
+    <p class="body lbody">Our color approach prioritizes elegance, restraint, and timelessness. The palette is intentionally neutral so that, like a gallery, it serves as a blank slate.</p></div>
+    <nav class="lx">
+      <a><span class="n">01</span><span class="nm">Palette</span></a><a><span class="n">02</span><span class="nm">Using color</span></a>
+      <a><span class="n">03</span><span class="nm">How yellow injects</span></a><a><span class="n">04</span><span class="nm">Dial the signal</span></a>
+      <a><span class="n">05</span><span class="nm">Signal flood</span></a><a><span class="n">06</span><span class="nm">Tonal range</span></a>
+      <a><span class="n">07</span><span class="nm">Image-led palette</span></a>
+    </nav>
+  </div></section>
+
+  <!-- D: IDENTITY TITLE LEFT -->
+  <section class="slide" id="D"><div class="label">D · Identity title (left)</div><div class="landing">
+    <div><div class="eyebrow">01 — Identity</div><h2 class="display">VISUAL IDENTITY</h2>
+    <p class="body lbody">The Arena identity is a small, disciplined set of parts — the symbol, the wordmark, and their lockups. Everything else is built from these.</p></div>
+    <nav class="lx">
+      <a><span class="n">01</span><span class="nm">The logo</span></a><a><span class="n">02</span><span class="nm">Lockups</span></a>
+      <a><span class="n">03</span><span class="nm">Clearspace</span></a><a><span class="n">04</span><span class="nm">Misuse</span></a>
+      <a><span class="n">05</span><span class="nm">Symbol construction</span></a><a><span class="n">06</span><span class="nm">Minimum size</span></a>
+      <a><span class="n">07</span><span class="nm">Scaling</span></a>
+    </nav>
+  </div></section>
+
+  <!-- E: IDENTITY LOGO SONGTRUST WHITE -->
+  <section class="slide light" id="E"><div class="label">E · Identity logo · white</div><div class="idpage">
+    <div><div class="eyebrow">01 — Identity</div><h2 class="display" style="margin-top:1rem">THE LOGO</h2>
+    <p class="body lead" style="margin-top:1rem">Our mark is simultaneously a stadium, screen, frame, and portal — a gateway into worlds of action.</p></div>
+    <div class="hero-card"><img src="./assets/logo/lockup-horizontal.svg" alt="The Arena"></div>
+    <div class="var-grid">
+      <div class="var"><img src="./assets/logo/lockup-horizontal.svg"><span class="cap">Horizontal</span></div>
+      <div class="var"><img src="./assets/logo/lockup-left.svg"><span class="cap">Stacked</span></div>
+      <div class="var"><img src="./assets/logo/icon.svg" style="max-height:54px"><span class="cap">Symbol</span></div>
+      <div class="var"><span class="display" style="font-size:1.5rem;color:#111">THE&nbsp;ARENA</span><span class="cap">Wordmark</span></div>
+    </div>
+  </div></section>
+
+  <!-- F: IDENTITY LOGO SONGTRUST BLACK -->
+  <section class="slide invert" id="F"><div class="label">F · Identity logo · black</div><div class="idpage">
+    <div><div class="eyebrow">01 — Identity</div><h2 class="display" style="margin-top:1rem">THE LOGO</h2>
+    <p class="body lead" style="margin-top:1rem">Our mark is simultaneously a stadium, screen, frame, and portal — a gateway into worlds of action.</p></div>
+    <div class="hero-card"><img src="./assets/logo/lockup-horizontal.svg" alt="The Arena"></div>
+    <div class="var-grid">
+      <div class="var"><img src="./assets/logo/lockup-horizontal.svg"><span class="cap">Horizontal</span></div>
+      <div class="var"><img src="./assets/logo/lockup-left.svg"><span class="cap">Stacked</span></div>
+      <div class="var"><img src="./assets/logo/icon.svg" style="max-height:54px"><span class="cap">Symbol</span></div>
+      <div class="var"><span class="display" style="font-size:1.5rem">THE&nbsp;ARENA</span><span class="cap">Wordmark</span></div>
+    </div>
+  </div></section>
+</body>
+</html>
