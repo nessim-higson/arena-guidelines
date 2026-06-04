@@ -29,7 +29,17 @@ export const SLIDES = [
   { id: "cover", ch: "cover", kind: "cover" },
 
   // ---------- 04 VISUAL IDENTITY ----------
-  { id: "ch04", ch: "identity", kind: "chapter", num: "04", title: "VISUAL\nIDENTITY" },
+  { id: "ch04", ch: "identity", kind: "landing", eyebrow: "01 — Identity", display: "VISUAL IDENTITY",
+    body: ["The Arena identity is a small, disciplined set of parts — the symbol, the wordmark, and their lockups. Everything else is built from these."],
+    index: [
+      { n: "01", name: "The logo", to: "lockups" },
+      { n: "02", name: "Clearspace", to: "safe-area" },
+      { n: "03", name: "Misuse", to: "best-practices" },
+      { n: "04", name: "The symbol", to: "icon-mark" },
+      { n: "05", name: "Construction", to: "symbol-construction" },
+      { n: "06", name: "Minimum size", to: "min-size" },
+      { n: "07", name: "Scaling", to: "scaling" }
+    ] },
 
   { id: "logo", ch: "identity", kind: "statement", label: "Visual Identity", display: "LOGO",
     body: [

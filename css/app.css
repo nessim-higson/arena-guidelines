@@ -363,6 +363,34 @@ html.lenis, html.lenis body { height: auto; }
 .lockup.on-light .dl button:hover { color: #000; border-color: #000; }
 .lockup.on-light .dl__c.is-on { background: #000; color: #fff; border-color: #000; }
 
+/* ============================================================
+   IDENTITY — logo presentation (Songtrust-style: centered, white)
+   ============================================================ */
+.slide--lockups { background: #fff; color: #111; }
+.logo-suite { align-items: center; text-align: center; justify-content: center; gap: clamp(2rem, 5vh, 3.5rem); }
+.logo-suite__head { display: flex; flex-direction: column; align-items: center; gap: var(--s2); max-width: 70ch; }
+.slide--lockups .eyebrow { color: #666; }
+.slide--lockups .eyebrow::before { background: #111; }   /* no yellow on white */
+.logo-suite__head .display { color: #111; font-size: var(--d-2); line-height: 1; }
+.logo-suite__lead { font-family: var(--f-syne); color: #555; line-height: 1.5; max-width: 58ch; }
+/* centered hero presentation of the primary lockup */
+.logo-hero { width: 100%; display: flex; justify-content: center; }
+.logo-hero__art { width: min(720px, 82%); border: 1px solid rgba(0,0,0,0.12); border-radius: var(--r-l);
+  padding: clamp(2.4rem, 7vh, 5rem); display: grid; place-items: center; color: #000; }
+.logo-hero__art .lk { width: auto; height: auto; max-width: 100%; max-height: 118px; }
+/* the suite — each variant with a usage note + download controls */
+.logo-suite__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; width: 100%; max-width: 1180px; }
+@media (max-width: 860px){ .logo-suite__grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px){ .logo-suite__grid { grid-template-columns: 1fr; } }
+.logo-var { background: #fff; border: 1px solid rgba(0,0,0,0.12); border-radius: var(--r-m); padding: 1.6rem 1.2rem; gap: 14px; align-items: stretch; }
+.logo-var .lockup__art { min-height: 60px; color: #000; }
+.logo-var .lockup__art .lk { max-height: 44px; }
+.logo-var__meta { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.logo-var__name { font-family: var(--f-syne); font-weight: 700; font-size: 0.86rem; color: #111; }
+.logo-var__use { font-family: var(--f-syne); font-size: 0.64rem; letter-spacing: 0.07em; text-transform: uppercase; color: #9a9a9a; }
+.logo-var .dl { justify-content: center; margin-top: 4px; }
+.logo-suite__note { font-family: var(--f-syne); font-size: var(--tx-body-s); color: #888; max-width: 64ch; }
+
 /* interactive type editor */
 .type-editor { font-family: var(--f-arena); text-transform: uppercase; color: var(--white);
   font-size: clamp(1.3rem, 3.9vw, 3.3rem); line-height: 1.1; letter-spacing: -0.01em;
