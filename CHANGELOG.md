@@ -12,8 +12,13 @@ logged under the top **Unreleased** section and rolled into the next version whe
 ## Unreleased — v2.0 (in progress)
 
 - **2026-06-04** — Opened v2 line: footer marked "v2 (in progress)"; began logging each iteration here.
+- **2026-06-04** — Type anatomy: dots shrunk; word kept oversized; trimmed the forced full-height grey band.
+- **2026-06-04** — **Structure pass (Cash-App direction).** Converted the five chapter intros (Type, Color, Imagery, Material, System) into **chapter landings**: eyebrow + big title + intro + a **clickable section index** so the long scroll reads as discrete, navigable chunks. Landings **alternate light/dark** (Type/Imagery/System on white) to break fatigue. New `landing` slide kind + `light` build flag.
 
-_Next iterations are logged here as they land._
+### Still open for v2
+- Songtrust-style **centered logo** treatments (Identity lockups).
+- **Arena + IP** chapter (Metal Slug / Fatal Fury) — awaiting the 5 exported screens.
+- Consider extending landings/section-index to Identity + a persistent index if the lighter pass isn't enough.
 
 ---
 

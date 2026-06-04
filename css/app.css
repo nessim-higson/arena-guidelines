@@ -443,6 +443,38 @@ html.lenis, html.lenis body { height: auto; }
 .statement .d1 { margin-bottom: clamp(1.5rem, 4vh, 3.25rem); }
 .statement__body { margin-top: 0; }
 
+/* ============================================================
+   CHAPTER LANDING — a discrete divider + clickable section index,
+   so the deck reads as chunks instead of one overwhelming scroll.
+   ============================================================ */
+.slide--landing { min-height: 90svh; }
+.landing { justify-content: center; gap: clamp(2rem, 5vh, 4rem); }
+.landing .d1 { margin-bottom: var(--s3); }
+.landing__body { max-width: 54ch; }
+
+.lx { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(2rem, 5vw, 5rem);
+  max-width: 900px; border-top: 1px solid var(--rule); }
+@media (max-width: 720px){ .lx { grid-template-columns: 1fr; } }
+.lx__item { display: flex; align-items: baseline; gap: 16px; padding: clamp(0.8rem, 1.5vh, 1.1rem) 0;
+  border-bottom: 1px solid var(--rule); text-decoration: none; color: inherit;
+  transition: padding-left .25s var(--ease), border-color .25s; }
+.lx__item:hover { padding-left: 12px; border-color: var(--rule-bright); }
+.lx__n { font-family: var(--f-syne); font-weight: 700; font-size: 0.68rem; letter-spacing: 0.08em; color: var(--signal); flex: none; min-width: 1.7em; }
+.lx__name { font-family: var(--f-syne); font-weight: 600; font-size: clamp(1rem, 1.5vw, 1.25rem); }
+.lx__go { margin-left: auto; color: var(--signal); opacity: 0; transform: translateX(-6px); transition: opacity .2s, transform .2s var(--ease); }
+.lx__item:hover .lx__go { opacity: 1; transform: none; }
+
+/* light landings — white ground to break fatigue (no yellow on white) */
+.slide--landing.is-light { background: #fff; color: #111; }
+.slide--landing.is-light .display, .slide--landing.is-light .d1 { color: #111; }
+.slide--landing.is-light .eyebrow { color: #666; }
+.slide--landing.is-light .eyebrow::before { background: #111; }
+.slide--landing.is-light .landing__body { color: #555; }
+.slide--landing.is-light .lx,
+.slide--landing.is-light .lx__item { border-color: rgba(0,0,0,0.14); }
+.slide--landing.is-light .lx__n,
+.slide--landing.is-light .lx__go { color: #111; }
+
 /* light slide (typeface anatomy render is on light grey) */
 .is-light-slide { background: #d9d9d4; }
 .is-light-slide .media__frame { background: #d9d9d4; }

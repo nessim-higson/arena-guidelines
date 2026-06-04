@@ -78,10 +78,18 @@ export const SLIDES = [
     intro: "The mark scales as one locked unit — the same four-ring symbol at every size, from billboard to favicon. It is never stretched, redrawn, or altered." },
 
   // ---------- TYPE ----------
-  { id: "typeface", ch: "type", kind: "statement", label: "Visual Identity", display: "TYPEFACE",
+  { id: "typeface", ch: "type", kind: "landing", eyebrow: "02 — Type", display: "TYPEFACE", light: true,
     body: [
-      "Arena is a cinematic display typeface built around modular precision, controlled aggression, and architectural clarity.",
-      "Designed for title systems, motion, and entertainment branding, it balances muscular geometry with refined optical curves to create a bold but premium visual voice."
+      "Arena is a cinematic display typeface built around modular precision, controlled aggression, and architectural clarity. Designed for title systems, motion, and entertainment branding, it balances muscular geometry with refined optical curves to create a bold but premium voice."
+    ],
+    index: [
+      { n: "01", name: "Try it", to: "arena-examples" },
+      { n: "02", name: "Arena", to: "arena-type" },
+      { n: "03", name: "Anatomy", to: "type-anatomy" },
+      { n: "04", name: "Syne", to: "syne-type" },
+      { n: "05", name: "Hierarchy", to: "hierarchy" },
+      { n: "06", name: "Type scale", to: "type-scale" },
+      { n: "07", name: "Arena + IP", to: "arena-ip" }
     ] },
 
   { id: "arena-examples", ch: "type", kind: "arena-examples", label: "Arena Typeface — Interactive" },
@@ -119,8 +127,17 @@ export const SLIDES = [
     images: [img(65), img(14), img(66), img(15), img(68), img(67)] },
 
   // ---------- COLOR ----------
-  { id: "color-intro", ch: "color", kind: "statement", label: "Visual Identity", display: "COLOR", soon: "Coming soon",
-    body: ["Our color approach prioritizes elegance, restraint, and timelessness. The palette is intentionally neutral so that, like a gallery, it serves as a blank slate — creating a visual language that enhances our content rather than competes with it."] },
+  { id: "color-intro", ch: "color", kind: "landing", eyebrow: "03 — Color", display: "COLOR",
+    body: ["Our color approach prioritizes elegance, restraint, and timelessness. The palette is intentionally neutral so that, like a gallery, it serves as a blank slate — creating a visual language that enhances our content rather than competes with it."],
+    index: [
+      { n: "01", name: "Palette", to: "color" },
+      { n: "02", name: "Using color", to: "color-usage" },
+      { n: "03", name: "How yellow injects", to: "inject-scale" },
+      { n: "04", name: "Dial the signal", to: "inject-demo" },
+      { n: "05", name: "Signal flood", to: "flood" },
+      { n: "06", name: "Tonal range", to: "tonal-range" },
+      { n: "07", name: "Image-led palette", to: "image-color" }
+    ] },
 
   { id: "color", ch: "color", kind: "color", label: "Brand Color",
     colors: [
@@ -194,8 +211,15 @@ export const SLIDES = [
     ] },
 
   // ---------- IMAGERY ----------
-  { id: "imagery", ch: "imagery", kind: "statement", label: "Visual Identity", display: "IMAGERY",
-    body: ["Although our IP and the imagery that comes from it is paramount, the following slides give guidance on the types of imagery we gravitate towards — defining our attitude, confidence and energy."] },
+  { id: "imagery", ch: "imagery", kind: "landing", eyebrow: "04 — Imagery", display: "IMAGERY", light: true,
+    body: ["Although our IP and the imagery that comes from it is paramount, the following slides give guidance on the types of imagery we gravitate towards — defining our attitude, confidence and energy."],
+    index: [
+      { n: "01", name: "Anime", to: "anime" },
+      { n: "02", name: "Swagger", to: "swagger" },
+      { n: "03", name: "Humor", to: "humor" },
+      { n: "04", name: "Portraits", to: "portraits" },
+      { n: "05", name: "Camera", to: "camera" }
+    ] },
 
   { id: "anime", ch: "imagery", kind: "pillar", category: "EDGE", sub: "ANIME",
     lead: "Anime is foundational to Arena's DNA.",
@@ -242,10 +266,12 @@ export const SLIDES = [
     ] },
 
   // ---------- MATERIAL ----------
-  { id: "material", ch: "material", kind: "statement", label: "Visual Identity", display: "MATERIAL",
+  { id: "material", ch: "material", kind: "landing", eyebrow: "05 — Material", display: "MATERIAL",
     body: [
-      "Arena's material language balances refinement with tension, pairing industrial surfaces and architectural forms with softer atmospheric treatments.",
-      "Matte finishes, metal textures, thermal gradients, shadow, blur, and layered depth create a world that feels engineered, cinematic, and charged with energy."
+      "Arena's material language balances refinement with tension, pairing industrial surfaces and architectural forms with softer atmospheric treatments. Matte finishes, metal textures, thermal gradients, shadow, blur, and layered depth create a world that feels engineered, cinematic, and charged with energy."
+    ],
+    index: [
+      { n: "01", name: "Material studies", to: "material-gallery" }
     ] },
 
   { id: "material-gallery", ch: "material", kind: "gallery", label: "Material",
@@ -254,8 +280,20 @@ export const SLIDES = [
     images: [img(26), img(25), img(28), img(27), img(57)] },
 
   // ---------- SYSTEM + RING TOOL ----------
-  { id: "system", ch: "system", kind: "statement", label: "Visual Identity", display: "SYSTEM",
-    body: ["Arena is designed as a flexible visual system where typography, motion, color, imagery, and form work together to create a cohesive world that can expand across platforms, IP, and experiences while maintaining a distinct point of view."] },
+  { id: "system", ch: "system", kind: "landing", eyebrow: "06 — System", display: "SYSTEM", light: true,
+    body: ["Arena is designed as a flexible visual system where typography, motion, color, imagery, and form work together to create a cohesive world that can expand across platforms, IP, and experiences while maintaining a distinct point of view."],
+    index: [
+      { n: "01", name: "Radius", to: "radius" },
+      { n: "02", name: "Spacing", to: "spacing" },
+      { n: "03", name: "Primitives", to: "primitives" },
+      { n: "04", name: "Mark scale", to: "mark-scale" },
+      { n: "05", name: "Mark build", to: "mark-build" },
+      { n: "06", name: "Ring tool", to: "ringtool" },
+      { n: "07", name: "Motif", to: "motif" },
+      { n: "08", name: "Hatch", to: "hatch" },
+      { n: "09", name: "Posters", to: "posters" },
+      { n: "10", name: "Frames", to: "frames" }
+    ] },
 
   { id: "radius", ch: "system", kind: "radius", eyebrow: "02 — Radius", title: "CORNER SYSTEM",
     intro: "The most brand-native scale: the mark is nested rounded rectangles, so radius is a primary token tier. Corners are always rounded; sharp 0px is reserved for full-bleed media only.",

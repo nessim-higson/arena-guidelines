@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=38";
-import { LOGO_SVGS } from "../data/logos.js?v=38";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=40";
+import { LOGO_SVGS } from "../data/logos.js?v=40";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -67,6 +67,23 @@ const R = {
     return bg + labelEl(s) + `<div class="slide__inner statement">
       <h2 class="display d1 reveal">${esc(s.display)}</h2>
       <div class="statement__body body reveal">${paras(s.body)}</div>
+    </div>`;
+  },
+
+  // Chapter landing: a discrete divider that announces the chapter and lists
+  // its sections as a clickable index — so the deck reads as chunks, not one
+  // overwhelming scroll. Some landings are light (white) to break fatigue.
+  landing(s) {
+    const items = (s.index || []).map(it =>
+      `<a class="lx__item reveal" href="#${it.to}"><span class="lx__n">${esc(it.n)}</span><span class="lx__name">${esc(it.name)}</span><span class="lx__go" aria-hidden="true">→</span></a>`
+    ).join("");
+    return labelEl(s) + `<div class="slide__inner landing">
+      <div class="landing__head">
+        ${s.eyebrow ? `<div class="eyebrow reveal">${esc(s.eyebrow)}</div>` : ""}
+        <h2 class="display d1 reveal">${esc(s.display)}</h2>
+        ${s.body ? `<div class="landing__body body reveal">${paras(s.body)}</div>` : ""}
+      </div>
+      ${items ? `<nav class="lx reveal" aria-label="Sections in ${esc(s.display)}">${items}</nav>` : ""}
     </div>`;
   },
 
@@ -565,6 +582,7 @@ function build() {
     sec.id = s.id;
     sec.dataset.ch = s.ch;
     if (s.dark) sec.classList.add("is-light-slide");
+    if (s.light) sec.classList.add("is-light");
     const fn = R[s.kind];
     sec.innerHTML = fn ? fn(s) : `<div class="slide__inner"><p>${s.id}</p></div>`;
     main.appendChild(sec);
