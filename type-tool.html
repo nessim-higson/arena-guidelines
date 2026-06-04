@@ -3,176 +3,152 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Arena Type Tool — typeset & export</title>
-<meta name="description" content="Typeset in the Arena display typeface and export vector SVG or high-resolution transparent PNG / JPG.">
+<title>Arena Type Tool — type & export</title>
+<meta name="description" content="Type directly in the Arena display typeface and export vector SVG or high-resolution transparent PNG / JPG.">
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap");
   @font-face{font-family:"Arena";src:url("./assets/fonts/Arena-Regular.otf") format("opentype");font-weight:400 900;font-display:swap}
   :root{
-    --black:#000;--white:#fff;--yellow:#faff00;
+    --yellow:#faff00;
     --f-arena:"Arena","Arial Narrow",sans-serif;--f-syne:"Syne",system-ui,sans-serif;
-    --rule:rgba(255,255,255,.14);--muted:rgba(255,255,255,.6);
+    --rule:rgba(255,255,255,.16);--muted:rgba(255,255,255,.55);
     --ease:cubic-bezier(.16,1,.3,1);
   }
   *{box-sizing:border-box;margin:0}
   html,body{height:100%}
-  body{background:#000;color:#fff;font-family:var(--f-syne);display:flex;flex-direction:column;min-height:100%}
-  .top{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;
-       padding:clamp(.9rem,2vw,1.4rem) clamp(1rem,3vw,2rem);border-bottom:1px solid var(--rule)}
-  .top h1{font-family:var(--f-arena);text-transform:uppercase;font-weight:400;font-size:clamp(1rem,2.4vw,1.5rem);letter-spacing:.02em}
-  .top p{font-size:.74rem;color:var(--muted);max-width:60ch}
+  body{background:#000;color:#fff;font-family:var(--f-syne);overflow:hidden}
 
-  /* preview stage */
-  .stage{flex:1;min-height:42vh;display:grid;place-items:center;padding:clamp(1.5rem,5vw,4rem);
-         background:#000;transition:background .25s var(--ease);overflow:hidden}
+  /* the whole viewport IS the canvas you type into */
+  .stage{position:fixed;inset:0;display:grid;place-items:center;padding:clamp(2.5rem,7vw,6rem) clamp(1.5rem,5vw,5rem);
+         background:#000;transition:background .3s var(--ease);cursor:text}
   .stage.light{background:#fff}
-  .stage svg{max-width:100%;max-height:100%;width:auto;height:auto;display:block}
-  .empty{font-family:var(--f-syne);color:var(--muted);font-size:.9rem}
+  .type{font-family:var(--f-arena);text-transform:uppercase;font-weight:400;line-height:.92;letter-spacing:-.01em;
+        font-size:clamp(2.6rem,9vw,8rem);text-align:center;color:#fff;outline:none;max-width:100%;
+        overflow-wrap:anywhere;caret-color:var(--yellow);transition:color .3s var(--ease)}
+  .stage.light .type{color:#000}
+  .type:empty::before{content:attr(data-ph);color:var(--muted);pointer-events:none}
+  .stage.light .type:empty::before{color:rgba(0,0,0,.35)}
+  /* blinking caret shown during the idle demo */
+  .te-caret{display:inline-block;width:.06em;height:.78em;margin-left:.04em;background:var(--yellow);
+            vertical-align:-.04em;animation:blink 1.05s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
 
-  /* controls */
-  .controls{border-top:1px solid var(--rule);padding:clamp(.9rem,2.5vw,1.6rem) clamp(1rem,3vw,2rem);
-            display:grid;grid-template-columns:1fr auto;gap:clamp(1rem,3vw,2rem);align-items:end}
-  @media(max-width:760px){.controls{grid-template-columns:1fr}}
-  label.fld{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:8px}
-  textarea{width:100%;min-height:64px;resize:vertical;background:#0c0c0c;color:#fff;border:1px solid var(--rule);
-           border-radius:10px;padding:12px 14px;font-family:var(--f-syne);font-size:1rem;line-height:1.3;outline:none}
-  textarea:focus{border-color:var(--yellow)}
-  .right{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
-  .seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden}
-  .seg button{font-family:var(--f-syne);font-weight:600;font-size:.72rem;letter-spacing:.04em;background:transparent;color:var(--muted);
+  /* floating controls */
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;gap:1rem;align-items:center;justify-content:space-between;
+       flex-wrap:wrap;padding:clamp(.7rem,2vw,1.1rem) clamp(1rem,3vw,2rem)}
+  .stage.light ~ .bar .seg button{color:rgba(0,0,0,.55)}
+  .stage.light ~ .bar .seg{border-color:rgba(0,0,0,.18)}
+  .stage.light ~ .bar .seg button.on{background:#000;color:#fff}
+  .stage.light ~ .bar .dl button{color:#000;border-color:rgba(0,0,0,.2)}
+  .stage.light ~ .bar .hint{color:rgba(0,0,0,.5)}
+  .group{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:rgba(0,0,0,.2);backdrop-filter:blur(6px)}
+  .seg button{font-family:var(--f-syne);font-weight:600;font-size:.72rem;letter-spacing:.03em;background:transparent;color:var(--muted);
               border:0;padding:9px 15px;cursor:pointer;transition:.15s}
   .seg button.on{background:#fff;color:#000}
   .dl{display:flex;gap:8px;flex-wrap:wrap}
   .dl button{font-family:var(--f-syne);font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
-             background:transparent;color:#fff;border:1px solid var(--rule);border-radius:999px;padding:10px 16px;cursor:pointer;transition:.15s}
-  .dl button:hover{border-color:var(--yellow);color:var(--yellow)}
+             background:rgba(0,0,0,.2);backdrop-filter:blur(6px);color:#fff;border:1px solid var(--rule);border-radius:999px;padding:10px 16px;cursor:pointer;transition:.15s}
+  .dl button:hover:not(:disabled){border-color:var(--yellow);color:var(--yellow)}
   .dl button:disabled{opacity:.4;cursor:not-allowed}
-  .note{font-size:.66rem;color:var(--muted)}
-  .err{color:var(--yellow)}
+  .hint{font-family:var(--f-syne);font-size:.68rem;letter-spacing:.04em;color:var(--muted)}
 </style>
 </head>
 <body>
-  <header class="top">
-    <div>
-      <h1>Arena Type Tool</h1>
-      <p>Typeset in the Arena display face, set it black or white, and export. SVG is true vector; PNG &amp; JPG export at ~3500&nbsp;px so titles stay crisp in slides.</p>
-    </div>
-    <p class="note" id="status">Loading font…</p>
-  </header>
+  <div class="stage" id="stage">
+    <div class="type" id="type" contenteditable="plaintext-only" spellcheck="false" data-ph="" role="textbox" aria-label="Type in the Arena typeface"></div>
+  </div>
 
-  <div class="stage" id="stage"><span class="empty" id="empty">…</span></div>
-
-  <div class="controls">
-    <div>
-      <label class="fld" for="txt">Your text — Arena is uppercase &amp; display-only</label>
-      <textarea id="txt" spellcheck="false" placeholder="ENTER THE ARENA">ENTER THE ARENA</textarea>
-    </div>
-    <div class="right">
+  <div class="bar">
+    <span class="hint" id="hint">Click anywhere and type · Arena is uppercase &amp; display-only</span>
+    <div class="group">
       <div class="seg" id="mode" role="group" aria-label="Color">
-        <button data-mode="dark" class="on">White on black</button>
-        <button data-mode="light">Black on white</button>
+        <button data-mode="dark" class="on">White</button>
+        <button data-mode="light">Black</button>
       </div>
       <div class="dl">
         <button id="dl-svg" disabled>SVG</button>
         <button id="dl-png" disabled>PNG</button>
         <button id="dl-jpg" disabled>JPG</button>
       </div>
-      <div class="note" id="dims">—</div>
     </div>
   </div>
 
   <script src="./assets/vendor/opentype.min.js"></script>
   <script>
   (function(){
-    var stage=document.getElementById('stage'), empty=document.getElementById('empty'),
-        txt=document.getElementById('txt'), status=document.getElementById('status'),
-        dims=document.getElementById('dims'), modeWrap=document.getElementById('mode');
+    var stage=document.getElementById('stage'), type=document.getElementById('type'),
+        hint=document.getElementById('hint'), modeWrap=document.getElementById('mode');
     var dlBtns=[document.getElementById('dl-svg'),document.getElementById('dl-png'),document.getElementById('dl-jpg')];
-    var font=null, mode='dark';
+    var font=null, mode='dark', userActive=false, demoTimer=null;
     var EM=1000, LINE=0.95, CAP=0.72, PAD=0.16, TARGET=3500;
 
     function colors(){ return mode==='dark' ? {fg:'#ffffff', bg:'#000000'} : {fg:'#000000', bg:'#ffffff'}; }
+    function text(){ return (type.innerText||'').replace(/ /g,' '); }
+    function enableDownloads(){ var has=text().trim().length>0; dlBtns.forEach(function(b){b.disabled=!has;}); }
 
+    /* ---------- idle "type to invite" demo (like the old inline editor) ---------- */
+    var phrases=["ENTER THE ARENA","WHERE STORIES ARE FORGED","STORIES THAT HIT HARD","CLAIM YOUR SEAT"];
+    var pi=0, ci=0, deleting=false;
+    function demo(){
+      if(userActive) return;
+      var p=phrases[pi];
+      type.innerHTML = esc(p.slice(0,ci)) + '<span class="te-caret"></span>';
+      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1400); return; } }
+      else { ci--; if(ci<0){ deleting=false; ci=0; pi=(pi+1)%phrases.length; } }
+      demoTimer=setTimeout(demo, deleting?45:95);
+    }
+    function esc(s){ return s.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+    function stopDemo(){ if(demoTimer){clearTimeout(demoTimer);demoTimer=null;} }
+    function goLive(){ if(userActive) return; userActive=true; stopDemo(); type.innerHTML=''; enableDownloads(); }
+
+    /* ---------- vector geometry from the font ---------- */
     function geometry(){
       if(!font) return null;
-      var text=(txt.value||'').toUpperCase().replace(/\r/g,'');
-      var lines=text.split('\n');
+      var lines=text().toUpperCase().replace(/\r/g,'').split('\n');
       var parts=[], minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9, ink=false;
       for(var i=0;i<lines.length;i++){
         var baseline=i*EM*LINE;
         minY=Math.min(minY, baseline-EM*CAP); maxY=Math.max(maxY, baseline);
-        var p=font.getPath(lines[i], 0, baseline, EM);
-        var d=p.toPathData(2);
+        var p=font.getPath(lines[i], 0, baseline, EM), d=p.toPathData(2);
         if(d){ parts.push(d); ink=true;
           var bb=p.getBoundingBox();
           if(isFinite(bb.x1)){ minX=Math.min(minX,bb.x1);maxX=Math.max(maxX,bb.x2);minY=Math.min(minY,bb.y1);maxY=Math.max(maxY,bb.y2); }
         }
       }
-      if(!ink){ return null; }
-      var pad=EM*PAD;                       // fixed padding (fraction of one em), not of width
-      minX-=pad;maxX+=pad;minY-=pad;maxY+=pad;
+      if(!ink) return null;
+      var pad=EM*PAD; minX-=pad;maxX+=pad;minY-=pad;maxY+=pad;
       return {d:parts.join(' '), x:minX, y:minY, w:maxX-minX, h:maxY-minY};
     }
-
     function svgStr(g, fg, bg){
-      var rect = bg ? '<rect x="'+g.x+'" y="'+g.y+'" width="'+g.w+'" height="'+g.h+'" fill="'+bg+'"/>' : '';
-      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+g.x.toFixed(1)+' '+g.y.toFixed(1)+' '+g.w.toFixed(1)+' '+g.h.toFixed(1)+'" '+
-             'width="'+Math.round(g.w)+'" height="'+Math.round(g.h)+'">'+rect+'<path d="'+g.d+'" fill="'+fg+'"/></svg>';
+      var rect=bg?'<rect x="'+g.x+'" y="'+g.y+'" width="'+g.w+'" height="'+g.h+'" fill="'+bg+'"/>':'';
+      return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+g.x.toFixed(1)+' '+g.y.toFixed(1)+' '+g.w.toFixed(1)+' '+g.h.toFixed(1)+'" width="'+Math.round(g.w)+'" height="'+Math.round(g.h)+'">'+rect+'<path d="'+g.d+'" fill="'+fg+'"/></svg>';
     }
-
-    function render(){
-      var g=geometry(), c=colors();
-      stage.classList.toggle('light', mode==='light');
-      var ok=!!g;
-      dlBtns.forEach(function(b){b.disabled=!ok;});
-      if(!ok){ stage.innerHTML='<span class="empty">Type something…</span>'; dims.textContent='—'; return; }
-      stage.innerHTML=svgStr(g, c.fg, null);
-      dims.textContent='Vector · exports ~3500 px raster';
-    }
-
-    function download(blob, name){
-      var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
-      document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(a.href);},1500);
-    }
-    function slug(){ var s=(txt.value||'arena').toUpperCase().replace(/\s+/g,'-').replace(/[^A-Z0-9\-]/g,'').slice(0,40); return 'arena-'+(s||'type'); }
-
-    function exportSVG(){
-      var g=geometry(); if(!g) return; var c=colors();
-      download(new Blob([svgStr(g, c.fg, null)], {type:'image/svg+xml'}), slug()+'.svg');
-    }
-    function raster(mime, quality, fill){
-      var g=geometry(); if(!g) return; var c=colors();
-      var scale=TARGET/Math.max(g.w,g.h);
-      var cw=Math.max(1,Math.round(g.w*scale)), ch=Math.max(1,Math.round(g.h*scale));
-      var canvas=document.createElement('canvas'); canvas.width=cw; canvas.height=ch;
-      var ctx=canvas.getContext('2d');
+    function download(blob,name){ var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){URL.revokeObjectURL(a.href);},1500); }
+    function slug(){ var s=text().toUpperCase().replace(/\s+/g,'-').replace(/[^A-Z0-9\-]/g,'').slice(0,40); return 'arena-'+(s||'type'); }
+    function exportSVG(){ var g=geometry(); if(!g)return; download(new Blob([svgStr(g,colors().fg,null)],{type:'image/svg+xml'}), slug()+'.svg'); }
+    function raster(mime,quality,fill){
+      var g=geometry(); if(!g)return; var c=colors();
+      var scale=TARGET/Math.max(g.w,g.h), cw=Math.max(1,Math.round(g.w*scale)), ch=Math.max(1,Math.round(g.h*scale));
+      var canvas=document.createElement('canvas'); canvas.width=cw; canvas.height=ch; var ctx=canvas.getContext('2d');
       if(fill){ ctx.fillStyle=fill; ctx.fillRect(0,0,cw,ch); }
       var img=new Image();
-      img.onload=function(){
-        ctx.drawImage(img,0,0,cw,ch);
-        canvas.toBlob(function(b){ if(b) download(b, slug()+(mime==='image/png'?'.png':'.jpg')); }, mime, quality);
-      };
-      img.onerror=function(){ status.textContent='Export failed.'; };
-      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgStr(g, c.fg, null));
+      img.onload=function(){ ctx.drawImage(img,0,0,cw,ch); canvas.toBlob(function(b){ if(b) download(b, slug()+(mime==='image/png'?'.png':'.jpg')); }, mime, quality); };
+      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svgStr(g,c.fg,null));
     }
 
-    // wire
-    txt.addEventListener('input', render);
-    modeWrap.addEventListener('click', function(e){
-      var b=e.target.closest('button'); if(!b) return;
-      mode=b.dataset.mode;
-      [].forEach.call(modeWrap.children, function(x){x.classList.toggle('on', x===b);});
-      render();
-    });
+    /* ---------- wire ---------- */
+    stage.addEventListener('mousedown', function(e){ if(e.target!==type){ type.focus(); } });
+    type.addEventListener('focus', goLive);
+    type.addEventListener('input', function(){ userActive=true; enableDownloads(); });
+    type.addEventListener('blur', function(){ if(!text().trim()){ userActive=false; ci=0; deleting=false; demo(); } });
+    modeWrap.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b)return; mode=b.dataset.mode; [].forEach.call(modeWrap.children,function(x){x.classList.toggle('on',x===b);}); });
     document.getElementById('dl-svg').addEventListener('click', exportSVG);
     document.getElementById('dl-png').addEventListener('click', function(){ raster('image/png', undefined, null); });
     document.getElementById('dl-jpg').addEventListener('click', function(){ raster('image/jpeg', 0.95, colors().bg); });
 
-    // load font
-    opentype.load('./assets/fonts/Arena-Regular.otf', function(err, f){
-      if(err){ status.innerHTML='<span class="err">Could not load the Arena font.</span>'; empty.textContent='Font failed to load.'; return; }
-      font=f; status.textContent='Ready'; render();
-    });
+    opentype.load('./assets/fonts/Arena-Regular.otf', function(err,f){ if(!err){ font=f; enableDownloads(); } });
+    demo();
   })();
   </script>
 </body>
