@@ -9,7 +9,7 @@
 export const RING_TOOL_URL = "https://nessim-higson.github.io/the-arena/arena-rings-engine.html";
 
 // standalone Arena type tool (typeset + export SVG/PNG/JPG) — embedded + linked
-export const TYPE_TOOL_URL = "./type-tool.html?v=52";
+export const TYPE_TOOL_URL = "./type-tool.html?v=53";
 
 // cover background — animated gifs cycled behind the wordmark (add more freely)
 export const COVER_GIFS = ["assets/cover/cover-1.gif", "assets/cover/cover-2.gif", "assets/cover/cover-3.gif"];

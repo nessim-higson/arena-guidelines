@@ -93,10 +93,7 @@
     </div>
   </div>
 
-  <div class="cta" id="cta">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 4v16M5 4h9M5 12h7M5 20h9"/></svg>
-    Click anywhere &amp; start typing
-  </div>
+  <div class="cta" id="cta">Click anywhere &amp; start typing</div>
 
   <div class="bar">
     <div class="ctl">
@@ -146,7 +143,7 @@
       fit();
       // type each sentence smoothly (line return included); the pause lives
       // between sentences — a ~2s hold once the full phrase is shown.
-      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1900); return; } }
+      if(!deleting){ ci++; if(ci>p.length){ deleting=true; demoTimer=setTimeout(demo,1500); return; } }
       else { ci--; if(ci<0){ deleting=false; ci=0; pi=(pi+1)%phrases.length; demoTimer=setTimeout(demo,1500); return; } }
       demoTimer=setTimeout(demo, deleting?50:115);
     }
