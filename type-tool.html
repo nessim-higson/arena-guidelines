@@ -22,8 +22,15 @@
   .stage{position:fixed;inset:0;display:grid;place-items:center;background:#000;
          transition:background .3s var(--ease);cursor:text}
   .stage.light{background:#fff}
-  .center{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3vh,34px);width:100%}
-  .typewrap{display:flex;align-items:center;justify-content:center;width:88%;overflow:hidden}
+  .center{display:flex;flex-direction:column;align-items:center;gap:clamp(18px,3vh,34px);width:100%;padding-inline:clamp(24px,6vw,80px)}
+  .typewrap{display:flex;align-items:center;justify-content:center;width:100%;overflow:hidden}
+  /* alignment: position the type block + ragged edge left / center / right */
+  .stage.align-left  .center{align-items:flex-start}
+  .stage.align-right .center{align-items:flex-end}
+  .stage.align-left  .typewrap{justify-content:flex-start}
+  .stage.align-right .typewrap{justify-content:flex-end}
+  .stage.align-left  .type{text-align:left}
+  .stage.align-right .type{text-align:right}
   /* download row that lives directly under the type the user has made */
   .dl-under{display:flex;align-items:center;gap:14px;min-height:42px;opacity:0;transform:translateY(8px);
             transition:opacity .3s var(--ease),transform .3s var(--ease);pointer-events:none}
@@ -56,7 +63,7 @@
   @keyframes ctapulse{0%{box-shadow:0 0 0 0 rgba(250,255,0,.5)}70%{box-shadow:0 0 0 16px rgba(250,255,0,0)}100%{box-shadow:0 0 0 0 rgba(250,255,0,0)}}
 
   /* controls */
-  .bar{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;gap:1.2rem;align-items:center;justify-content:space-between;
+  .bar{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;gap:clamp(1rem,4vw,2.5rem);align-items:center;justify-content:center;
        flex-wrap:wrap;padding:clamp(.7rem,2vw,1.1rem) clamp(1rem,3vw,2rem)}
   .ctl{display:flex;align-items:center;gap:9px}
   .ctl > span{font-family:var(--f-syne);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
@@ -66,6 +73,7 @@
   .seg button.on{background:var(--yellow);color:#000}
   .sw{width:14px;height:14px;border-radius:50%;border:1px solid rgba(127,127,127,.6)}
   .sw-black{background:#000}.sw-white{background:#fff}
+  .seg button svg{display:block;width:15px;height:15px;fill:currentColor}
   .dl{display:flex;gap:8px;flex-wrap:wrap}
   .dl button{font-family:var(--f-syne);font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
              background:rgba(127,127,127,.14);backdrop-filter:blur(6px);color:inherit;border:1px solid var(--rule);border-radius:999px;padding:10px 16px;cursor:pointer;transition:.15s}
@@ -103,6 +111,14 @@
         <button data-mode="light"><span class="sw sw-white"></span>White</button>
       </div>
     </div>
+    <div class="ctl">
+      <span>Align</span>
+      <div class="seg" id="align" role="group" aria-label="Text alignment">
+        <button data-align="left" aria-label="Align left"><svg viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="1.7"/><rect x="1" y="7.2" width="9" height="1.7"/><rect x="1" y="11.4" width="12" height="1.7"/></svg></button>
+        <button data-align="center" class="on" aria-label="Align center"><svg viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="1.7"/><rect x="3.5" y="7.2" width="9" height="1.7"/><rect x="2" y="11.4" width="12" height="1.7"/></svg></button>
+        <button data-align="right" aria-label="Align right"><svg viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="1.7"/><rect x="6" y="7.2" width="9" height="1.7"/><rect x="3" y="11.4" width="12" height="1.7"/></svg></button>
+      </div>
+    </div>
   </div>
 
   <script src="./assets/vendor/opentype.min.js"></script>
@@ -110,9 +126,9 @@
   (function(){
     var stage=document.getElementById('stage'), type=document.getElementById('type'),
         wrap=type.parentNode, cta=document.getElementById('cta'), modeWrap=document.getElementById('mode'),
-        dlunder=document.getElementById('dlunder');
+        alignWrap=document.getElementById('align'), dlunder=document.getElementById('dlunder');
     var dlBtns=[document.getElementById('dl-svg'),document.getElementById('dl-png'),document.getElementById('dl-jpg')];
-    var font=null, mode='dark', userActive=false, demoTimer=null;
+    var font=null, mode='dark', align='center', userActive=false, demoTimer=null;
     var EM=1000, LINE=0.95, CAP=0.72, PAD=0.16, TARGET=3500, MAXPX=480, MINPX=22;
 
     function colors(){ return mode==='dark' ? {fg:'#ffffff', bg:'#000000'} : {fg:'#000000', bg:'#ffffff'}; }
@@ -155,10 +171,14 @@
     function geometry(){
       if(!font) return null;
       var lines=text().toUpperCase().replace(/\r/g,'').split('\n');
+      // per-line advance widths so multi-line export can match the chosen alignment
+      var widths=lines.map(function(ln){ return ln ? font.getAdvanceWidth(ln,EM) : 0; });
+      var maxW=Math.max.apply(null, widths.concat([1]));
       var parts=[], minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9, ink=false;
       for(var i=0;i<lines.length;i++){
+        var off = align==='left' ? 0 : (align==='right' ? (maxW-widths[i]) : (maxW-widths[i])/2);
         var baseline=i*EM*LINE; minY=Math.min(minY,baseline-EM*CAP); maxY=Math.max(maxY,baseline);
-        var p=font.getPath(lines[i],0,baseline,EM), d=p.toPathData(2);
+        var p=font.getPath(lines[i],off,baseline,EM), d=p.toPathData(2);
         if(d){ parts.push(d); ink=true; var bb=p.getBoundingBox();
           if(isFinite(bb.x1)){minX=Math.min(minX,bb.x1);maxX=Math.max(maxX,bb.x2);minY=Math.min(minY,bb.y1);maxY=Math.max(maxY,bb.y2);} }
       }
@@ -186,6 +206,9 @@
     window.addEventListener('resize', fit);
     modeWrap.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b)return; mode=b.dataset.mode;
       stage.classList.toggle('light', mode==='light'); [].forEach.call(modeWrap.children,function(x){x.classList.toggle('on',x===b);}); });
+    alignWrap.addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b)return; align=b.dataset.align;
+      stage.classList.remove('align-left','align-center','align-right'); stage.classList.add('align-'+align);
+      [].forEach.call(alignWrap.children,function(x){x.classList.toggle('on',x===b);}); fit(); });
     document.getElementById('dl-svg').addEventListener('click', exportSVG);
     document.getElementById('dl-png').addEventListener('click', function(){ raster('image/png', undefined, null); });
     document.getElementById('dl-jpg').addEventListener('click', function(){ raster('image/jpeg', 0.95, colors().bg); });
