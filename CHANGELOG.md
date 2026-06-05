@@ -11,6 +11,7 @@ logged under the top **Unreleased** section and rolled into the next version whe
 
 ## Unreleased — v2.0 (in progress)
 
+- **2026-06-05** — **Logo section reverted to V.1 (cache `?v=56`).** After comparing treatments on `logo-comps.html`, chose the **original V.1 dark 4-up grid** over the white Songtrust-style suite. Restored the `lockups` renderer (2×2 grid: Horizontal / Stacked-left / Stacked-centered / Icon on the dark ground, White default download), dropped the white-background override on `.slide--lockups`, and put the slide back to full-height so the grid centers. Added the V.1 grid as Option D on the comps page for reference.
 - **2026-06-05** — **V.2 feedback pass (cache `?v=55`).** Nine-item polish on the chosen V.2 direction:
   (1/6) every section landing now renders on **white** — added `light: true` to the Identity ("VISUAL IDENTITY") and Color landings so all dividers match.
   (2) **Logo-section comps** added at `logo-comps.html` — the logo suite in three treatments (white·centered / black·centered / white·left-justified) for the client to pick.

@@ -191,7 +191,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* only the dramatic / full-bleed slides fill the viewport;
    content slides size to their content with consistent rhythm */
 .slide--cover, .slide--chapter, .slide--gallery, .slide--image,
-.slide--ringtool, .slide--appendix { min-height: 100svh; }
+.slide--ringtool, .slide--lockups, .slide--appendix { min-height: 100svh; }
 .slide__inner { width: 100%; max-width: var(--maxw); margin: 0 auto; flex: 1; display: flex; flex-direction: column; }
 /* in-flow header row (label left, yellow tag right) */
 .slide__top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s3); margin-bottom: clamp(1rem, 2.2vh, 1.9rem); }
@@ -369,11 +369,9 @@ html.lenis, html.lenis body { height: auto; }
 /* ============================================================
    IDENTITY — logo presentation (Songtrust-style: centered, white)
    ============================================================ */
-.slide--lockups { background: #fff; color: #111; }
+/* (V.1 restored) lockups slide is on the default dark ground — no white override */
 .logo-suite { align-items: center; text-align: center; justify-content: center; gap: clamp(2rem, 5vh, 3.5rem); }
 .logo-suite__head { display: flex; flex-direction: column; align-items: center; gap: var(--s2); max-width: 70ch; }
-.slide--lockups .eyebrow { color: #666; }
-.slide--lockups .eyebrow::before { background: #111; }   /* no yellow on white */
 .logo-suite__head .display { color: #111; font-size: var(--d-2); line-height: 1; }
 .logo-suite__lead { font-family: var(--f-syne); color: #555; line-height: 1.5; max-width: 58ch; }
 /* centered hero presentation of the primary lockup */

@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, TYPE_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=55";
-import { LOGO_SVGS } from "../data/logos.js?v=55";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, TYPE_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=56";
+import { LOGO_SVGS } from "../data/logos.js?v=56";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -103,14 +103,13 @@ const R = {
   },
 
   lockups(s) {
-    const variant = (key, name, use) => `<div class="lockup logo-var on-light reveal" data-logo="${key}">
+    const item = (key, name) => `<div class="lockup reveal" data-logo="${key}">
       <div class="lockup__art">${mark(key, "lk")}</div>
-      <div class="logo-var__meta">
-        <span class="logo-var__name">${esc(name)}</span>
-        <span class="logo-var__use">${esc(use)}</span>
+      <div class="lockup__meta">
+        <span class="cap">${esc(name)}</span>
         <div class="dl">
-          <button class="dl__c" data-color="white">White</button>
-          <button class="dl__c is-on" data-color="black">Black</button>
+          <button class="dl__c is-on" data-color="white">White</button>
+          <button class="dl__c" data-color="black">Black</button>
           <span class="dl__sep"></span>
           <button class="dl__f" data-fmt="svg">SVG</button>
           <button class="dl__f" data-fmt="png">PNG</button>
@@ -118,20 +117,14 @@ const R = {
         </div>
       </div>
     </div>`;
-    return `<div class="slide__inner logo-suite">
-      <div class="logo-suite__head reveal">
-        <div class="eyebrow">Identity — Logo</div>
-        <h2 class="display d2">THE LOGO</h2>
-        <p class="logo-suite__lead">The horizontal lockup is the primary identifier — used most often. Reach for the symbol, the stack, or the wordmark when space or context calls for it.</p>
+    return labelEl(s) + `<div class="slide__inner col" style="justify-content:center">
+      <div class="lockups-grid">
+        ${item("horizontal", "Primary — horizontal · used often")}
+        ${item("left", "Stacked — left")}
+        ${item("center", "Stacked — centered")}
+        ${item("icon", "Icon — standalone")}
       </div>
-      <div class="logo-hero reveal"><div class="logo-hero__art on-light">${mark("horizontal", "lk")}</div></div>
-      <div class="logo-suite__grid">
-        ${variant("horizontal", "Horizontal", "Used most often")}
-        ${variant("left", "Stacked", "Used often")}
-        ${variant("icon", "Symbol", "Used often")}
-        ${variant("center", "Stacked · centered", "Used least")}
-      </div>
-      <p class="logo-suite__note reveal">Pick a colour, then a format — files generate and download in your browser. SVG is vector · PNG is transparent · JPEG ships on a contrasting background.</p>
+      <p class="cap" style="margin-top:var(--s4)">Pick a color, then a format — files generate and download in your browser. SVG is vector; PNG is transparent; JPEG ships on a contrasting background.</p>
     </div>`;
   },
 
