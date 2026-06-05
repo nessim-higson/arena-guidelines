@@ -11,6 +11,15 @@ logged under the top **Unreleased** section and rolled into the next version whe
 
 ## Unreleased — v2.0 (in progress)
 
+- **2026-06-05** — **V.2 feedback pass (cache `?v=55`).** Nine-item polish on the chosen V.2 direction:
+  (1/6) every section landing now renders on **white** — added `light: true` to the Identity ("VISUAL IDENTITY") and Color landings so all dividers match.
+  (2) **Logo-section comps** added at `logo-comps.html` — the logo suite in three treatments (white·centered / black·centered / white·left-justified) for the client to pick.
+  (3) **Padding pass** — pulled `.slide--iconmark` (and the logo suite) out of the forced `min-height:100svh` so the Icon slide sizes to content instead of floating in an empty screen; tightened general rhythm.
+  (4) More **breathing room below "Syne Bold"** on the Syne specimen.
+  (5) **Type Hierarchy** rebuilt — was a narrow centered column with labels flung to the far right; now a clean left-aligned label + sample spec table (`hier-list`/`hier-row` grid).
+  (7) More padding below the **"Image directs the palette"** color slide.
+  (8) **Aura / Swagger** pillar: switched `.pillar__grid` from `auto-fit` to `auto-fill` so the 2-image pillar keeps the same card height as the 3-image rows above instead of stretching taller.
+  (9) **Responsive chapter titles** — `.chapter__title` now `clamp(2.4rem,9vw,8rem)` + `white-space:nowrap` so the longest header (MNEMONIC) sets the size and no title wraps; removed the duplicate **MATERIALS** chapter (Material lives as a landing).
 - **2026-06-04** — Opened v2 line: footer marked "v2 (in progress)"; began logging each iteration here.
 - **2026-06-04** — **Arena Type Tool** (`type-tool.html`): standalone page to typeset in Arena, toggle black/white, and export **vector SVG** + high-res (~3500 px) transparent **PNG**/**JPG** for slides. Uses vendored `opentype.js` for true glyph outlines (self-hostable, no CDN). Embedded into the deck on the Type "Try it" slide (iframe) replacing the old preview-only editor, with an "Open full tool ↗" link.
 - **2026-06-04** — Type tool, **type-in-viewport** rebuild: the whole canvas is now the input — click and type directly into the large Arena type and it expands, with the old auto-typing "invitation" demo when idle. Floating controls (White/Black + SVG/PNG/JPG). Export still vector via opentype.

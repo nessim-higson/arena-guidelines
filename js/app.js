@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, TYPE_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=54";
-import { LOGO_SVGS } from "../data/logos.js?v=54";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, TYPE_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=55";
+import { LOGO_SVGS } from "../data/logos.js?v=55";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -332,13 +332,17 @@ const R = {
   },
 
   hierarchy(s) {
-    return `<div class="slide__inner col" style="gap:var(--s2);max-width:1100px">
+    const row = (sample, label) => `<div class="hier-row reveal">
+      <span class="hier-row__label cap">${esc(label)}</span>
+      <div class="hier-row__sample">${sample}</div>
+    </div>`;
+    return `<div class="slide__inner foundation">
       ${secHead("Type — Hierarchy", "", { desc: "One message across the scale — Arena sets the statement, Syne carries everything beneath it." })}
-      <div class="hier-row reveal"><h3 class="display display--oblique" style="font-size:clamp(2rem,6.5vw,5rem)">ENTER THE ARENA</h3><span class="cap">Arena Regular</span></div>
-      <div class="rule reveal"></div>
-      <div class="hier-row reveal"><h4 style="font-family:var(--f-syne);font-weight:700;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(1.2rem,3vw,2rem);margin:0">Where stories are forged</h4><span class="cap">Syne Bold</span></div>
-      <div class="rule reveal"></div>
-      <div class="hier-row reveal"><p class="body" style="max-width:60ch;margin:0">A stage for transformation. Open to all with the courage to step inside. It's where stories are forged, and characters tested, shaped, and pushed to the edge to discover what they're capable of.</p><span class="cap">Syne Regular</span></div>
+      <div class="hier-list">
+        ${row(`<h3 class="display display--oblique" style="font-size:clamp(2rem,6.5vw,5rem);line-height:.95;margin:0">ENTER THE ARENA</h3>`, "Arena Regular")}
+        ${row(`<h4 style="font-family:var(--f-syne);font-weight:700;text-transform:uppercase;letter-spacing:.01em;font-size:clamp(1.2rem,3vw,2rem);margin:0">Where stories are forged</h4>`, "Syne Bold")}
+        ${row(`<p class="body" style="max-width:60ch;margin:0">A stage for transformation. Open to all with the courage to step inside. It's where stories are forged, and characters tested, shaped, and pushed to the edge to discover what they're capable of.</p>`, "Syne Regular")}
+      </div>
     </div>`;
   },
 

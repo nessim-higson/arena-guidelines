@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Arena — Logo Section Comps</title>
+  <link rel="stylesheet" href="./css/app.css?v=55" />
+  <style>
+    body { margin: 0; background: #f4f4f4; }
+    .comp { position: relative; padding: clamp(48px, 7vh, 96px) clamp(20px, 6vw, 90px); border-bottom: 1px solid #d6d6d6; }
+    .comp__tag { position: absolute; top: 18px; left: 18px; z-index: 5;
+      font-family: var(--f-syne); font-weight: 700; font-size: .64rem; letter-spacing: .14em;
+      text-transform: uppercase; padding: 6px 11px; border: 1px solid currentColor; border-radius: 999px; opacity: .8; }
+    /* this page has no IntersectionObserver, so force reveal elements visible */
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .logo-suite { min-height: 0; }
+
+    /* A — White · centered (current treatment) */
+    .comp--white { background: #fff; color: #111; }
+
+    /* B — Black · centered */
+    .comp--black { background: #000; color: #fff; }
+    .comp--black .logo-suite__head .display { color: #fff; }
+    .comp--black .logo-suite__lead,
+    .comp--black .logo-suite__note { color: #b4b4b4; }
+    .comp--black .eyebrow { color: #cfcfcf; }
+    .comp--black .eyebrow::before { background: #FAFF00; }
+    .comp--black .logo-hero__art { border-color: rgba(255,255,255,.16); background: #000; }
+    .comp--black .logo-hero__art .lk,
+    .comp--black .logo-var .lockup__art { color: #fff; }
+    .comp--black .logo-var { background: #0c0c0c; border-color: rgba(255,255,255,.14); }
+    .comp--black .logo-var__name { color: #fff; }
+    .comp--black .logo-var__use { color: #8a8a8a; }
+    .comp--black .dl button { color: #b4b4b4; border-color: rgba(255,255,255,.22); }
+    .comp--black .dl button:hover { color: #fff; border-color: #fff; }
+    .comp--black .dl__c.is-on { background: #fff; color: #000; border-color: #fff; }
+
+    /* C — Left-justified (on white) */
+    .comp--left { background: #fff; color: #111; }
+    .comp--left .logo-suite { align-items: flex-start; text-align: left; }
+    .comp--left .logo-suite__head { align-items: flex-start; text-align: left; }
+    .comp--left .logo-hero { justify-content: flex-start; }
+    .comp--left .logo-hero__art { margin: 0; }
+    .comp--left .logo-var__meta { align-items: flex-start; text-align: left; }
+    .comp--left .logo-var .lockup__art { justify-content: flex-start; }
+    .comp--left .dl { justify-content: flex-start; }
+  </style>
+</head>
+<body>
+  <main id="comps"></main>
+
+  <script type="module">
+    import { LOGO_SVGS } from "./data/logos.js?v=55";
+    const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    const mark = (key = "icon", cls = "portal-mark") =>
+      (LOGO_SVGS[key] || LOGO_SVGS.icon).replace("<svg ", `<svg class="${cls}" `);
+
+    const variant = (key, name, use) => `<div class="lockup logo-var on-light reveal" data-logo="${key}">
+      <div class="lockup__art">${mark(key, "lk")}</div>
+      <div class="logo-var__meta">
+        <span class="logo-var__name">${esc(name)}</span>
+        <span class="logo-var__use">${esc(use)}</span>
+        <div class="dl">
+          <button class="dl__c" data-color="white">White</button>
+          <button class="dl__c is-on" data-color="black">Black</button>
+          <span class="dl__sep"></span>
+          <button class="dl__f" data-fmt="svg">SVG</button>
+          <button class="dl__f" data-fmt="png">PNG</button>
+          <button class="dl__f" data-fmt="jpeg">JPEG</button>
+        </div>
+      </div>
+    </div>`;
+
+    const suite = () => `<div class="slide__inner logo-suite">
+      <div class="logo-suite__head reveal">
+        <div class="eyebrow">Identity — Logo</div>
+        <h2 class="display d2">THE LOGO</h2>
+        <p class="logo-suite__lead">The horizontal lockup is the primary identifier — used most often. Reach for the symbol, the stack, or the wordmark when space or context calls for it.</p>
+      </div>
+      <div class="logo-hero reveal"><div class="logo-hero__art on-light">${mark("horizontal", "lk")}</div></div>
+      <div class="logo-suite__grid">
+        ${variant("horizontal", "Horizontal", "Used most often")}
+        ${variant("left", "Stacked", "Used often")}
+        ${variant("icon", "Symbol", "Used often")}
+        ${variant("center", "Stacked · centered", "Used least")}
+      </div>
+      <p class="logo-suite__note reveal">Pick a colour, then a format — files generate and download in your browser.</p>
+    </div>`;
+
+    document.getElementById("comps").innerHTML = `
+      <section class="comp comp--white"><span class="comp__tag">A — White · centered (current)</span>${suite()}</section>
+      <section class="comp comp--black"><span class="comp__tag">B — Black · centered</span>${suite()}</section>
+      <section class="comp comp--left"><span class="comp__tag">C — White · left-justified</span>${suite()}</section>
+    `;
+  </script>
+</body>
+</html>

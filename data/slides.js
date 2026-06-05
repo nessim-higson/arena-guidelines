@@ -29,7 +29,7 @@ export const SLIDES = [
   { id: "cover", ch: "cover", kind: "cover" },
 
   // ---------- 04 VISUAL IDENTITY ----------
-  { id: "ch04", ch: "identity", kind: "landing", eyebrow: "01 — Identity", display: "VISUAL IDENTITY",
+  { id: "ch04", ch: "identity", kind: "landing", eyebrow: "01 — Identity", display: "VISUAL IDENTITY", light: true,
     body: ["The Arena identity is a small, disciplined set of parts — the symbol, the wordmark, and their lockups. Everything else is built from these."],
     index: [
       { n: "01", name: "The logo", to: "lockups" },
@@ -139,7 +139,7 @@ export const SLIDES = [
     images: [img(65), img(14), img(66), img(15), img(68), img(67)] },
 
   // ---------- COLOR ----------
-  { id: "color-intro", ch: "color", kind: "landing", eyebrow: "03 — Color", display: "COLOR",
+  { id: "color-intro", ch: "color", kind: "landing", eyebrow: "03 — Color", display: "COLOR", light: true,
     body: ["Our color approach prioritizes elegance, restraint, and timelessness. The palette is intentionally neutral so that, like a gallery, it serves as a blank slate — creating a visual language that enhances our content rather than competes with it."],
     index: [
       { n: "01", name: "Palette", to: "color" },
@@ -278,7 +278,7 @@ export const SLIDES = [
     ] },
 
   // ---------- MATERIAL ----------
-  { id: "material", ch: "material", kind: "landing", eyebrow: "05 — Material", display: "MATERIAL",
+  { id: "material", ch: "material", kind: "landing", eyebrow: "05 — Material", display: "MATERIAL", light: true,
     body: [
       "Arena's material language balances refinement with tension, pairing industrial surfaces and architectural forms with softer atmospheric treatments. Matte finishes, metal textures, thermal gradients, shadow, blur, and layered depth create a world that feels engineered, cinematic, and charged with energy."
     ],
@@ -342,7 +342,6 @@ export const SLIDES = [
   // ---------- COMING-SOON CHAPTERS ----------
   { id: "ch05", ch: "motion", kind: "chapter", num: "05", title: "MOTION", soon: "This chapter is coming soon" },
   { id: "ch06", ch: "motion", kind: "chapter", num: "06", title: "MNEMONIC", soon: "This chapter is coming soon" },
-  { id: "ch07", ch: "motion", kind: "chapter", num: "07", title: "MATERIALS", soon: "This chapter is coming soon" },
 
   // ---------- BOILERPLATE ----------
   { id: "boilerplate", ch: "appendix", kind: "boilerplate", label: "Boilerplate", heading: "About The Arena",

@@ -191,7 +191,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* only the dramatic / full-bleed slides fill the viewport;
    content slides size to their content with consistent rhythm */
 .slide--cover, .slide--chapter, .slide--gallery, .slide--image,
-.slide--ringtool, .slide--iconmark, .slide--lockups, .slide--appendix { min-height: 100svh; }
+.slide--ringtool, .slide--appendix { min-height: 100svh; }
 .slide__inner { width: 100%; max-width: var(--maxw); margin: 0 auto; flex: 1; display: flex; flex-direction: column; }
 /* in-flow header row (label left, yellow tag right) */
 .slide__top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s3); margin-bottom: clamp(1rem, 2.2vh, 1.9rem); }
@@ -255,7 +255,8 @@ html.lenis, html.lenis body { height: auto; }
    sections, read like a foundry specimen sheet. Shares the Misuse slide's
    light palette so the two white moments feel intentional and related.
    (No yellow lives here, so white never breaks the "no yellow on white" rule.) */
-.slide--syne-specimen { background: #fff; color: #111; }
+.slide--syne-specimen { background: #fff; color: #111; padding-bottom: clamp(4rem, 9vh, 7.5rem); }
+.slide--image-color { padding-bottom: clamp(3.5rem, 8vh, 7rem); }
 .slide--syne-specimen .label { color: #111; }
 .slide--syne-specimen .cap { color: #888; }
 .slide--syne-specimen .rule { background: rgba(0,0,0,0.12); }
@@ -294,7 +295,9 @@ html.lenis, html.lenis body { height: auto; }
 
 /* chapter divider */
 .chapter { justify-content: center; }
-.chapter__title { font-size: var(--d-chapter); }
+/* sized so the longest single-word chapter title (MNEMONIC, MATERIALS) fits on
+   one line at any width — a consistent point size across all dividers */
+.chapter__title { font-size: clamp(2.4rem, 9vw, 8rem); white-space: nowrap; line-height: 1; }
 
 /* statement (label + huge headline + body) */
 .statement .display { margin-bottom: auto; }
@@ -508,8 +511,13 @@ html.lenis, html.lenis body { height: auto; }
 .is-light-slide .media__frame { background: #d9d9d4; }
 
 /* hierarchy rows */
-.hier-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s4); }
-.hier-row .cap { white-space: nowrap; }
+.hier-list { display: flex; flex-direction: column; margin-top: var(--s4); }
+.hier-row { display: grid; grid-template-columns: 170px 1fr; gap: clamp(1.5rem, 4vw, 3.5rem); align-items: baseline;
+  padding: clamp(1.2rem, 3vh, 2.2rem) 0; border-top: 1px solid var(--rule); }
+.hier-row:last-child { border-bottom: 1px solid var(--rule); }
+.hier-row__label { white-space: nowrap; }
+.hier-row__sample { min-width: 0; }
+@media (max-width: 700px){ .hier-row { grid-template-columns: 1fr; gap: 8px; } }
 
 /* color swatch copy hint */
 .swatch .copy { font-family: var(--f-syne); font-size: 0.7rem; color: var(--body-dim); text-align: right; letter-spacing: 0.04em; }
@@ -801,7 +809,9 @@ html.lenis, html.lenis body { height: auto; }
 .pillar__rule { flex: 1; height: 1px; background: var(--rule-bright); }
 
 /* uniform image grid — descriptor reveals on rollover (no persistent boxes) */
-.pillar__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: clamp(0.75rem, 1.4vw, 1.15rem); }
+/* auto-fill (not auto-fit) so 2-image pillars (Swagger) keep the same card
+   size/height as the 3-image ones instead of stretching taller */
+.pillar__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: clamp(0.75rem, 1.4vw, 1.15rem); }
 .pcard { position: relative; margin: 0; aspect-ratio: 4 / 3; overflow: hidden; background: var(--panel); }
 .pcard img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .7s var(--ease), filter .5s var(--ease); }
 .pcard__no { position: absolute; top: 12px; left: 14px; z-index: 2; font-family: var(--f-syne); font-weight: 700; font-size: 0.66rem; letter-spacing: 0.12em; color: rgba(255,255,255,0.9); mix-blend-mode: difference; transition: opacity .3s; }
@@ -878,8 +888,6 @@ html.lenis, html.lenis body { height: auto; }
   .row { flex-direction: column; gap: var(--s4) !important; }
   .type-row { grid-template-columns: 1fr; gap: 6px; }
   .dodont, .insp { grid-template-columns: 1fr; }
-  .hier-row { flex-direction: column; align-items: flex-start; gap: 4px; }
-  .hier-row .cap { order: -1; }
   .swatch { grid-template-columns: 1fr; }
   .mark-echo { gap: var(--s3); }
 }
