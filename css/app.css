@@ -65,7 +65,7 @@
 /* ---- Arena custom display face (WIP working typeface) ----- */
 @font-face {
   font-family: "Arena";
-  src: url("../assets/fonts/Arena-Regular.otf?v=57") format("opentype");
+  src: url("../assets/fonts/Arena-Regular.otf?v=58") format("opentype");
   font-weight: 400 900;
   font-display: swap;
 }
