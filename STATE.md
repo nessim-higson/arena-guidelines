@@ -103,7 +103,7 @@ Suggested approach when resuming:
 | `data/logos.js` | `LOGO_SVGS` official marks (inline) |
 | `js/app.js` | `R` renderers + interactions (scroll, reveal, downloads) |
 | `css/app.css` | tokens + `.slide--<kind>` styles |
-| `type-tool.html` | standalone Arena typesetter/exporter — type-in-canvas, black/white bg, **align** (L/C/R), **tracking** slider, and **manual per-pair kerning** (Kern toggle → click a gap, ←/→ to adjust); all baked into the SVG/PNG/JPG export. Embedded via iframe on the Type "Try it" slide |
+| `type-tool.html` | standalone Arena typesetter/exporter — type-in-canvas, black/white bg, **align** (L/C/R), and **manual per-pair kerning** (Kern toggle → click a gap, ←/→ to adjust); all baked into the SVG/PNG/JPG export. Embedded via iframe on the Type "Try it" slide |
 | `logo-comps.html` | scratch review page — 4 logo treatments (D is live) |
 | `assets/` | fonts (`Arena-Regular.otf`), `vendor/opentype.min.js`, logo SVGs, imagery, MOVIES mp4s |
 | `CHANGELOG.md` | dated change log (source of truth for iteration history) |

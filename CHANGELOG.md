@@ -11,6 +11,7 @@ logged under the top **Unreleased** section and rolled into the next version whe
 
 ## Unreleased — v2.0 (in progress)
 
+- **2026-06-17** — **Type tool: drop the global tracking slider (cache `?v=61`).** Per request, removed the Tracking control and kept only the per-pair manual **Kern** feature. `kernUnits` is now `font kern + manual` (no global term); bar is Background · Align · Kern. Export math unchanged otherwise.
 - **2026-06-17** — **Type tool: manual kerning + tracking (cache `?v=60`).** Two new spacing controls in the bottom bar, both baked into the SVG/PNG/JPG export (not just on screen):
   - **Tracking** slider — global letter spacing, live as you type.
   - **Kern** toggle — per-pair manual kerning. Turn it on and the type splits into individual letters; click a gap (or Tab) to select a pair, then **← / →** tighten / loosen it (Shift = bigger step), with a HUD showing the active pair and value plus −/+ buttons. Font's own kern is preserved and the manual value layers on top.
