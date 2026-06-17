@@ -7,7 +7,7 @@
 <meta name="description" content="Type directly in the Arena display typeface and export vector SVG or high-resolution transparent PNG / JPG.">
 <style>
   @import url("https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap");
-  @font-face{font-family:"Arena";src:url("./assets/fonts/Arena-Regular.otf?v=62") format("opentype");font-weight:400 900;font-display:swap}
+  @font-face{font-family:"Arena";src:url("./assets/fonts/Arena-Regular.otf?v=63") format("opentype");font-weight:400 900;font-display:swap}
   :root{
     --yellow:#faff00;
     --f-arena:"Arena","Arial Narrow",sans-serif;--f-syne:"Syne",system-ui,sans-serif;
@@ -323,7 +323,7 @@
     document.getElementById('dl-png').addEventListener('click', function(){ raster('image/png', undefined, null); });
     document.getElementById('dl-jpg').addEventListener('click', function(){ raster('image/jpeg', 0.95, colors().bg); });
 
-    opentype.load('./assets/fonts/Arena-Regular.otf?v=62', function(err,f){ if(!err){ font=f; enableDownloads(); } });
+    opentype.load('./assets/fonts/Arena-Regular.otf?v=63', function(err,f){ if(!err){ font=f; enableDownloads(); } });
     demo();
   })();
   </script>
