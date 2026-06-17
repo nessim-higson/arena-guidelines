@@ -11,6 +11,7 @@ logged under the top **Unreleased** section and rolled into the next version whe
 
 ## Unreleased — v2.0 (in progress)
 
+- **2026-06-17** — **Arena kerning: ease P→A to −170 (cache `?v=62`).** The earlier −260 fixed EXPAND but was too tight in PAINT (A jammed into the P). Re-rendered both words across candidates; **−170** reads balanced in both (−120 was loose, −260 too tight). L→T stays −220. Font cache-buster bumped to `?v=62`.
 - **2026-06-17** — **Type tool: drop the global tracking slider (cache `?v=61`).** Per request, removed the Tracking control and kept only the per-pair manual **Kern** feature. `kernUnits` is now `font kern + manual` (no global term); bar is Background · Align · Kern. Export math unchanged otherwise.
 - **2026-06-17** — **Type tool: manual kerning + tracking (cache `?v=60`).** Two new spacing controls in the bottom bar, both baked into the SVG/PNG/JPG export (not just on screen):
   - **Tracking** slider — global letter spacing, live as you type.
