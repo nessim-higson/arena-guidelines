@@ -2,8 +2,8 @@
    THE ARENA — PLAYBOOK runtime
    Builds slides from data/slides.js and wires interactions.
    ============================================================ */
-import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, TYPE_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=64";
-import { LOGO_SVGS } from "../data/logos.js?v=64";
+import { SLIDES, NAV, PORTAL_SVG, RING_TOOL_URL, TYPE_TOOL_URL, COVER_GIFS } from "../data/slides.js?v=65";
+import { LOGO_SVGS } from "../data/logos.js?v=65";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -577,6 +577,31 @@ function secHead(eyebrow, title, opts = {}) {
 /* ============================================================
    BUILD
    ============================================================ */
+// Cover lockup is drawn bbox-aligned, but the solid wordmark optically reads
+// larger than the thin outlined mark. Shrink the "THE ARENA" paths a touch —
+// anchored to their left edge + vertical centre so the gap to the mark and the
+// vertical centring both hold. Cover instance only; the official `left` SVG used
+// elsewhere (nav, grid, footer) is untouched.
+const COVER_TYPE_SCALE = 0.9;
+function tuneCoverLockup() {
+  const svg = $("#coverLogo svg");
+  if (!svg) return;
+  const paths = [...svg.querySelectorAll("path")];
+  if (paths.length < 2) return;
+  const boxes = paths.map(p => ({ p, b: p.getBBox() })).filter(o => o.b.width);
+  // split mark (left cluster) from type (right cluster) at the largest x-centre gap
+  const cxs = boxes.map(o => o.b.x + o.b.width / 2).sort((a, b) => a - b);
+  let gap = 0, split = 0;
+  for (let i = 1; i < cxs.length; i++) { if (cxs[i] - cxs[i - 1] > gap) { gap = cxs[i] - cxs[i - 1]; split = (cxs[i] + cxs[i - 1]) / 2; } }
+  const type = boxes.filter(o => (o.b.x + o.b.width / 2) > split);
+  if (!type.length) return;
+  const x0 = Math.min(...type.map(o => o.b.x));                                  // type left edge → keep gap to mark
+  const yc = (Math.min(...type.map(o => o.b.y)) + Math.max(...type.map(o => o.b.y + o.b.height))) / 2; // type centre → keep centring
+  const k = COVER_TYPE_SCALE;
+  const tr = `translate(${x0} ${yc}) scale(${k}) translate(${-x0} ${-yc})`;
+  type.forEach(o => o.p.setAttribute("transform", tr));
+}
+
 function build() {
   // nav
   const navWrap = $("#navChapters");
@@ -595,6 +620,8 @@ function build() {
     sec.innerHTML = fn ? fn(s) : `<div class="slide__inner"><p>${s.id}</p></div>`;
     main.appendChild(sec);
   });
+
+  tuneCoverLockup();
 
   // lightbox for galleries
   const lb = E("div", "lightbox");

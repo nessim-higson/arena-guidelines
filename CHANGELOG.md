@@ -11,6 +11,8 @@ logged under the top **Unreleased** section and rolled into the next version whe
 
 ## Unreleased — v2.0 (in progress)
 
+- **2026-06-17** — **Cover: optically size the wordmark to the mark (cache `?v=65`).** The lockup is bbox-aligned, but the solid "THE ARENA" read larger than the thin outlined portal mark. Shrunk the wordmark ~10% on the **cover instance only** (`tuneCoverLockup()` scales the type paths, anchored to their left edge + vertical centre so the mark gap and centring hold), so the type now sits just inside the mark's height. The official `left` lockup used elsewhere (nav, logo grid, footer) is untouched.
+
 - **2026-06-17** — **Section eyebrows: more breathing room (cache `?v=64`).** The small section labels were sitting flush on the big headlines — on the chapter landings the eyebrow→headline gap was literally 0px. Added space below the eyebrow (landings ~0→21px via a clamp; section headers `.sh`/`.sec-head` 1rem→1.5rem) so each section header reads as label-then-headline, not stacked tight.
 
 - **2026-06-17** — **Arena typeface: new authoritative cut `Arena-Regular-11` (cache `?v=63`).** Dropped in the designer's updated source font (same `Arena` family + uppercase-only glyph set, refined outlines) which now ships its **own full kerning pass — 39 pairs** built into the font. This **supersedes the hand-tuned kern values we'd baked into the repo copy**: the designer's file sets **L→T −100** and **P→A −40** (vs our −220 / −170). Used verbatim per request — our manual overrides were not re-applied. Bumped font cache-buster + global asset version to 63.
