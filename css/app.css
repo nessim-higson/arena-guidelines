@@ -246,7 +246,7 @@ html.lenis, html.lenis body { height: auto; }
    instead of blending into the black. Sits a tier below the chapter title. */
 .sh { max-width: 64ch; margin-bottom: var(--s4); }
 .sh + * { margin-top: 0; }
-.sh__title { line-height: 0.95; margin: var(--s2) 0 0; }
+.sh__title { line-height: 0.95; margin: var(--s3) 0 0; }
 .sh__title--arena { font-family: var(--f-arena); text-transform: uppercase; letter-spacing: 0; font-size: clamp(2.6rem, 8vw, 6rem); }
 .sh__title--syne { font-family: var(--f-syne); font-weight: 800; letter-spacing: -0.02em; font-size: clamp(2.8rem, 8.5vw, 6.6rem); }
 .sh__desc { color: var(--body); font-family: var(--f-syne); margin-top: var(--s3); max-width: 50ch; line-height: 1.5; }
@@ -479,6 +479,8 @@ html.lenis, html.lenis body { height: auto; }
 .slide--landing { min-height: 90svh; }
 .landing { justify-content: center; gap: clamp(2rem, 5vh, 4rem); }
 .landing .d1 { margin-bottom: var(--s3); }
+/* breathing room under the section eyebrow (was sitting flush on the headline) */
+.landing__head .eyebrow { margin-bottom: clamp(1.25rem, 2.6vh, 2.25rem); }
 .landing__body { max-width: 54ch; }
 
 .lx { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(2rem, 5vw, 5rem);
@@ -591,7 +593,7 @@ html.lenis, html.lenis body { height: auto; }
 /* the head's margin-bottom is the single source of head→content spacing —
    neutralize the content block's own margin-top so the gap isn't doubled */
 .foundation > .sec-head + * { margin-top: 0; }
-.foundation .sec-head h2 { font-family: var(--f-arena); text-transform: uppercase; font-size: var(--d-2); line-height: 1; margin: var(--s2) 0 0; }
+.foundation .sec-head h2 { font-family: var(--f-arena); text-transform: uppercase; font-size: var(--d-2); line-height: 1; margin: var(--s3) 0 0; }
 .foundation .sec-head p { color: var(--body); margin-top: var(--s2); max-width: 64ch; }
 
 /* type scale */

@@ -11,6 +11,8 @@ logged under the top **Unreleased** section and rolled into the next version whe
 
 ## Unreleased — v2.0 (in progress)
 
+- **2026-06-17** — **Section eyebrows: more breathing room (cache `?v=64`).** The small section labels were sitting flush on the big headlines — on the chapter landings the eyebrow→headline gap was literally 0px. Added space below the eyebrow (landings ~0→21px via a clamp; section headers `.sh`/`.sec-head` 1rem→1.5rem) so each section header reads as label-then-headline, not stacked tight.
+
 - **2026-06-17** — **Arena typeface: new authoritative cut `Arena-Regular-11` (cache `?v=63`).** Dropped in the designer's updated source font (same `Arena` family + uppercase-only glyph set, refined outlines) which now ships its **own full kerning pass — 39 pairs** built into the font. This **supersedes the hand-tuned kern values we'd baked into the repo copy**: the designer's file sets **L→T −100** and **P→A −40** (vs our −220 / −170). Used verbatim per request — our manual overrides were not re-applied. Bumped font cache-buster + global asset version to 63.
 - **2026-06-17** — **Arena kerning: ease P→A to −170 (cache `?v=62`).** The earlier −260 fixed EXPAND but was too tight in PAINT (A jammed into the P). Re-rendered both words across candidates; **−170** reads balanced in both (−120 was loose, −260 too tight). L→T stays −220. Font cache-buster bumped to `?v=62`.
 - **2026-06-17** — **Type tool: drop the global tracking slider (cache `?v=61`).** Per request, removed the Tracking control and kept only the per-pair manual **Kern** feature. `kernUnits` is now `font kern + manual` (no global term); bar is Background · Align · Kern. Export math unchanged otherwise.
