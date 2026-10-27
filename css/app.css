@@ -891,3 +891,17 @@ html.lenis, html.lenis body { height: auto; }
   .swatch { grid-template-columns: 1fr; }
   .mark-echo { gap: var(--s3); }
 }
+
+/* All guidelines: the directory shared with the IP and video books on the Lab (27 Oct 2026) */
+.nav__menu { position: relative; margin-left: 14px; }
+.nav__menu-btn { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; font-family: var(--f-syne); font-weight: 600; font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--body); opacity: .85; }
+.nav__menu-btn:hover, .nav__menu.open .nav__menu-btn { opacity: 1; }
+.nav__menu-btn i { width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-2px) rotate(45deg); transition: transform .2s; }
+.nav__menu.open .nav__menu-btn i { transform: translateY(1px) rotate(-135deg); }
+.nav__drop { position: absolute; right: 0; top: calc(100% + 12px); min-width: 280px; display: none; background: #0B0B0C; border: 1px solid #2A2A2E; padding: 10px 0 8px; z-index: 50; }
+.nav__menu.open .nav__drop { display: block; }
+.nav__drop p { margin: 8px 18px 4px; font-family: var(--f-syne); font-size: .58rem; letter-spacing: .14em; text-transform: uppercase; color: #6B6B6B; }
+.nav__drop a { display: flex; justify-content: space-between; gap: 24px; padding: 8px 18px; font-family: var(--f-syne); font-weight: 500; font-size: .8rem; color: #fff; text-decoration: none; background: none; }
+.nav__drop a:hover { background: #1B1B1E; }
+.nav__drop a[aria-current] { color: #FAFF00; }
+.nav__drop a span { font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: #6B6B6B; }

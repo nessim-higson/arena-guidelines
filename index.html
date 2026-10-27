@@ -7,12 +7,29 @@
   <meta name="description" content="The Arena brand playbook — visual identity, typography, color, the portal mark, and the live Ring Tool." />
   <meta name="theme-color" content="#000000" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 120'><rect x='8' y='8' width='184' height='104' rx='24' fill='none' stroke='%23fff' stroke-width='10'/><rect x='64' y='44' width='72' height='32' rx='10' fill='none' stroke='%23fff' stroke-width='10'/></svg>" />
-  <link rel="stylesheet" href="./css/app.css?v=65" />
+  <link rel="stylesheet" href="./css/app.css?v=66" />
 </head>
 <body>
   <nav class="nav">
     <a class="nav__brand" id="navBrand" href="#cover"></a>
     <div class="nav__chapters" id="navChapters"></div>
+    <div class="nav__menu" id="navMenu">
+      <button type="button" class="nav__menu-btn" aria-haspopup="true" aria-expanded="false">All guidelines<i aria-hidden="true"></i></button>
+      <div class="nav__drop" role="menu">
+        <p>Guidelines</p>
+        <a role="menuitem" href="https://lab.iamalwayshungry.com/arena/fatal-fury/">Fatal Fury</a>
+        <a role="menuitem" href="https://lab.iamalwayshungry.com/arena/kof/">The King of Fighters</a>
+        <a role="menuitem" href="https://lab.iamalwayshungry.com/arena/art-of-fighting/">Art of Fighting</a>
+        <a role="menuitem" href="https://lab.iamalwayshungry.com/arena/metal-slug/">Metal Slug</a>
+        <p>The Arena</p>
+        <a role="menuitem" href="#cover" aria-current="page">Brand Playbook</a>
+        <a role="menuitem" href="https://lab.iamalwayshungry.com/arena/video/">Video Production Guidelines</a>
+        <a role="menuitem" href="https://lab.iamalwayshungry.com/arena/motion/" target="_blank" rel="noopener">Motion labs<span>Lab ↗</span></a>
+        <p>IP &amp; Franchise Bibles</p>
+        <a role="menuitem" href="https://docs.google.com/presentation/d/1JiYbrMmWfaxbLM37J41dhkgPT32ApCn7IucTS6nScR8/edit" target="_blank" rel="noopener">Fatal Fury bible<span>Slides ↗</span></a>
+        <a role="menuitem" href="https://docs.google.com/presentation/d/16XskwAIUHcx4Z44U2yWUhbxX5y6yNmDNHDfLFS_a2CI/edit" target="_blank" rel="noopener">Metal Slug bible<span>Slides ↗</span></a>
+      </div>
+    </div>
     <a class="nav__brand" href="#ringtool" style="color:var(--body)"><span class="wm" style="font-family:var(--f-syne);font-weight:600;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase">Ring Tool ↗</span></a>
   </nav>
   <div class="nav__progress" id="navProgress"></div>
@@ -27,6 +44,16 @@
     <small>Interactive guidelines · zero-build · self-hostable</small>
   </footer>
 
-  <script type="module" src="./js/app.js?v=65"></script>
+  <script>
+    (function () {
+      var m = document.getElementById("navMenu"), b = m.querySelector(".nav__menu-btn");
+      document.addEventListener("click", function (e) {
+        var open = b.contains(e.target) ? !m.classList.contains("open") : m.contains(e.target) && !e.target.closest("a");
+        m.classList.toggle("open", open); b.setAttribute("aria-expanded", open);
+      });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") { m.classList.remove("open"); b.setAttribute("aria-expanded", false); } });
+    })();
+  </script>
+  <script type="module" src="./js/app.js?v=66"></script>
 </body>
 </html>
