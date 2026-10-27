@@ -1,7 +1,7 @@
 # STATE — The Arena Interactive Brand Playbook
 
 > Snapshot of where this project stands so work can be picked back up cold.
-> Last updated: **2026-06-15** · Cache version in use: **`?v=56`** · Branch: **main**
+> Last updated: **2026-10-27** · Cache version in use: **`?v=66`** · Branch: **main**
 
 ---
 
@@ -61,6 +61,7 @@ Data-driven slides. Three layers:
 
 ## 5. Recent work / decisions (newest first)
 
+0. **All guidelines dropdown** (27 Oct 2026, v=66). `.nav__menu` in `index.html` (inline toggle script, styles at the end of `css/app.css`): the four SNK books, the Video Production Guidelines and the motion labs on the Lab, the Fatal Fury and Metal Slug bibles. Absolute Lab URLs, so it works from GitHub Pages too.
 1. **Type tool — Left/Center/Right alignment** (`8fd1140`, v=56). New **Align** control in the bottom bar (icon segment, defaults Center). Drives both the live canvas (block position + ragged edge via `.stage.align-left/right` classes) **and the export** — `geometry()` offsets each line by its advance width so multi-line SVG/PNG/JPG match the chosen alignment.
 2. **Logo section reverted to V.1** (`f975ef4`, v=56). After comparing on `logo-comps.html`, chose the **original V.1 dark 4-up grid** (Horizontal / Stacked-left / Stacked-centered / Icon on the dark ground, White default download) over the white "Songtrust-style" centered suite. Dropped the `.slide--lockups { background:#fff }` override; slide is back on the default dark ground and full-height so the grid centers.
 3. **`logo-comps.html`** (`c09d041`) — scratch review page showing the logo suite four ways: **D** V.1 dark 4-up grid (the one now live), **A** white·centered, **B** black·centered, **C** white·left-justified.
