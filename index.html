@@ -40,7 +40,7 @@
 <script>
 // The gate for an encrypted guideline book (tools/playbook/build.mjs). The password never leaves the browser:
 // it derives the AES key, which is checked against a sealed sample, kept in IndexedDB and used by sw.js.
-const CFG = {"salt":"f0013b2e4dfaf694c5ac57ff78dead2f","iter":310000,"check":"XMnX7CgLeAFodFoUCXh6R2VPBYz2GlmUHYwnDQWhPSTjJaNYn2uKMjwZ"};
+const CFG = {"salt":"f0013b2e4dfaf694c5ac57ff78dead2f","iter":310000,"check":"vZScUc7RjmqEv5ft1Igs9PpuA4mZicMnCBwFI/f4lQw8FwPWlGhItCdH"};
 const $ = id => document.getElementById(id);
 const say = (t, err) => { $("msg").textContent = t; $("msg").className = "msg" + (err ? " err" : ""); };
 const hex = h => new Uint8Array(h.match(/../g).map(b => parseInt(b, 16)));
