@@ -214,13 +214,13 @@ export const SLIDES = [
 
   { id: "image-color", ch: "color", kind: "image-color", label: "Color in Context",
     eyebrow: "04 — Color", title: "IMAGE DIRECTS THE PALETTE",
-    intro: "On its own the system is monochrome — but its secondary color comes from the work. Colors are pulled straight from the IP's imagery, never overpowering it, shown here with Metal Slug. Pick a source: the field floods with the tone sampled from its pixels, and the swatches below are read live from the image.",
-    // Metal Slug: Secret Level visual development by Blur (Ness, 31 Oct 2026), four scenes with four different palettes.
+    intro: "On its own the system is monochrome — but its secondary color comes from the work. Colors are pulled straight from the IP's imagery, never overpowering it. Pick a source: the field floods with the tone sampled from its pixels, and the swatches below are read live from the image.",
+    // Metal Slug from Secret Level's visual development by Blur (Ness, 31 Oct 2026); the other three stay photographic.
     sources: [
-      { name: "Island", img: "assets/blur/island.jpg", note: "Island ops, pulled from sea and jungle", fallback: { tone: "#8b876b", ink: "#000000", acc: "#4fa3a0" } },
-      { name: "Desert", img: "assets/blur/desert.jpg", note: "Desert ops, pulled from the dunes", fallback: { tone: "#986f48", ink: "#000000", acc: "#e0a24a" } },
-      { name: "Jungle", img: "assets/blur/jungle.jpg", note: "Jungle firefight, pulled from the canopy", fallback: { tone: "#464d29", ink: "#ffffff", acc: "#c8d24a" } },
-      { name: "Dusk",   img: "assets/blur/palms.jpg",  note: "Dusk patrol, pulled from the sky", fallback: { tone: "#a77560", ink: "#000000", acc: "#e08a6a" } }
+      { name: "Metal Slug", img: "assets/blur/desert.jpg", note: "Desert ops, pulled from the Secret Level art", fallback: { tone: "#986f48", ink: "#000000", acc: "#e0a24a" } },
+      { name: "Portrait",   img: "assets/extracted/pg19-002.png", note: "Grit & presence, pulled from skin and blood", fallback: { tone: "#5a3b34", ink: "#ffffff", acc: "#b54a3a" } },
+      { name: "Anime",      img: "assets/extracted/pg21-001.png", note: "Kinetic fire, pulled from the embers", fallback: { tone: "#6b3a1e", ink: "#ffffff", acc: "#ff7a2a" } },
+      { name: "Swagger",    img: "assets/extracted/pg22-000.png", note: "Street warmth, pulled from the scene", fallback: { tone: "#7a5a3a", ink: "#ffffff", acc: "#c98a4a" } }
     ] },
 
   // ---------- IMAGERY ----------
