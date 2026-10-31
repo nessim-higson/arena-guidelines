@@ -216,7 +216,7 @@ export const SLIDES = [
     eyebrow: "04 — Color", title: "IMAGE DIRECTS THE PALETTE",
     intro: "On its own the system is monochrome — but its secondary color comes from the work. Colors are pulled straight from the IP's imagery, never overpowering it. Pick a source: the field floods with the tone sampled from its pixels, and the swatches below are read live from the image.",
     sources: [
-      { name: "Metal Slug", img: img(65),         note: "Desert ops — pulled from the key art", fallback: { tone: "#9a7d4e", ink: "#000000", acc: "#caa24a" } },
+      { name: "Metal Slug", img: img(65),         note: "Island ops — pulled from the key art", fallback: { tone: "#716f59", ink: "#ffffff", acc: "#caa24a" } },
       { name: "Portrait",   img: "assets/extracted/pg19-002.png", note: "Grit & presence — pulled from skin and blood", fallback: { tone: "#5a3b34", ink: "#ffffff", acc: "#b54a3a" } },
       { name: "Anime",      img: "assets/extracted/pg21-001.png", note: "Kinetic fire — pulled from the embers", fallback: { tone: "#6b3a1e", ink: "#ffffff", acc: "#ff7a2a" } },
       { name: "Swagger",    img: "assets/extracted/pg22-000.png", note: "Street warmth — pulled from the scene", fallback: { tone: "#7a5a3a", ink: "#ffffff", acc: "#c98a4a" } }

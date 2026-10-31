@@ -11,6 +11,8 @@ logged under the top **Unreleased** section and rolled into the next version whe
 
 ## Unreleased — v2.0 (in progress)
 
+- 31 Oct 2026 (Ness): every Metal Slug example now carries Jason's new SV-001 wordmark (stacked and one line). The Arena + IP key art and posters are rebuilt on Secret Level's visual development art (Blur) instead of the AI photo comps; the lockups and the Death Valley title lockup are rebuilt in vector; the materials gallery's Metal Slug piece is now the sand-cast pour material study. Built by `tools/metal-slug-examples.py`. Cache v67.
+
 - **2026-06-17** — **Cover: optically size the wordmark to the mark (cache `?v=65`).** The lockup is bbox-aligned, but the solid "THE ARENA" read larger than the thin outlined portal mark. Shrunk the wordmark ~10% on the **cover instance only** (`tuneCoverLockup()` scales the type paths, anchored to their left edge + vertical centre so the mark gap and centring hold), so the type now sits just inside the mark's height. The official `left` lockup used elsewhere (nav, logo grid, footer) is untouched.
 
 - **2026-06-17** — **Section eyebrows: more breathing room (cache `?v=64`).** The small section labels were sitting flush on the big headlines — on the chapter landings the eyebrow→headline gap was literally 0px. Added space below the eyebrow (landings ~0→21px via a clamp; section headers `.sh`/`.sec-head` 1rem→1.5rem) so each section header reads as label-then-headline, not stacked tight.
