@@ -9,7 +9,7 @@
 
 An **interactive brand playbook** for **The Arena** (entertainment / IP studio, West Hollywood — enterthearena.com). A **zero-build static site** (HTML / CSS / ES modules) meant to (a) impress clients and (b) be handed off for self-hosting.
 
-- **Live:** https://nessim-higson.github.io/arena-guidelines/ (GitHub Pages, `main` / root)
+- **Live:** https://nessim-higson.github.io/arena-guidelines/ (GitHub Pages from branch `gh-pages`, sealed behind the Arena password since 31 Oct 2026; the repo itself stays public). Rebuild after changes: `node ../arena-ip/tools/playbook/build.mjs --pages <tmp>`, copy into a `gh-pages` worktree, commit, push. Also live at enterthearena.com/playbook and on the Lab (/arena/guidelines).
 - **Repo:** https://github.com/nessim-higson/arena-guidelines
 - **Standalone tools (shipped, embedded in the deck + linkable on their own):**
   - Type tool → https://nessim-higson.github.io/arena-guidelines/type-tool.html
