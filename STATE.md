@@ -1,7 +1,7 @@
 # STATE — The Arena Interactive Brand Playbook
 
 > Snapshot of where this project stands so work can be picked back up cold.
-> Last updated: **2026-10-27** · Cache version in use: **`?v=69`** · Branch: **main**
+> Last updated: **2026-10-27** · Cache version in use: **`?v=70`** · Branch: **main**
 
 ---
 

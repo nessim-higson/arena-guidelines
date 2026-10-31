@@ -256,7 +256,7 @@ export const SLIDES = [
     body: "We embrace humor that emerges from confidence, contrast and surprise. It should feel sharp, unexpected and self-aware rather than comedic for its own sake. The goal is personality, not parody.",
     items: [
       { img: "assets/extracted/pg23-000.png", pos: "bottom", lines: ["Serious stakes meeting absurd situations.", "Humor born from contrast.", "Self-awareness without losing intensity."] },
-      // Real film stills replace the two AI images (Ness, 31 Oct 2026): Mad Max: Fury Road (Warner Bros. trailer, 0:57), Kung Fu Hustle (trailer, 0:48).
+      // Real film stills replace the two AI images (Ness, 31 Oct 2026): Mad Max: Fury Road (Warner Bros. trailer, 0:59), Kung Fu Hustle (trailer, 0:48).
       { img: "assets/imagery/humor-fury-road.jpg", pos: "center", lines: ["Exaggeration pushed to its limit.", "Chaotic, confident and unforgettable.", "Entertainment can be fun without becoming frivolous."] },
       { img: "assets/imagery/humor-kung-fu-hustle.jpg", pos: "center", lines: ["Unexpected visual collision.", "Action and absurdity existing simultaneously.", "Memorable because it shouldn't work."] }
     ] },
@@ -276,7 +276,8 @@ export const SLIDES = [
     items: [
       { img: "assets/extracted/pg20-000.png", pos: "bottom", lines: ["Places the viewer inside the moment.", "Physical proximity creates intensity.", "Action experienced rather than witnessed."] },
       { img: "assets/extracted/pg20-002.png", pos: "bottom", lines: ["Unexpected perspective.", "Reveals scale, geometry and spectacle.", "Turns a familiar scene into something iconic."] },
-      { img: "assets/extracted/pg20-001.png", pos: "top", lines: ["Momentum directed toward the viewer.", "Creates urgency and movement.", "Feels immediate and cinematic."] }
+      // Real film still replaces the AI soldiers and chickens (Ness, 31 Oct 2026): RRR (DVV Entertainment trailer, 0:32).
+      { img: "assets/imagery/camera-rrr.jpg", pos: "center", lines: ["Momentum directed toward the viewer.", "Creates urgency and movement.", "Feels immediate and cinematic."] }
     ] },
 
   // ---------- MATERIAL ----------

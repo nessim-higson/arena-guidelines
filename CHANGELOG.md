@@ -11,6 +11,8 @@ logged under the top **Unreleased** section and rolled into the next version whe
 
 ## Unreleased — v2.0 (in progress)
 
+- 31 Oct 2026 (Ness): Craft / Camera Angles loses the AI soldiers-and-chickens image for a real still from RRR (the tiger charging at camera). Humor's Fury Road still corrected to the pole-swinging War Boy (the wrong frame had gone in). Cache v70.
+
 - 31 Oct 2026 (Ness): Image Directs the Palette back to Portrait, Anime and Swagger; Metal Slug is the one Blur source (Secret Level desert). Four illustrations did not work. Cache v69.
 
 - 31 Oct 2026 (Ness): Image Directs the Palette samples four Secret Level scenes by Blur (island, desert, jungle, dusk; `assets/blur/`). Tonality / Humor loses its two AI images for real film stills: Mad Max: Fury Road and Kung Fu Hustle (`assets/imagery/`), with Tropic Thunder kept. The GitHub Pages copy is now the sealed build on branch gh-pages, behind the Arena password (built by ../arena-ip/tools/playbook/build.mjs --pages). Cache v68.
